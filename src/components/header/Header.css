@@ -1,0 +1,45 @@
+.header {
+    background-color: #ff0000; /* Fundo vermelho */
+    color: white;
+    padding: 0.5rem 1rem; /* py-2 e px-4 do Tailwind */
+    width: 100%;
+  }
+  
+  .header-content {
+    max-width: 1024px; /* Aproximadamente max-w-screen-lg do Tailwind */
+    margin: 0 auto; /* Centraliza o conteúdo como mx-auto */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* gap-2 do Tailwind */
+  }
+  
+  .logo span {
+    font-weight: bold;
+    font-size: 1.125rem; /* text-lg do Tailwind */
+  }
+  
+  .logo .heart {
+    font-size: 1.25rem; /* text-xl do Tailwind */
+  }
+  
+  .contact-info {
+    display: flex;
+    gap: 1.5rem; /* gap-6 do Tailwind */
+    font-size: 0.875rem; /* text-sm do Tailwind */
+  }
+  
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* gap-2 do Tailwind */
+  }
+  
+  .contact-item .icon {
+    font-size: 1.125rem; /* text-lg do Tailwind */
+  }
