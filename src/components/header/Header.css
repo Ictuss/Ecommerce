@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
 .header {
     background-color: #ff0000; /* Fundo vermelho */
     color: white;
@@ -29,6 +31,7 @@
   }
   
   .contact-info {
+    font-family: 'Anton', sans-serif;
     display: flex;
     gap: 1.5rem; /* gap-6 do Tailwind */
     font-size: 0.875rem; /* text-sm do Tailwind */
