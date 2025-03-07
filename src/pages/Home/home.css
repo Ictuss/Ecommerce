@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+.home-container {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Altura total da tela */
+  font-family: 'Anton', sans-serif;
+  color: #ff0000; /* Vermelho */
+  text-align: center;
+}
+
+.home-container h1,
+.home-container p {
+  font-size: 28px;
+}

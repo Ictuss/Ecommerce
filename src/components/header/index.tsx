@@ -1,6 +1,5 @@
-// Header.tsx
 import React from 'react';
-import './Header.css'; // Importe o CSS aqui
+import './Header.css';
 
 const Header: React.FC = () => {
   return (
@@ -31,6 +30,23 @@ const Header: React.FC = () => {
             <span>ictus@ictusvirtual.com.br</span>
           </div>
         </div>
+      </div>
+
+      {/* Navbar */}
+      <div className="navbar-container">
+        <nav className="navbar">
+          <ul className="nav-links">
+            <li>Início</li>
+            <li>Modelos</li>
+            <li>Blog</li>
+            <li>Contato</li>
+            <li>Sobre nós</li>
+          </ul>
+          <div className="search-box">
+            <input type="text" placeholder="Pesquisar..." />
+            <span className="search-icon">🔍</span>
+          </div>
+        </nav>
       </div>
     </header>
   );
