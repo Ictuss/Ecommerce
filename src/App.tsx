@@ -1,13 +1,13 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { StrapiProvider } from './context/StrapiContext';
 import Header from './components/header';
-import { Home } from 'lucide-react';
 import SobreNos from './pages/AboutUs/aboutus';
 import Blog from './pages/Blog/blog';
 import Contato from './pages/Contact/contact';
 import Modelos from './pages/Models/models';
 import ProductDetail from './Products/ProductDetail';
 import Products from './Products/products';
+import Home from './pages/Home/home';
 
 function App() {
   return (
