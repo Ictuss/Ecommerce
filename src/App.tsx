@@ -8,6 +8,7 @@ import Modelos from './pages/Models/models';
 import ProductDetail from './Products/ProductDetail';
 import Products from './Products/products';
 import Home from './pages/Home/home';
+import LittmannClassicIII from './pages/ProductDetailsStatic/LittmannClassicIII';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path="/contato" element={<Contato />} />
             <Route path="/sobre-nos" element={<SobreNos />} />
             <Route path="/products" element={<Products />} />
+            <Route path="/product/littmann-classic-iii" element={<LittmannClassicIII />} />
             <Route path="/product/:id" element={<ProductDetail />} /> {/* Nova rota dinâmica */}
           </Routes>
         </div>

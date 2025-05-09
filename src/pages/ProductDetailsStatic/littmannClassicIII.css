@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+.product-page {
+  font-family: 'Anton', sans-serif;
+  color: #d10b0b;
+  padding: 40px;
+  background-color: #fff;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.titulo {
+  font-size: 48px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.subtitulo {
+  font-size: 32px;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.conteudo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.descricao {
+  flex: 2;
+  font-size: 26px;
+  color: #d10b0b;
+}
+
+.descricao ul {
+  list-style-type: disc;
+  padding-left: 20px;
+  margin-bottom: 20px;
+}
+
+.descricao h3 {
+  margin-top: 30px;
+  font-size: 22px;
+  color: #d10b0b;
+}
+
+.imagens {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.imagens img {
+  width: 100%;
+  border: 1px solid #eee;
+  border-radius: 10px;
+}
