@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+.contato {
+  padding: 60px 20px;
+  background: #fff;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.titulo {
+  color: #d10606;
+  font-size: 36px;
+  text-align: center;
+  margin-bottom: 40px;
+  font-weight: bold;
+}
+
+.conteudo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.formulario {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.formulario input,
+.formulario textarea {
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: border 0.3s ease;
+}
+
+.formulario input:focus,
+.formulario textarea:focus {
+  outline: none;
+  border-color: #d10606;
+}
+
+.formulario button {
+  border: none;
+  background: #d10606;
+  color: #fff;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.formulario button:hover {
+  background: #a30404;
+}
+
+.info p i {
+    color: #d10606;
+    margin-right: 8px;
+    width: 18px;
+    font-family: 'Anton', sans-serif;
+    display: inline-block;
+    text-align: center;
+}
+
+  
+.info {
+    flex: 1;
+    min-width: 300px;
+    background: #f9f9f9;
+    padding: 25px 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    font-family: 'Anton', sans-serif;
+  }
+  
+
+.info h3 {
+  color: #d10606;
+  margin-bottom: 10px;
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+.info p {
+  margin-bottom: 10px;
+  font-size: 15px;
+  line-height: 1.6;
+}
