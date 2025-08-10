@@ -4,8 +4,11 @@ import { Link } from 'react-router-dom';
 import litman from "../../assets/1.png"
 const Home: React.FC = () => {
   return (
-    <div className="home-container">
-      <h1>Destaques</h1>
+ 
+    <>
+       <h1 className='h1'>Destaques</h1>
+        <div className="home-container">
+      
       <div className="card-container">
         <div className="product-card">
           <h2>Estetoscópio Littmann Classic III</h2>
@@ -24,6 +27,8 @@ const Home: React.FC = () => {
         </div>
       </div>
     </div>
+    </>
+
   );
 };
 

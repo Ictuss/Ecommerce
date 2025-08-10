@@ -81,48 +81,48 @@
   color: #ff0000;
 }
 
-/* ===== Responsividade ===== */
-
-/* <= 1024px (tablet) */
-
-
-/* <= 768px (celular) */
 @media (max-width: 768px) {
   .menu-toggle {
     display: inline-block;
   }
-  .logo img { width: 200px; height: auto; }
+
+  /* A borda envolve tudo sempre (fechado e aberto) */
   .navbar-container {
     border: 2px solid #b30000;
     border-radius: 10px;
+    margin: 2px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+    overflow: hidden; /* mantém a continuidade nos cantos */
   }
 
+  .navbar {
+    align-items: center;
+    /* nada de position relative aqui */
+  }
 
-
-  .icon { width: 20px; height: 20px; }
-
+  /* Fechado por padrão no mobile */
   .nav-links {
-    background: #fff;
-    border: 2px solid #b30000;
-    border-radius: 10px;
-    padding: 20px;
+    display: none;
     flex-direction: column;
     gap: 15px;
-    z-index: 10;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
+    padding: 16px 20px 20px;
+    background: #fff;
+
+    /* só um divisor interno, sem borda externa */
+    border-top: 2px solid #b30000;
   }
+
+  /* Abre dentro do mesmo contêiner (continuidade de borda) */
   .nav-links.is-open {
     display: flex;
-    border-top: none;
-    border-top-right-radius: 0;
-    border-top-left-radius: 0;
   }
-  .navbar {
-    position: relative;
-    align-items: center;
-  }
+
+  .logo img { width: 200px; height: auto; }
+  .icon { width: 20px; height: 20px; }
 }
+
 
 /* <= 420px (muito estreito) */
 @media (max-width: 420px) {

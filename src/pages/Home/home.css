@@ -15,6 +15,16 @@
   margin-bottom: 40px;
 }
 
+.h1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Anton', sans-serif;
+  background-color: #b30000;
+  color: white;
+  width: 100%;
+}
+
 .card-container {
   display: flex;
   justify-content: center;
