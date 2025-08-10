@@ -1,140 +1,130 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
 
-.header {
-  background-color: #ff0000; /* Fundo vermelho */
-  color: #ffffff; /* Texto branco */
-  padding: 13px 0px;
+
+
+
+/* Banner */
+.logoPrincipal-container { margin: 8px 0 10px; width: 100%; }
+.logoPrincipal { width: 100%; height: auto; display: block; }
+
+
+.icon {
+  width: 24px;
+  height: 24px;
+}
+
+/* Navbar */
+.navbar-container {
+  background-color: #ffffff;
+  border: 2px solid #b30000;
+  border-radius: 10px;
+  padding: 10px 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,.1);
+  font-family: 'Anton', sans-serif;
+  margin: 2px;
+}
+
+.navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  height: 65px;
-  font-family: 'Anton', sans-serif; /* Usa a fonte Anton */
+  gap: 16px;
 }
 
-.header-content {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: nowrap;
-  flex-direction: row;
+/* Hambúrguer - escondido no desktop */
+.menu-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 6px 8px;
+  position: relative;
 }
 
-.logo img {
-    width: 120px;
-  
+.menu-toggle::after {
+  content: "☰";
+  font-size: 28px;
 }
 
-.logoPrincipal {
-    width: 100%;
-    height: auto;
-    display: block;
-    margin: 0;
-    padding: 0;
-  }
-  
+.menu-toggle[aria-expanded="true"]::after {
+  content: "×";
+}
 
-.contact-info {
-    margin-left: 120px;
+.nav-links {
+  list-style: none;
   display: flex;
   align-items: center;
-  gap: 80px; /* Espaçamento entre os itens de contato */
+  gap: clamp(16px, 6vw, 120px);
+  margin: 0;
+  padding: 0;
 }
 
-.contact-item {
-  display: flex;
-  align-items: center;
-  gap: 15px; /* Espaçamento entre ícone e texto */
+.nav-links .link {
+  text-decoration: none;
+  color: #b30000;
+  font-size: clamp(18px, 3.2vw, 32px);
+  font-weight: bold;
+  transition: opacity .2s ease;
+}
+
+.nav-links .link:hover {
+  opacity: .8;
 }
 
 
-.contact-item span {
-  font-size: 22px; /* Tamanho da fonte mantido */
+
+.search-icon {
+  font-size: 18px;
+  margin-right: 8px;
+  color: #ff0000;
 }
 
-.navbar-container {
-    display: block;
-    background-color: #fff; /* ou a cor desejada */
-    width: 100%;
-    padding: 10px 0;
-}
+/* ===== Responsividade ===== */
 
-.icon {
-    width: 30px;
-    height: 30px;
-}
+/* <= 1024px (tablet) */
 
-.logoPrincipal-container {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    width: 100%;
+
+/* <= 768px (celular) */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: inline-block;
   }
-  
-  .logoPrincipal {
-    width: 100%;
-    max-width: 100%;
-    display: block;
-    height: auto;
-  }
+  .logo img { width: 200px; height: auto; }
   .navbar-container {
-    display: block;
-    background-color: #ffffff;
-    width: 100%;
-    border: 4px solid #b30000;
-    padding: 10px 0px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    font-family: 'Anton', sans-serif;
-    
-  }
-  
-  .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 4px 25px;
-  }
-  
-  .nav-links {
-    list-style: none;
-    display: flex;
-    gap: 120px;
-    margin: 0;
-    padding: 0;
-  }
- 
-  .nav-links .link {
-    text-decoration: none;
-    color: #b30000; /* vermelho escuro */
-    font-size: 32px;
-    font-weight: bold;
-    transition: color 0.2s;
-  }
-  
-  .nav-links .link:hover {
-    color: #b30000;
-  }
-  
-  .search-box {
-    width: 300px;
-    display: flex;
-    align-items: center;
     border: 2px solid #b30000;
-    border-radius: 20px;
-    padding: 5px 10px;
+    border-radius: 10px;
   }
-  
-  .search-box input {
-    border: none;
-    outline: none;
-    font-size: 18px;
-    font-family: 'Anton', sans-serif;
-    padding: 5px;
+
+
+
+  .icon { width: 20px; height: 20px; }
+
+  .nav-links {
+    background: #fff;
+    border: 2px solid #b30000;
+    border-radius: 10px;
+    padding: 20px;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 10;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
   }
-  
-  .search-icon {
-    color: #ff0000;
-    font-size: 18px;
-    margin-right: 5px;
+  .nav-links.is-open {
+    display: flex;
+    border-top: none;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
   }
-  
+  .navbar {
+    position: relative;
+    align-items: center;
+  }
+}
+
+/* <= 420px (muito estreito) */
+@media (max-width: 420px) {
+  .logo img { width: 200px; height: auto; }
+}
