@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+.newsletter-container {
+  padding: 10px;
+  text-align: center;
+}
+
+.newsletter-text {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #ff0000;
+}
+
+.newsletter-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.input-field {
+  padding: 10px;
+  border: 2px solid #ff0000;
+  border-radius: 20px;
+  font-size: 1rem;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.2);
+  outline: none;
+}
+
+.submit-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  background-color: #ff0000;
+  color: #fff;
+  font-family: 'Anton', sans-serif;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+  background-color: #cc0000;
+}
+
+@media (min-width: 768px) {
+  .newsletter-form {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .input-field {
+    width: 20%;
+  }
+
+  .submit-button {
+    width: 15%;
+  }
+}

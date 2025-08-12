@@ -4,8 +4,16 @@
 
 
 /* Banner */
-.logoPrincipal-container { margin: 8px 0 10px; width: 100%; }
-.logoPrincipal { width: 100%; height: auto; display: block; }
+.logoPrincipal-container {
+  margin: 8px 0 10px;
+  width: 100%;
+}
+
+.logoPrincipal {
+  width: 100%;
+  height: auto;
+  display: block;
+}
 
 
 .icon {
@@ -19,7 +27,7 @@
   border: 2px solid #b30000;
   border-radius: 10px;
   padding: 10px 0;
-  box-shadow: 0 2px 4px rgba(0,0,0,.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
   font-family: 'Anton', sans-serif;
   margin: 2px;
 }
@@ -81,50 +89,57 @@
   color: #ff0000;
 }
 
-@media (max-width: 768px) {
-  .menu-toggle {
-    display: inline-block;
-  }
-
-  /* A borda envolve tudo sempre (fechado e aberto) */
+/* @media (min-width: 768px) {
   .navbar-container {
     border: 2px solid #b30000;
     border-radius: 10px;
-    margin: 2px;
+    margin: 0 auto;
     background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,.1);
-    overflow: hidden; /* mantém a continuidade nos cantos */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
+    width: 1200px;
+    padding: 10px 20px;
   }
 
   .navbar {
     align-items: center;
-    /* nada de position relative aqui */
   }
 
-  /* Fechado por padrão no mobile */
+
+  .logoPrincipal {
+    width: 1250px;
+  }
+
+  .h1 {
+    width: 100%;
+  }
+
+
+  .icon {
+    width: 20px;
+    height: 20px;
+  }
+} */
+
+@media (min-width: 1440px) {
+    .navbar-container {
+    border: 2px solid #b30000;
+    border-radius: 10px;
+    margin: 0 auto;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
+    width: 1370px;
+    padding: 10px 20px;
+  }
+
   .nav-links {
-    display: none;
-    flex-direction: column;
-    gap: 15px;
-    text-align: center;
-    padding: 16px 20px 20px;
-    background: #fff;
-
-    /* só um divisor interno, sem borda externa */
-    border-top: 2px solid #b30000;
-  }
-
-  /* Abre dentro do mesmo contêiner (continuidade de borda) */
-  .nav-links.is-open {
     display: flex;
+    justify-content: flex-start;
   }
 
-  .logo img { width: 200px; height: auto; }
-  .icon { width: 20px; height: 20px; }
-}
+    .logoPrincipal-container {
+    width: 100%;
+    
+  }
 
 
-/* <= 420px (muito estreito) */
-@media (max-width: 420px) {
-  .logo img { width: 200px; height: auto; }
 }

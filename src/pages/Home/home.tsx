@@ -1,34 +1,39 @@
 import React from 'react';
 import './Home.css';
 import { Link } from 'react-router-dom';
-import litman from "../../assets/1.png"
+import { mockProducts } from '../../mock/mockProdutcs.js';
+import litman from '../../assets/1.png';
+
 const Home: React.FC = () => {
   return (
- 
     <>
-       <h1 className='h1'>Destaques</h1>
-        <div className="home-container">
-      
-      <div className="card-container">
-        <div className="product-card">
-          <h2>Estetoscópio Littmann Classic III</h2>
-          <img
-            src={litman} // Coloque a imagem na pasta public/images
-            alt="Estetoscópio Littmann Classic III"
-            className="product-image"
-          />
-          <p className="product-description">
-            O Littmann Classic III oferece acústica de excelência para profissionais de saúde.
-          </p>
-          <p className="product-price">R$ 799,90</p>
-          <Link to="/product/littmann-classic-iii" className="product-button">
-            Ver Detalhes
-          </Link>
-        </div>
-      </div>
-    </div>
-    </>
+      <h1 className="h1">Destaques</h1>
 
+      {/* No mobile, este container vira carrossel horizontal com snap */}
+      <div className="home-container">
+        {mockProducts.map((product: any) => (
+          <div className="card-container" key={product.id}>
+            <div className="product-card">
+              <h2>{product.name}</h2>
+
+              <img
+                src={product.image === 'litman' ? litman : product.image}
+                alt={product.name}
+                className="product-image"
+              />
+
+              <p className="product-description">{product.description}</p>
+
+              <p className="product-price">{product.price}</p>
+
+              {/* <Link to={product.path} className="product-button">
+                Ver Detalhes
+              </Link> */}
+            </div>
+          </div>  
+        ))}
+      </div>
+    </>
   );
 };
 

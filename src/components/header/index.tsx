@@ -4,6 +4,7 @@ import "./Header.css";
 import principalLogo from "../../assets/icons/banner.png";
 import ContactInfo from "./component/contactInfo/contactInfo";
 import SearchInfo from "./component/searchInfo/searchInfo";
+import NewsletterSignup from "./newLetter/newLetter";
 
 const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -13,7 +14,7 @@ const Header: React.FC = () => {
       <ContactInfo />
       <SearchInfo />
       <div className="navbar-container">
-        <nav className="container navbar">
+        <nav className="">
           <button
             className="menu-toggle"
             aria-label="Abrir menu"
@@ -66,6 +67,8 @@ const Header: React.FC = () => {
           alt="Banner Principal"
         />
       </div>
+
+      <NewsletterSignup/>
     </>
   );
 };

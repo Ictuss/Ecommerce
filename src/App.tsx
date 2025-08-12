@@ -14,7 +14,7 @@ function App() {
   return (
     <StrapiProvider>
       <Router>
-        <div>
+        
           <Header />
           <Routes>
             <Route path="/" element={<Home />} />
@@ -26,7 +26,7 @@ function App() {
             <Route path="/product/littmann-classic-iii" element={<LittmannClassicIII />} />
             <Route path="/product/:id" element={<ProductDetail />} /> {/* Nova rota dinâmica */}
           </Routes>
-        </div>
+        
       </Router>
     </StrapiProvider>
   );

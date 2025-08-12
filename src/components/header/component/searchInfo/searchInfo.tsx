@@ -2,7 +2,7 @@ import React from "react";
 import logoPreta from "../../../../assets/logoPreta.png";
 import "./searchInfo.css";
 import iconZap from "../../../../assets/whatsapp.png";
-import iconInfo from '../../../../assets/info.png';
+import iconInfo from "../../../../assets/info.png";
 const SearchInfo: React.FC = () => {
   return (
     <>
@@ -25,10 +25,16 @@ const SearchInfo: React.FC = () => {
               aria-label="O que você procura?"
             />
           </label>
-          <div className="link-div">
-            <li className="link">Fale Conosco!     <img src={iconZap} alt="WhatsApp" className="link-icon" /></li>
-            <li className="link">Sobre Nós     <img src={iconInfo} alt="Informações" className="link-icon" /></li>
-          </div>
+        </div>
+        <div className="link-div">
+          <li className="link">
+            Fale Conosco!{" "}
+            <img src={iconZap} alt="WhatsApp" className="link-icon" />
+          </li>
+          <li className="link"> 
+            Sobre Nós{" "}
+            <img src={iconInfo} alt="Informações" className="link-icon" />
+          </li>
         </div>
       </div>
     </>

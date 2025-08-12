@@ -1,13 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
-.search-box {
-  min-width: 180px;
-  width: clamp(180px, 25vw, 320px);
-  display: flex;
-  align-items: center;
-  border: 2px solid #b30000;
-  border-radius: 20px;
-  padding: 6px 10px;
-}
 
 .search-box input {
   border: none;
@@ -34,8 +25,7 @@
   --ictus-red-50: rgba(207,9,9,.45);   /* placeholder ofuscado */
 }
 .search-box{
-  min-width:220px;
-  width:min(560px, 90vw);
+  min-width:250px;
   display:flex;
   align-items:center;
   gap:10px;
@@ -45,7 +35,7 @@
   box-shadow: inset 0 0 0 1px rgba(255,255,255,.15);
   background:#fff;
 }
-.si-search{ display:flex; justify-content:center; flex-direction: column; }
+.si-search{ display:flex; justify-content:center; flex-direction: column; padding: 0px 10px;  }
 .search-icon{
   font-size:22px;
   line-height:1;
@@ -85,4 +75,24 @@
     flex-direction: column;
     justify-content: center;
     width: 100%;
+    align-items: center;
+}
+
+
+@media (min-width: 1200px) {
+  .container{
+    display: flex;
+    flex-direction: row;
+    gap: 134px;
+    padding: 20px 0px;
+    }
+}
+
+@media (min-width: 1440px) {
+  .container{
+    display: flex;
+    flex-direction: row;
+    gap: 184px;
+        padding: 20px 0px;
+  } 
 }

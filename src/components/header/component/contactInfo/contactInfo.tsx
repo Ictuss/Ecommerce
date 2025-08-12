@@ -18,14 +18,14 @@ const ContactInfo: React.FC = () => {
       <div className="contact-item address">
         <img src={loc} alt="" className="icon" aria-hidden="true" />
         <span className="contact-text">
-          <span className="addr-line">Rua Getúlio Vargas, 1951</span>
-          <span className="addr-line">Centro</span>
-          <span className="addr-line">Guarapuava - PR</span>
+          <span className="addr-line">Rua Getúlio Vargas, 1951, Centro, Guarapuava - PR</span>
+          {/* <span className="addr-line">Centro</span>
+          <span className="addr-line">Guarapuava - PR</span> */}
         </span>
       </div>
 
       {/* WhatsApp */}
-      <div className="contact-item">
+      {/* <div className="contact-item">
         <img src={wpp} alt="" className="icon" aria-hidden="true" />
         <a
           className="contact-text link"
@@ -35,7 +35,7 @@ const ContactInfo: React.FC = () => {
         >
           42 9 9138 3593
         </a>
-      </div>
+      </div> */}
 
       {/* Telefone */}
       <div className="contact-item">
