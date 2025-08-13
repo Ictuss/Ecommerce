@@ -14,15 +14,15 @@ const Home: React.FC = () => {
         {mockProducts.map((product: any) => (
           <div className="card-container" key={product.id}>
             <div className="product-card">
-              <h2>{product.name}</h2>
+        
 
               <img
                 src={product.image === 'litman' ? litman : product.image}
                 alt={product.name}
                 className="product-image"
               />
-
-              <p className="product-description">{product.description}</p>
+      <h2>{product.name}</h2>
+              {/* <p className="product-description">{product.description}</p> */}
 
               <p className="product-price">{product.price}</p>
 
