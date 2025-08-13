@@ -1,0 +1,95 @@
+/* Fonte Anton para o título */
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+:root{
+  --hl-red: #b30000;
+  --hl-text: #333;
+  --hl-bg: #fff;
+  --hl-border: #e74a4a;
+}
+
+/* Card base */
+.hl-card{
+  display: flex;
+  flex-direction: column;           /* mobile: vertical */
+  gap: 16px;
+  background: var(--hl-bg);
+  border-radius: 6px;
+  padding: 12px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 3px solid var(--hl-border);
+  /* leve textura pontilhada de fundo */
+  background-image:
+    radial-gradient(#eee 1px, transparent 1px);
+  background-size: 10px 10px;
+  background-position: 0 0;
+}
+
+/* Imagem */
+.hl-media{
+  width: 100%;
+  flex-shrink: 0;
+}
+.hl-img{
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+/* Conteúdo */
+.hl-content{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hl-title{
+  margin: 0;
+  font-family: 'Anton', sans-serif;
+  font-size: 28px;
+  line-height: 1.1;
+  color: var(--hl-red);
+}
+
+.hl-text{
+  margin: 0;
+  color: var(--hl-text);
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.hl-footer{
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+.hl-date{
+  font-size: 14px;
+  color: #9b1b1b;
+  font-weight: 600;
+}
+
+/* Desktop: lado a lado */
+@media (min-width: 960px){
+  .hl-card{
+    flex-direction: row;            /* horizontal */
+    align-items: flex-start;
+    gap: 24px;
+    padding: 18px;
+  }
+  .hl-media{
+    width: 260px;                   /* coluna da imagem */
+  }
+  .hl-img{
+    height: 160px;
+  }
+  .hl-title{
+    font-size: 36px;
+  }
+  .hl-text{
+    font-size: 17px;
+  }
+}

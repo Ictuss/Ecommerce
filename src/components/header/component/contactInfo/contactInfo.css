@@ -37,8 +37,8 @@
 
 /* Ícones */
 .icon {
-  width: 18px;                  /* antes 24px */
-  height: 18px;
+  width: 28px;                  /* antes 24px */
+  height: 28px;
   object-fit: contain;
   filter: brightness(0) invert(1);
 }
@@ -75,8 +75,6 @@
 
   .contact-item { gap: 10px; }
 
-  .icon { width: 20px; height: 20px; }
-
   .contact-text { font-size: 15px; }
 
   /* Mostra endereço completo a partir daqui */
@@ -111,6 +109,6 @@
     justify-content: center;
     height: 66px;
     padding: 0 50px;
-    gap: 16px;
+    gap: 65px;
   }
 }

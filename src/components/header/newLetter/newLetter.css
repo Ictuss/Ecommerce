@@ -7,31 +7,45 @@
 
 .newsletter-text {
   font-family: 'Anton', sans-serif;
-  font-size: 1.5rem;
+  font-size: 32px;
   margin-bottom: 10px;
   color: #ff0000;
 }
 
 .newsletter-form {
   display: flex;
+  align-items: center;
   flex-direction: column;
   gap: 10px;
 }
 
 .input-field {
+  max-width: 350px;
   padding: 10px;
-  border: 2px solid #ff0000;
+  border: 3px solid #ff0000;
   border-radius: 20px;
-  font-size: 1rem;
-  color: #fff;
+  color: #ff0000;
   background: rgba(255, 255, 255, 0.2);
   outline: none;
+  text-align: center;
+  font-family: 'Anton', sans-serif;
+  line-height: 1.5; /* Ajusta a altura da linha para centralizar verticalmente */
+  height: 40px; /* Define uma altura fixa para consistência */
+}
+
+.input-field::placeholder {
+  color: #ff0000;
+  opacity: 0.5;
+  font-family: 'Anton', sans-serif;
+  font-size: 1.0rem;
+  line-height: 1.5; /* Alinha verticalmente o placeholder */
+  text-align: center; /* Garante centralização horizontal */
 }
 
 .submit-button {
+  width: 150px;
   padding: 10px 20px;
   border: none;
-  border-radius: 20px;
   background-color: #ff0000;
   color: #fff;
   font-family: 'Anton', sans-serif;
@@ -59,4 +73,13 @@
   .submit-button {
     width: 15%;
   }
+
+  .input-field::placeholder {
+  color: #ff0000;
+  opacity: 0.5;
+  font-family: 'Anton', sans-serif;
+  font-size: 1.5rem;
+  line-height: 1.5; /* Alinha verticalmente o placeholder */
+  text-align: center; /* Garante centralização horizontal */
+}
 }

@@ -18,17 +18,21 @@ const Header: React.FC = () => {
           <button
             className="menu-toggle"
             aria-label="Abrir menu"
-            aria-expanded={menuOpen}
             onClick={() => setMenuOpen((v) => !v)}
           ></button>
 
-          <ul className={`nav-links ${menuOpen ? "is-open" : ""}`}>
+          <ul className={`nav-links`}>
             <li>
               <Link to="/" className="link" onClick={() => setMenuOpen(false)}>
-                Página Inicial
+                Inicio
               </Link>
             </li>
             {/* <li><Link to="/modelos" className="link" onClick={() => setMenuOpen(false)}>Modelos</Link></li> */}
+            <li>
+              <Link to="/" className="link" onClick={() => setMenuOpen(false)}>
+                Produtos
+              </Link>
+            </li>
             <li>
               <Link
                 to="/blog"
@@ -38,7 +42,7 @@ const Header: React.FC = () => {
                 Blog
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link
                 to="/contato"
                 className="link"
@@ -46,8 +50,8 @@ const Header: React.FC = () => {
               >
                 Contato
               </Link>
-            </li>
-            <li>
+            </li> */}
+            {/* <li>
               <Link
                 to="/sobre-nos"
                 className="link"
@@ -55,7 +59,7 @@ const Header: React.FC = () => {
               >
                 Sobre Nós
               </Link>
-            </li>
+            </li> */}
           </ul>
         </nav>
       </div>
@@ -68,7 +72,7 @@ const Header: React.FC = () => {
         />
       </div>
 
-      <NewsletterSignup/>
+      <NewsletterSignup />
     </>
   );
 };

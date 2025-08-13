@@ -15,7 +15,7 @@
 }
 
 .logoPretaImg {
-    max-width: 200px;
+    max-width: 285px;
     height: auto;
     display: flex;
     align-items: center;
@@ -43,7 +43,9 @@
   opacity:.85;
 }
 .link-div {
+  font-size: 24px;
     display: flex;
+    gap: 20px;
     justify-content: center;
     flex-direction: column;
     align-items: center;
@@ -92,7 +94,8 @@
   .container{
     display: flex;
     flex-direction: row;
-    gap: 184px;
-        padding: 20px 0px;
+    /* gap: ; */
+        padding: 20px 0px;  
+        justify-content: center;
   } 
 }
