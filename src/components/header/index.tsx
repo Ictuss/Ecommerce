@@ -42,24 +42,6 @@ const Header: React.FC = () => {
                 Blog
               </Link>
             </li>
-            {/* <li>
-              <Link
-                to="/contato"
-                className="link"
-                onClick={() => setMenuOpen(false)}
-              >
-                Contato
-              </Link>
-            </li> */}
-            {/* <li>
-              <Link
-                to="/sobre-nos"
-                className="link"
-                onClick={() => setMenuOpen(false)}
-              >
-                Sobre Nós
-              </Link>
-            </li> */}
           </ul>
         </nav>
       </div>
@@ -71,8 +53,6 @@ const Header: React.FC = () => {
           alt="Banner Principal"
         />
       </div>
-
-      <NewsletterSignup />
     </>
   );
 };

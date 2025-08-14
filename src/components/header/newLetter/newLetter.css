@@ -29,15 +29,14 @@
   outline: none;
   text-align: center;
   font-family: 'Anton', sans-serif;
-  line-height: 1.5; /* Ajusta a altura da linha para centralizar verticalmente */
-  height: 40px; /* Define uma altura fixa para consistência */
+  font-size: 22px;
+  height: 25px; /* Define uma altura fixa para consistência */
 }
 
 .input-field::placeholder {
   color: #ff0000;
   opacity: 0.5;
   font-family: 'Anton', sans-serif;
-  font-size: 1.0rem;
   line-height: 1.5; /* Alinha verticalmente o placeholder */
   text-align: center; /* Garante centralização horizontal */
 }

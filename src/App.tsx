@@ -5,8 +5,8 @@ import SobreNos from './pages/AboutUs/aboutus';
 import Blog from './pages/Blog/blog';
 import Contato from './pages/Contact/contact';
 import Modelos from './pages/Models/models';
-import ProductDetail from './Products/ProductDetail';
-import Products from './Products/products';
+import ProductDetail from './pages/Products/ProductDetail';
+import Products from './pages/Products/products';
 import Home from './pages/Home/home';
 import LittmannClassicIII from './pages/ProductDetailsStatic/LittmannClassicIII';
 

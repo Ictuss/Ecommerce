@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useStrapi } from '../context/StrapiContext';
+import { useStrapi } from '../../context/StrapiContext';
 
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();

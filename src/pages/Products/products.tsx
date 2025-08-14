@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useStrapi } from '../context/StrapiContext';
+import { useStrapi } from '../../context/StrapiContext';
 
 const Products: React.FC = () => {
   const { products, loading, error } = useStrapi();
