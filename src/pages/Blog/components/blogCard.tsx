@@ -1,11 +1,12 @@
 import React from "react";
 import "./blogCard.css";
+import dorPulso from "../../../assets/dorPulso.png";
 
 export default function PostHighlight({
   title = "Seu pulso está dolorido? Confira as possíveis causas.",
   text = `Você trabalha com movimentos repetitivos? Passa muito tempo com as mãos no teclado ou mouse? Especialistas relatam o número crescente de pacientes com LER. Confira alguns produtos que podem te ajudar!`,
   date = "12/05/2025",
-  image = "https://images.unsplash.com/photo-1588702547919-26089e690ecc?q=80&w=800&auto=format&fit=crop"
+  image = dorPulso
 }) {
   return (
     <article className="hl-card" role="article" aria-label="Destaque de conteúdo">

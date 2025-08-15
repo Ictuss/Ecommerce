@@ -6,7 +6,7 @@ export const mockProducts = [
     image: "litman",
     description: "O Littmann Classic III oferece acústica de excelência para profissionais de saúde.",
     price: "R$ 799,90",
-    path: "/product/littmann-classic-iii",
+    path: "../assets/dorPulso.png",
     category: "inverno"
   },
   {

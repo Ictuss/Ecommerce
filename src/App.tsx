@@ -9,6 +9,7 @@ import ProductDetail from './pages/Products/ProductDetail';
 import Products from './pages/Products/products';
 import Home from './pages/Home/home';
 import LittmannClassicIII from './pages/ProductDetailsStatic/LittmannClassicIII';
+import BlogDetail from './pages/BlogDetail/blogDetail';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/" element={<Home />} />
             {/* <Route path="/modelos" element={<Modelos />} /> */}
             <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<BlogDetail />} />
             <Route path="/contato" element={<Contato />} />
             <Route path="/sobre-nos" element={<SobreNos />} />
             <Route path="/products" element={<Products />} />

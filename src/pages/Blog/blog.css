@@ -1,0 +1,13 @@
+/* blogList.css (ou no seu blogCard.css) */
+.hl-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+.hl-card { cursor: pointer; }        /* feedback de clique */
+.hl-card:hover { box-shadow: 0 6px 16px rgba(0,0,0,.06); transform: translateY(-1px); }
+
+
+.containerblog-list {
+    width: 100%;    
+}
