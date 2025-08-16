@@ -1,7 +1,8 @@
 /* Fonte Anton para o título */
 @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&display=swap');
 
-:root{
+:root {
   --hl-red: #b30000;
   --hl-text: #333;
   --hl-bg: #fff;
@@ -9,9 +10,10 @@
 }
 
 /* Card base */
-.hl-card{
+.hl-card {
   display: flex;
-  flex-direction: column;           /* mobile: vertical */
+  flex-direction: column;
+  /* mobile: vertical */
   gap: 16px;
   background: var(--hl-bg);
   border-radius: 6px;
@@ -27,69 +29,86 @@
 }
 
 /* Imagem */
-.hl-media{
+.hl-media {
   width: 100%;
   flex-shrink: 0;
 }
-.hl-img{
+
+.hl-img {
   width: 100%;
-  height: auto;
+  height: 160px;
   display: block;
   border-radius: 4px;
   object-fit: cover;
 }
 
 /* Conteúdo */
-.hl-content{
+.hl-content {
   display: flex;
+  width: 100%;
   flex-direction: column;
   gap: 10px;
 }
 
-.hl-title{
+.hl-title {
   margin: 0;
   font-family: 'Anton', sans-serif;
   font-size: 28px;
   line-height: 1.1;
-  color: var(--hl-red);
+  color: #c11412;
 }
 
-.hl-text{
+.hl-text {
   margin: 0;
-  color: var(--hl-text);
+  color: #c11412;
+  font-family: 'DM Sans', sans-serif;
   font-size: 16px;
   line-height: 1.45;
 }
 
-.hl-footer{
+.hl-footer {
   display: flex;
   justify-content: flex-end;
   margin-top: 12px;
 }
-.hl-date{
+
+.hl-date {
   font-size: 14px;
-  color: #9b1b1b;
+  color: #c11412;
   font-weight: 600;
 }
 
 /* Desktop: lado a lado */
-@media (min-width: 960px){
-  .hl-card{
-    flex-direction: row;            /* horizontal */
+@media (min-width: 960px) {
+  .hl-card {
+    flex-direction: row;
+    /* horizontal */
     align-items: flex-start;
     gap: 24px;
     padding: 18px;
   }
-  .hl-media{
-    width: 260px;                   /* coluna da imagem */
+
+  .hl-content {
+    display: flex;
+    width: 70%;
+    flex-direction: column;
+    gap: 10px;
   }
-  .hl-img{
+
+  .hl-media {
+    width: 260px;
+    /* coluna da imagem */
+  }
+
+  .hl-img {
     height: 160px;
   }
-  .hl-title{
+
+  .hl-title {
     font-size: 36px;
   }
-  .hl-text{
+
+  .hl-text {
     font-size: 17px;
   }
 }

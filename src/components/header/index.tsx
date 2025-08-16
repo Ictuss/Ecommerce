@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useMatch } from "react-router-dom";
 import "./Header.css";
 import principalLogo from "../../assets/icons/banner.png";
+import logoBlog from "../../assets/logoBlog.png";
 import ContactInfo from "./component/contactInfo/contactInfo";
 import SearchInfo from "./component/searchInfo/searchInfo";
 import NewsletterSignup from "./newLetter/newLetter";
@@ -9,6 +10,11 @@ import NewsletterSignup from "./newLetter/newLetter";
 const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const location = useLocation();
+  const isBlog = location.pathname.startsWith("/blog");
+  const isProductDetail = Boolean(useMatch("/product/:id")); // ✅ /product/<id>
+
+  const logoToShow = isBlog ? logoBlog : principalLogo;
   return (
     <>
       <ContactInfo />
@@ -46,13 +52,11 @@ const Header: React.FC = () => {
         </nav>
       </div>
       {/* BANNER PRINCIPAL */}
-      <div className="logoPrincipal-container">
-        <img
-          src={principalLogo}
-          className="logoPrincipal"
-          alt="Banner Principal"
-        />
-      </div>
+    {!isProductDetail && (
+        <div className="logoPrincipal-container">
+          <img src={logoToShow} className="logoPrincipal" alt="Banner Principal" />
+        </div>
+      )}
     </>
   );
 };

@@ -34,14 +34,14 @@ export const posts: Post[] = [
     thumb: "/assets/blog/thumb2.jpg",
     content: ["Conteúdo do post 2...", "Mais conteúdo...", "Conclusão..."],
   },
-  {
-    slug: "tendinite-cuidados",
-    title: "Tendinite: cuidados no dia a dia",
-    excerpt:
-      "Entenda o que é, como prevenir e quais produtos podem ajudar na rotina.",
-    date: "01/06/2025",
-    hero: "/assets/blog/hero3.jpg",
-    thumb: "/assets/blog/thumb3.jpg",
-    content: ["Conteúdo do post 3...", "Mais conteúdo...", "Conclusão..."],
-  },
+  // {
+  //   slug: "tendinite-cuidados",
+  //   title: "Tendinite: cuidados no dia a dia",
+  //   excerpt:
+  //     "Entenda o que é, como prevenir e quais produtos podem ajudar na rotina.",
+  //   date: "01/06/2025",
+  //   hero: "/assets/blog/hero3.jpg",
+  //   thumb: "/assets/blog/thumb3.jpg",
+  //   content: ["Conteúdo do post 3...", "Mais conteúdo...", "Conclusão..."],
+  // },
 ];
