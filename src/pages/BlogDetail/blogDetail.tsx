@@ -3,6 +3,8 @@ import React from "react";
 import { Link, useParams, Navigate } from "react-router-dom";
 import "./blogDetail.css";
 import { posts } from "../../mock/posts";
+import dorPulso from "../../assets/dorPulso.png";
+import PostHighlight from "../Blog/components/blogCard";
 
 const BlogDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -13,9 +15,9 @@ const BlogDetail: React.FC = () => {
 
   return (
     <main className="blog">
-      <article className="container">
+      <article className="">
         <div className="blog-hero">
-          <img src={post.hero} alt={post.title} className="hero-img" />
+          <img src={dorPulso} alt={post.title} className="hero-img" />
         </div>
 
         <header className="blog-header">
@@ -24,23 +26,37 @@ const BlogDetail: React.FC = () => {
         </header>
 
         <section className="blog-content">
-          {post.content.map((para, i) => <p key={i}>{para}</p>)}
+          {post.content.map((para, i) => (
+            <p key={i}>{para}</p>
+          ))}
         </section>
       </article>
 
-      <div className="section-divider">Mais notícias</div>
-
-      <section className="related container">
-        {related.map((item) => (
-          <Link to={`/blog/${item.slug}`} className="related-card" key={item.slug}>
-            <img src={item.thumb} alt={item.title} loading="lazy" />
-            <div className="related-body">
-              <h3>{item.title}</h3>
-              <p>{item.excerpt}</p>
-            </div>
-          </Link>
-        ))}
-      </section>
+      <div className="section-divider">Mais matérias:</div>
+      <div className="anothers-posts">
+        <PostHighlight
+          title="Seu pulso está dolorido? Confira as possíveis causas."
+          text="Você trabalha com movimentos repetitivos? Passa muito tempo com as mãos no teclado ou mouse? Especialistas relatam o número crescente de pacientes com LER. Confira alguns produtos que podem te ajudar!"
+          date="12/05/2020"
+          image={dorPulso}
+        />
+      </div>
+      <div className="anothers-posts">
+        <PostHighlight
+          title="Seu pulso está dolorido? Confira as possíveis causas."
+          text="Você trabalha com movimentos repetitivos? Passa muito tempo com as mãos no teclado ou mouse? Especialistas relatam o número crescente de pacientes com LER. Confira alguns produtos que podem te ajudar!"
+          date="12/05/2020"
+          image={dorPulso}
+        />
+      </div>
+      <div className="anothers-posts">
+        <PostHighlight
+          title="Seu pulso está dolorido? Confira as possíveis causas."
+          text="Você trabalha com movimentos repetitivos? Passa muito tempo com as mãos no teclado ou mouse? Especialistas relatam o número crescente de pacientes com LER. Confira alguns produtos que podem te ajudar!"
+          date="12/05/2020"
+          image={dorPulso}
+        />
+      </div>
     </main>
   );
 };
