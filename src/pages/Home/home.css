@@ -13,14 +13,17 @@ body {
   color: #b30000;
   margin: 8px 0 4px;
 }
+
 .banner-image {
   width: 100%;
   height: auto;
   display: block;
 }
+
 .banner-card {
   background-color: #fff;
-  width: 100%; /* Mesma largura dos cards no mobile */
+  width: 100%;
+  /* Mesma largura dos cards no mobile */
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -138,6 +141,7 @@ body {
 
 /* Largura amigável no mobile */
 .product-card {
+
   background-color: #fff;
   border-radius: 10px;
   width: 75vw;
@@ -164,6 +168,7 @@ body {
 
 .product-description {
   font-size: 14px;
+  text-decoration: none;
   color: #7a0000;
   margin: 6px 0 10px;
 }
@@ -176,6 +181,10 @@ body {
   text-align: right;
   width: 100%;
   /* garante que ocupe toda a largura do card */
+}
+
+.product-link {
+  text-decoration: none;
 }
 
 .product-button {
@@ -245,6 +254,7 @@ body {
 
   .product-card h2 {
     font-size: 22px;
+    text-decoration: none;
   }
 
   .product-price {

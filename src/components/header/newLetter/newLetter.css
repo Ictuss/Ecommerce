@@ -30,7 +30,7 @@
   text-align: center;
   font-family: 'Anton', sans-serif;
   font-size: 22px;
-  height: 25px; /* Define uma altura fixa para consistência */
+  height: 45px; /* Define uma altura fixa para consistência */
 }
 
 .input-field::placeholder {

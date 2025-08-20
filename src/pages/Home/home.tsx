@@ -38,7 +38,7 @@ const Section: React.FC<{
         <React.Fragment key={`${title}-chunk-${idx}`}>
           <div className="home-container">
             {group.map((product) => (
-              <Link to={product.path} key={product.id}>
+              <Link to={product.path} key={product.id} className="product-link">
                 <div className="card-container">
                   <div className="product-card">
                     <img
@@ -82,7 +82,7 @@ const Home: React.FC = () => {
   return (
     <>
       <NewsletterSignup />
-      <h1 className="h1">Destaques</h1>
+      <h1 className="h1">DESTAQUES!</h1>
 
       <Section
         title="Inverno"
