@@ -7,14 +7,48 @@ import NewsletterSignup from "../../components/header/newLetter/newLetter.js";
 import logoInverno from "../../assets/logoInverno.png";
 import logoMae from "../../assets/logoMae.png";
 import logoMove from "../../assets/logoMove.png";
+import ProductHome from "../../models/product.js";
 
-type Product = {
-  id: string | number;
-  name: string;
-  price: string;
-  image: string;
-  path: string;
-  category: "inverno" | "mae-bebe" | "mobilidade"; // <-- add mobilidade
+
+
+const Home: React.FC = () => {
+  const inverno = (mockProducts as ProductHome[]).filter(
+    (p) => p.category === "inverno"
+  );
+  const maeBebe = (mockProducts as ProductHome[]).filter(
+    (p) => p.category === "mae-bebe"
+  );
+  const mobilidade = (mockProducts as ProductHome[]).filter(
+    (p) => p.category === "mobilidade"
+  );
+
+  return (
+    <>
+      <NewsletterSignup />
+      <h1 className="h1">DESTAQUES!</h1>
+
+      <Section
+        title="Inverno"
+        products={inverno}
+        bannerSrc={logoInverno}
+        bannerAlt="Banner Inverno"
+      />
+
+      <Section
+        title="Mamãe e bebê"
+        products={maeBebe}
+        bannerSrc={logoMae}
+        bannerAlt="Banner Mamãe e bebê"
+      />
+
+      <Section
+        title="Mobilidade"
+        products={mobilidade}
+        bannerSrc={logoMove}
+        bannerAlt="Banner Mobilidade"
+      />
+    </>
+  );
 };
 
 const chunk = <T,>(arr: T[], size: number) =>
@@ -24,7 +58,7 @@ const chunk = <T,>(arr: T[], size: number) =>
 
 const Section: React.FC<{
   title: string;
-  products: Product[];
+  products: ProductHome[];
   bannerSrc: string;
   bannerAlt: string;
 }> = ({ title, products, bannerSrc, bannerAlt }) => {
@@ -68,44 +102,6 @@ const Section: React.FC<{
   );
 };
 
-const Home: React.FC = () => {
-  const inverno = (mockProducts as Product[]).filter(
-    (p) => p.category === "inverno"
-  );
-  const maeBebe = (mockProducts as Product[]).filter(
-    (p) => p.category === "mae-bebe"
-  );
-  const mobilidade = (mockProducts as Product[]).filter(
-    (p) => p.category === "mobilidade"
-  );
 
-  return (
-    <>
-      <NewsletterSignup />
-      <h1 className="h1">DESTAQUES!</h1>
-
-      <Section
-        title="Inverno"
-        products={inverno}
-        bannerSrc={logoInverno}
-        bannerAlt="Banner Inverno"
-      />
-
-      <Section
-        title="Mamãe e bebê"
-        products={maeBebe}
-        bannerSrc={logoMae}
-        bannerAlt="Banner Mamãe e bebê"
-      />
-
-      <Section
-        title="Mobilidade"
-        products={mobilidade}
-        bannerSrc={logoMove}
-        bannerAlt="Banner Mobilidade"
-      />
-    </>
-  );
-};
 
 export default Home;

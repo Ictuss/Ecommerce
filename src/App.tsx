@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { StrapiProvider } from './context/StrapiContext';
 import Header from './components/header';
 import SobreNos from './pages/AboutUs/aboutus';
 import Blog from './pages/Blog/blog';
@@ -11,7 +10,6 @@ import BlogDetail from './pages/BlogDetail/blogDetail';
 
 function App() {
   return (
-    <StrapiProvider>
       <Router>
         
           <Header />
@@ -26,7 +24,6 @@ function App() {
           </Routes>
         
       </Router>
-    </StrapiProvider>
   );
 }
 
