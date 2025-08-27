@@ -6,14 +6,12 @@ export const BlogPosts: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'status', 'publishedAt'],
   },
+  // TEMPORARIAMENTE removendo todas as restrições de acesso para debug
   access: {
-   read: ({ req }) => {
-    console.log('Acesso público solicitado:', req.url); // Depuração
-    return true; // Sempre permite leitura
-  }, // Permitir leitura pública por enquanto
-    create: () => true, // Permitir criação
-    update: () => true, // Permitir edição
-    delete: () => true, // Permitir exclusão
+    read: () => true,
+    create: () => true,
+    update: () => true,
+    delete: () => true,
   },
   fields: [
     {
@@ -26,6 +24,9 @@ export const BlogPosts: CollectionConfig = {
       type: 'text',
       required: true,
       unique: true,
+      admin: {
+        description: 'URL amigável do post (será gerada automaticamente se não preenchida)'
+      }
     },
     {
       name: 'excerpt',
@@ -48,7 +49,7 @@ export const BlogPosts: CollectionConfig = {
       name: 'featuredImage',
       type: 'upload',
       relationTo: 'media',
-      required: true,
+      required: false, // Temporariamente não obrigatório
     },
     {
       name: 'gallery',
@@ -108,10 +109,16 @@ export const BlogPosts: CollectionConfig = {
         {
           name: 'metaTitle',
           type: 'text',
+          admin: {
+            description: 'Título para SEO (se não preenchido, usará o título do post)'
+          }
         },
         {
           name: 'metaDescription',
           type: 'textarea',
+          admin: {
+            description: 'Descrição para SEO'
+          }
         }
       ]
     },
@@ -119,23 +126,33 @@ export const BlogPosts: CollectionConfig = {
     {
       name: 'wpId',
       type: 'number',
+      admin: {
+        hidden: true, // Oculta no admin, usado apenas para migração
+      }
     },
     {
       name: 'publishedAt',
       type: 'date',
       defaultValue: () => new Date(),
+      admin: {
+        description: 'Data de publicação'
+      }
     }
   ],
   hooks: {
     beforeChange: [
-      ({ data }: any) => {
-        // Auto-gerar slug
+      ({ data }) => {
+        // Auto-gerar slug se não existir
         if (!data.slug && data.title) {
           data.slug = data.title
             .toLowerCase()
-            .replace(/[^a-z0-9]+/g, '-')
-            .replace(/(^-|-$)/g, '');
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '') // Remove acentos
+            .replace(/[^a-z0-9\s]/g, '') // Remove caracteres especiais
+            .replace(/\s+/g, '-') // Substitui espaços por hífens
+            .replace(/(^-|-$)/g, ''); // Remove hífens no início e fim
         }
+
         return data;
       }
     ]

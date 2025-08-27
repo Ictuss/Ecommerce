@@ -13,21 +13,27 @@ import { Products } from './collections/Products'
 import { Videos } from './collections/Videos'
 import { BlogPosts } from './collections/BlogPosts'
 
-
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
   cors: [
-    'http://localhost:5173', // seu frontend React
+    'http://localhost:3000', // Admin do Payload
+    'http://localhost:5173', // Frontend React
   ],
-   csrf: [
-    'http://localhost:5173',
+  csrf: [
+    'http://localhost:3000', // Admin do Payload
+    'http://localhost:5173', // Frontend React
   ],
   admin: {
-    user: Users.slug, 
+    user: Users.slug,
     importMap: {
       baseDir: path.resolve(dirname),
+    },
+  },
+    upload: {
+    limits: {
+      fileSize: 5000000, // 5MB
     },
   },
   collections: [Users, Media, Products, Videos, BlogPosts],
@@ -43,7 +49,7 @@ export default buildConfig({
   }),
   sharp,
   plugins: [
-   // payloadCloudPlugin(),
+    // payloadCloudPlugin(),
     // storage-adapter-placeholder
   ],
 })

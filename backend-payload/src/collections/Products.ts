@@ -122,7 +122,7 @@ export const Products: CollectionConfig = {
   ],
   hooks: {
     beforeChange: [
-      ({ data }: any) => {
+      ({ data }) => {
         // Auto-gerar slug se não existir
         if (!data.slug && data.name) {
           data.slug = data.name

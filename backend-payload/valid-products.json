@@ -1,0 +1,78 @@
+[
+  {
+    "id": 3721,
+    "name": "Travesseiro de Viagem Trip Top Fibrasca",
+    "slug": "travesseiro-de-viagem-trip-top-fibrasca",
+    "price": "",
+    "regular_price": "",
+    "sale_price": "",
+    "description": "<p>Este produto traz o benefício da higiene e saúde, pois pode ser utilizado como um pillow top para travesseiro, podendo ser utilizado sobre o travesseiro do hotel, assim você poderá dormir em seu Trip top ao invés de dormir com a cabeça diretamente sobre o travesseiro do hotel onde várias pessoas já dormiram ali. Outro fator importante para o benefício da saúde é o tratamento anti bactericida, fungicida e anti ácaro dos íons de prata! Esta é uma nanotecnologia aplicada no revestimento do produto que elimina toda e qualquer presença de ácaros, fungos e bactérias a todo instante! Ou seja, nesse caso nada é melhor do que dormir em algo que é seu, não é? O produto ainda acompanha com uma alça em malha para poder melhor se acoplar ao travesseiro, ficando firme e sem escorregar! Além disso, ele é pequeno, dobrável, sendo muito fácil e prático de levar! E ainda mais! Seu revestimento é produzido em uma das mais nobres malharias da Fibrasca, que produz a malha dupla com detalhes e jacquard, feita com tecnologia italiana, produzida inteiramente no Brasil! Ah, e se sujar, não há problema, seu enchimento feito em espuma hipersoft aerada com aplicação de silicone promove a fácil passagem da água e do ar sendo integralmente lavável em máquina, podendo secar também até 40ºC, ou seja, higiene total para seu Trip Top e para você. Surpreenda-se e descubra o conforto, a qualidade, saúde e bem estar do travesseiro de viagem Trip top by Fibrasca!</p>",
+    "short_description": "<p>O travesseiro de viagem Trip top é um excelente acompanhante para o seu passeio! Este produto pode ser utilizado como travesseiro para recostar a cabeça na poltrona do avião, no carro e até mesmo no onibus durante suas viagens.</p>",
+    "images": [
+      {
+        "id": 3725,
+        "src": "https://ictusvirtual.com.br/wp-content/uploads/2023/05/71XLKhOyEgL._AC_SL1500_.jpg",
+        "name": "71XLKhOyEgL._AC_SL1500_",
+        "alt": ""
+      },
+      {
+        "id": 3728,
+        "src": "https://ictusvirtual.com.br/wp-content/uploads/2023/05/71L6Eb1y3wL._AC_SL1500_.jpg",
+        "name": "71L6Eb1y3wL._AC_SL1500_",
+        "alt": ""
+      },
+      {
+        "id": 3727,
+        "src": "https://ictusvirtual.com.br/wp-content/uploads/2023/05/71x4Rir0YTL._AC_SL1500_.jpg",
+        "name": "71x4Rir0YTL._AC_SL1500_",
+        "alt": ""
+      }
+    ],
+    "categories": [
+      {
+        "id": 18,
+        "name": "OUTROS",
+        "slug": "outros"
+      }
+    ],
+    "stock_status": "instock"
+  },
+  {
+    "id": 3709,
+    "name": "Travesseiro de Corpo Minhocão Fibrasca",
+    "slug": "travesseiro-de-corpo-minhocao-fibrasca",
+    "price": "",
+    "regular_price": "",
+    "sale_price": "",
+    "description": "<h5><strong>Veja como o travesseiro pode transformar suas noites de sono</strong></h5><p>Durante a gestação: Esse modelo proporciona sustentação ideal para encaixe da barriguinha da gestante, envolvendo ela e trazendo muito conforto.</p><h5>Alinhamento da postura</h5><p>Com o uso do Travesseiro Minhocão, a gestante terá muito mais conforto, pois não deixará a barriga pendente forçando a coluna e a lombar.</p><p>Alinhando corretamente a posição do corpo e do ventre.</p><h5>Produto ideal para antes e depois da gestação</h5><p>Esse travesseiro pode ser usado, como travesseiro de amamentação após a gestação.</p><p>Proporcionando suporte ideal, conforto para mamãe e para o bebê na hora da amamentação.</p><ul><li>Ajuda no alinhamento da coluna</li><li>Multiuso</li><li>Travesseiro de corpo</li><li>Travesseiro para gestante</li><li>Travesseiro de amamentação</li></ul>",
+    "short_description": "<h3>Um travesseiro completo para seu sono, saúde e bem estar</h3><p>O travesseiro de corpo Minhocão, da Fibrasca foi desenvolvido para proporcionar uma noite de sono, ainda mais aconchegante e confortável para você.</p><p>Este modelo feito em exclusivo formato anatômico, trás um sono envolvente que auxilia desde a mamãe gestante e até quem busca dormir com posicionamento correto alinhando a postura durante o sono.</p>",
+    "images": [
+      {
+        "id": 3720,
+        "src": "https://ictusvirtual.com.br/wp-content/uploads/2023/05/81Q64HSs5pL._AC_SL1500_.jpg",
+        "name": "81Q64HSs5pL._AC_SL1500_",
+        "alt": ""
+      },
+      {
+        "id": 3719,
+        "src": "https://ictusvirtual.com.br/wp-content/uploads/2023/05/71AKOUo5EyL._AC_SL1500_.jpg",
+        "name": "71AKOUo5EyL._AC_SL1500_",
+        "alt": ""
+      },
+      {
+        "id": 3718,
+        "src": "https://ictusvirtual.com.br/wp-content/uploads/2023/05/81ZkDC6XQcL._AC_SL1500_.jpg",
+        "name": "81ZkDC6XQcL._AC_SL1500_",
+        "alt": ""
+      }
+    ],
+    "categories": [
+      {
+        "id": 18,
+        "name": "OUTROS",
+        "slug": "outros"
+      }
+    ],
+    "stock_status": "instock"
+  }
+]

@@ -146,12 +146,21 @@ export interface User {
   password?: string | null;
 }
 /**
+ * Gerencie imagens e arquivos do site
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
   id: number;
-  alt: string;
+  /**
+   * Descrição da imagem para acessibilidade (obrigatório para SEO)
+   */
+  alt?: string | null;
+  /**
+   * Legenda que aparecerá abaixo da imagem (opcional)
+   */
+  caption?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -163,6 +172,32 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    card?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    tablet?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -253,6 +288,9 @@ export interface Video {
 export interface BlogPost {
   id: number;
   title: string;
+  /**
+   * URL amigável do post (será gerada automaticamente se não preenchida)
+   */
   slug: string;
   /**
    * Resumo do post para listagens
@@ -262,7 +300,7 @@ export interface BlogPost {
    * Conteúdo completo do post
    */
   content: string;
-  featuredImage: number | Media;
+  featuredImage?: (number | null) | Media;
   gallery?:
     | {
         image?: (number | null) | Media;
@@ -282,10 +320,19 @@ export interface BlogPost {
    */
   featured?: boolean | null;
   seo?: {
+    /**
+     * Título para SEO (se não preenchido, usará o título do post)
+     */
     metaTitle?: string | null;
+    /**
+     * Descrição para SEO
+     */
     metaDescription?: string | null;
   };
   wpId?: number | null;
+  /**
+   * Data de publicação
+   */
   publishedAt?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -389,6 +436,7 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  caption?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -400,6 +448,40 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+  sizes?:
+    | T
+    | {
+        thumbnail?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        card?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        tablet?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
