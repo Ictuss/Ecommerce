@@ -12,6 +12,22 @@ const BlogPost = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Função para construir URL das imagens
+  const buildImageUrl = (imageUrl: string | undefined): string => {
+    if (!imageUrl) return dorPulso;
+    
+    // Se a URL já é completa (começa com http)
+    if (imageUrl.startsWith('http')) {
+      return imageUrl;
+    }
+    
+    // Construir URL completa
+    const baseUrl = 'http://localhost:3000';
+    const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+    const cleanImageUrl = imageUrl.startsWith('/') ? imageUrl : `/${imageUrl}`;
+    return `${cleanBaseUrl}${cleanImageUrl}`;
+  };
+
   useEffect(() => {
     const loadPost = async () => {
       try {
@@ -22,6 +38,9 @@ const BlogPost = () => {
           setError('Post não encontrado');
           return;
         }
+
+        console.log('Post carregado:', blogPost);
+        console.log('FeaturedImage:', blogPost.featuredImage);
 
         setPost(blogPost);
         
@@ -55,17 +74,24 @@ const BlogPost = () => {
     );
   }
 
+  // Construir URL da imagem em destaque
+  const featuredImageUrl = post.featuredImage ? buildImageUrl(post.featuredImage.url) : null;
+
   return (
     <main className="blog-post">
       <header className="blog-post-header">
         <Link to="/blog" className="back-link">← Voltar para o blog</Link>
         
         {/* Imagem em destaque como hero */}
-        {post.featuredImage && (
+        {featuredImageUrl && (
           <div className="featured-image">
             <img 
-              src={post.featuredImage.url} 
-              alt={post.featuredImage.alt || post.title}
+              src={featuredImageUrl}
+              alt={post.featuredImage?.alt || post.title}
+              onError={(e) => {
+                console.log('Erro ao carregar imagem:', featuredImageUrl);
+                e.currentTarget.src = dorPulso;
+              }}
             />
           </div>
         )}
@@ -108,14 +134,21 @@ const BlogPost = () => {
           <div className="post-gallery">
             <h3>Galeria</h3>
             <div className="gallery-grid">
-              {post.gallery.map((item: any, index: number) => (
-                <div key={index} className="gallery-item">
-                  <img 
-                    src={item.image.url} 
-                    alt={item.image.alt || `Imagem ${index + 1}`}
-                  />
-                </div>
-              ))}
+              {post.gallery.map((item: any, index: number) => {
+                const galleryImageUrl = buildImageUrl(item.image?.url);
+                return (
+                  <div key={index} className="gallery-item">
+                    <img 
+                      src={galleryImageUrl}
+                      alt={item.image?.alt || `Imagem ${index + 1}`}
+                      onError={(e) => {
+                        console.log('Erro ao carregar imagem da galeria:', galleryImageUrl);
+                        e.currentTarget.src = dorPulso;
+                      }}
+                    />
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}
