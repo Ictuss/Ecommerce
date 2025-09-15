@@ -21,44 +21,45 @@ const Blog = () => {
         console.log("Posts completos:", JSON.stringify(blogPosts, null, 2));
         
         // Formatar posts para o componente
-        const formattedPosts: FormattedBlogPost[] = blogPosts.map(
-          (post: BlogPostFromPayload) => {
-            // Debug individual de cada post
-            console.log(`Post: ${post.title}`);
-            console.log(`FeaturedImage:`, post.featuredImage);
-            
-            // Construir URL da imagem
-            let imageUrl = dorPulso; // Valor padrão
-            
-            if (post.featuredImage && post.featuredImage.url) {
-              // Se a URL já é completa (começa com http)
-              if (post.featuredImage.url.startsWith('http')) {
-                imageUrl = post.featuredImage.url;
-              } else {
-                // Construir URL completa - removendo barra dupla se existir
-                const baseUrl =  'http://localhost:3000';
-                const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
-                const cleanImageUrl = post.featuredImage.url.startsWith('/') ? post.featuredImage.url : `/${post.featuredImage.url}`;
-                imageUrl = `${cleanBaseUrl}${cleanImageUrl}`;
-              }
-            }
-            
-            console.log(`URL final da imagem: ${imageUrl}`);
+// Formatar posts para o componente
+const formattedPosts: FormattedBlogPost[] = blogPosts
+  .map((post: BlogPostFromPayload) => {
+    let imageUrl = dorPulso; // Valor padrão
 
-            return {
-              id: post.id,
-              slug: post.slug,
-              title: post.title,
-              excerpt: post.excerpt,
-              date: new Date(post.publishedAt).toLocaleDateString("pt-BR"),
-              image: imageUrl,
-              category: post.category,
-              featured: post.featured,
-            };
-          }
-        );
+    if (post.featuredImage && post.featuredImage.url) {
+      if (post.featuredImage.url.startsWith("http")) {
+        imageUrl = post.featuredImage.url;
+      } else {
+        const baseUrl = "http://localhost:3000";
+        const cleanBaseUrl = baseUrl.endsWith("/")
+          ? baseUrl.slice(0, -1)
+          : baseUrl;
+        const cleanImageUrl = post.featuredImage.url.startsWith("/")
+          ? post.featuredImage.url
+          : `/${post.featuredImage.url}`;
+        imageUrl = `${cleanBaseUrl}${cleanImageUrl}`;
+      }
+    }
 
-        setPosts(formattedPosts);
+    return {
+      id: post.id,
+      slug: post.slug,
+      title: post.title,
+      excerpt: post.excerpt,
+      // aqui você mantém a data formatada para exibir
+      date: new Date(post.publishedAt).toLocaleDateString("pt-BR"),
+      // mas também guarda a data bruta para ordenar
+      rawDate: new Date(post.publishedAt),
+      image: imageUrl,
+      category: post.category,
+      featured: post.featured,
+    };
+  })
+  // ordena por data decrescente (mais recente primeiro)
+  .sort((a, b) => b.rawDate.getTime() - a.rawDate.getTime());
+
+setPosts(formattedPosts);
+
       } catch (err) {
         console.error("Erro ao carregar posts:", err);
         setError("Erro ao carregar posts do blog.");
