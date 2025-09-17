@@ -376,7 +376,7 @@
 /* ======= DESKTOP (1024px+) ======= */
 @media (min-width: 1024px) {
   .blog-post {
-    max-width: 1200px;
+    max-width: 1380px;
     margin: 0 auto;
   }
   
@@ -402,12 +402,12 @@
   }
   
   .post-content {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto 60px;
   }
   
   .post-content p {
-    font-size: 18px;
+    font-size: 19px;
     line-height: 1.8;
   }
   
@@ -424,6 +424,11 @@
     max-width: 800px;
     margin: 60px auto var(--spacing-3xl);
   }
+  .bottom-actions {
+  display: flex;
+  justify-content: center;
+  padding: var(--spacing-3xl) var(--spacing-md);
+}
 }
 
 /* ======= DESKTOP GRANDE (1440px+) ======= */

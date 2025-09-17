@@ -1,9 +1,9 @@
-import { useState, useEffect, useMemo } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useState, useEffect, useMemo } from "react";
+import { useParams, Link } from "react-router-dom";
 import { apiService } from "../../services/api";
 import "./blogDetail.css";
 import type { BlogPostPageData, BlogPostFromPayload } from "../../types/blog";
-import PostHighlight from '../Blog/components/blogCard';
+import PostHighlight from "../Blog/components/blogCard";
 import dorPulso from "../../assets/dorPulso.png";
 
 const BlogPost = () => {
@@ -15,10 +15,10 @@ const BlogPost = () => {
 
   const buildImageUrl = (imageUrl?: string): string => {
     if (!imageUrl) return dorPulso;
-    if (imageUrl.startsWith('http')) return imageUrl;
-    const baseUrl = 'http://localhost:3000';
-    const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
-    const cleanImageUrl = imageUrl.startsWith('/') ? imageUrl : `/${imageUrl}`;
+    if (imageUrl.startsWith("http")) return imageUrl;
+    const baseUrl = "http://localhost:3000";
+    const cleanBaseUrl = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
+    const cleanImageUrl = imageUrl.startsWith("/") ? imageUrl : `/${imageUrl}`;
     return `${cleanBaseUrl}${cleanImageUrl}`;
   };
 
@@ -27,15 +27,16 @@ const BlogPost = () => {
     const loadPost = async () => {
       try {
         setLoading(true);
-        const blogPost: BlogPostPageData | null = await apiService.fetchBlogPostBySlug(slug || '');
+        const blogPost: BlogPostPageData | null =
+          await apiService.fetchBlogPostBySlug(slug || "");
         if (!blogPost) {
-          setError('Post não encontrado');
+          setError("Post não encontrado");
           return;
         }
         setPost(blogPost);
       } catch (err) {
-        console.error('Erro ao carregar post:', err);
-        setError('Erro ao carregar o post.');
+        console.error("Erro ao carregar post:", err);
+        setError("Erro ao carregar o post.");
       } finally {
         setLoading(false);
       }
@@ -43,40 +44,66 @@ const BlogPost = () => {
     if (slug) loadPost();
   }, [slug]);
 
-  // 2) Depois que o post carregar, busca e monta os “Mais matérias” dinâmicos
-  useEffect(() => {
-    const loadRelated = async () => {
-      if (!post?.category) {
+useEffect(() => {
+  const loadRelated = async () => {
+    try {
+      const allPosts: BlogPostFromPayload[] = await apiService.fetchBlogPosts();
+      if (!post) {
         setRelated([]);
         return;
       }
-      try {
-        const allPosts: BlogPostFromPayload[] = await apiService.fetchBlogPosts();
 
-        const sameCategorySorted = allPosts
-          // mesma categoria
-          .filter(p => p.category === post.category)
-          // exclui o próprio post
-          .filter(p => p.slug !== post.slug)
-          // ordena por mais recente
+      // Helper: ordena por mais recente e limita
+      const topRecent = (list: BlogPostFromPayload[], limit = 3) =>
+        list
+          .filter((p) => p.slug !== post.slug)
           .sort((a, b) => {
-            const da = new Date(a.publishedAt).getTime();
-            const db = new Date(b.publishedAt).getTime();
+            const da = new Date(a.publishedAt || 0).getTime();
+            const db = new Date(b.publishedAt || 0).getTime();
             return db - da;
           })
-          // limita a 3 (ajuste como quiser)
-          .slice(0, 3);
+          .slice(0, limit);
 
+      let sameCategorySorted: BlogPostFromPayload[] = [];
+
+      if (post.category) {
+        sameCategorySorted = topRecent(
+          allPosts.filter((p) => p.category === post.category)
+        );
+      }
+
+      // Fallback: se não houver da mesma categoria, pega os mais recentes gerais
+      if (sameCategorySorted.length === 0) {
+        setRelated(topRecent(allPosts));
+      } else {
         setRelated(sameCategorySorted);
-      } catch (err) {
-        console.error('Erro ao carregar relacionados:', err);
-        // não quebra a página; só fica sem relacionados
+      }
+    } catch (err) {
+      console.error("Erro ao carregar relacionados:", err);
+      // Fallback de rede/erro: tenta ao menos mostrar os mais recentes gerais
+      try {
+        const allPosts: BlogPostFromPayload[] = await apiService.fetchBlogPosts();
+        if (post) {
+          const recent = allPosts
+            .filter((p) => p.slug !== post.slug)
+            .sort((a, b) => {
+              const da = new Date(a.publishedAt || 0).getTime();
+              const db = new Date(b.publishedAt || 0).getTime();
+              return db - da;
+            })
+            .slice(0, 3);
+          setRelated(recent);
+        } else {
+          setRelated([]);
+        }
+      } catch {
         setRelated([]);
       }
-    };
+    }
+  };
 
-    loadRelated();
-  }, [post]);
+  loadRelated();
+}, [post]);
 
   if (loading) {
     return (
@@ -90,17 +117,23 @@ const BlogPost = () => {
     return (
       <div className="error-container">
         <h2>{error}</h2>
-        <Link to="/blog" className="back-link">← Voltar para o blog</Link>
+        <Link to="/blog" className="back-link">
+          ← Voltar para o blog
+        </Link>
       </div>
     );
   }
 
-  const featuredImageUrl = post.featuredImage ? buildImageUrl(post.featuredImage.url) : null;
+  const featuredImageUrl = post.featuredImage
+    ? buildImageUrl(post.featuredImage.url)
+    : null;
 
   return (
     <main className="blog-post">
       <header className="blog-post-header">
-        <Link to="/blog" className="back-link">← Voltar para o blog</Link>
+        <Link to="/blog" className="back-link">
+          ← Voltar para o blog
+        </Link>
 
         {featuredImageUrl && (
           <div className="featured-image">
@@ -124,8 +157,10 @@ const BlogPost = () => {
 
         <div className="blog-post-meta">
           <span className="post-date">
-            {new Date(post.publishedAt).toLocaleDateString('pt-BR', {
-              year: 'numeric', month: 'long', day: 'numeric'
+            {new Date(post.publishedAt).toLocaleDateString("pt-BR", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
             })}
           </span>
           <span className="post-category">{post.category}</span>
@@ -135,9 +170,12 @@ const BlogPost = () => {
 
       <div className="blog-post-content">
         <div className="post-content">
-          {post.content.split('\n').map((paragraph, index) =>
-            paragraph.trim() && <p key={index}>{paragraph}</p>
-          )}
+          {post.content
+            .split("\n")
+            .map(
+              (paragraph, index) =>
+                paragraph.trim() && <p key={index}>{paragraph}</p>
+            )}
         </div>
 
         {post.gallery && post.gallery.length > 0 && (
@@ -151,7 +189,9 @@ const BlogPost = () => {
                     <img
                       src={galleryImageUrl}
                       alt={item.image?.alt || `Imagem ${index + 1}`}
-                      onError={(e) => { e.currentTarget.src = dorPulso; }}
+                      onError={(e) => {
+                        e.currentTarget.src = dorPulso;
+                      }}
                     />
                   </div>
                 );
@@ -160,7 +200,11 @@ const BlogPost = () => {
           </div>
         )}
       </div>
-
+      <div className="bottom-actions">
+        <Link to="/blog" className="back-link">
+          ← Voltar para o blog
+        </Link>
+      </div>
       {/* Mais matérias dinâmico */}
       <div className="section-divider">Mais matérias</div>
 
@@ -177,7 +221,7 @@ const BlogPost = () => {
                 <PostHighlight
                   title={r.title}
                   text={r.excerpt}
-                  date={new Date(r.publishedAt).toLocaleDateString('pt-BR')}
+                  date={new Date(r.publishedAt).toLocaleDateString("pt-BR")}
                   image={img}
                 />
               </Link>
@@ -192,7 +236,9 @@ const BlogPost = () => {
           <div className="post-tags">
             <h4>Tags:</h4>
             {post.tags.map((tagObj: any, index: number) => (
-              <span key={index} className="tag">{tagObj.tag}</span>
+              <span key={index} className="tag">
+                {tagObj.tag}
+              </span>
             ))}
           </div>
         )}
@@ -200,7 +246,7 @@ const BlogPost = () => {
 
       {/* SEO Meta */}
       {post.seo && (
-        <div style={{ display: 'none' }}>
+        <div style={{ display: "none" }}>
           <meta name="description" content={post.seo.metaDescription} />
           <title>{post.seo.metaTitle || post.title}</title>
         </div>
