@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "productss",
+  "info": {
+    "singularName": "product",
+    "pluralName": "productss",
+    "displayName": "products",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "timer": {
+      "type": "datetime"
+    },
+    "price": {
+      "type": "string",
+      "required": true,
+      "default": "0"
+    },
+    "whatsAppLink": {
+      "type": "string"
+    }
+  }
+}
