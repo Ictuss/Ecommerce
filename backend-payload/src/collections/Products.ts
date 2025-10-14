@@ -4,16 +4,17 @@ export const Products: CollectionConfig = {
   slug: 'products',
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'price', 'category', 'inStock'],
+    defaultColumns: ['name', 'price', 'category', 'featured'],
   },
   access: {
-    read: () => true, // Público para o ecommerce
+    read: () => true, // Público para leitura
   },
   fields: [
     {
       name: 'name',
       type: 'text',
       required: true,
+      label: 'Nome do Produto',
     },
     {
       name: 'slug',
@@ -21,58 +22,41 @@ export const Products: CollectionConfig = {
       required: true,
       unique: true,
       admin: {
-        description: 'URL amigável para o produto'
-      }
+        description: 'URL amigável (ex: camiseta-preta)',
+      },
     },
     {
       name: 'description',
-      type: 'richText',
-      required: true,
-    },
-    {
-      name: 'shortDescription',
       type: 'textarea',
-      admin: {
-        description: 'Descrição curta para listagens'
-      }
+      required: true,
+      label: 'Descrição',
     },
     {
       name: 'price',
       type: 'number',
       required: true,
       min: 0,
-    },
-    {
-      name: 'salePrice',
-      type: 'number',
-      min: 0,
-      admin: {
-        description: 'Preço promocional (opcional)'
-      }
+      label: 'Preço',
     },
     {
       name: 'category',
-      type: 'text',
+      type: 'select',
       required: true,
-      admin: {
-        description: 'Ex: roupas, acessórios, calçados'
-      }
-    },
-    {
-      name: 'tags',
-      type: 'array',
-      fields: [
-        {
-          name: 'tag',
-          type: 'text',
-        }
-      ]
+      label: 'Categoria',
+      options: [
+        { label: 'Roupas', value: 'roupas' },
+        { label: 'Acessórios', value: 'acessorios' },
+        { label: 'Calçados', value: 'calcados' },
+        { label: 'Outros', value: 'outros' },
+      ],
     },
     {
       name: 'images',
       type: 'array',
       required: true,
       minRows: 1,
+      maxRows: 5,
+      label: 'Imagens',
       fields: [
         {
           name: 'image',
@@ -84,41 +68,19 @@ export const Products: CollectionConfig = {
           name: 'alt',
           type: 'text',
           required: true,
-        }
-      ]
-    },
-    {
-      name: 'inStock',
-      type: 'checkbox',
-      defaultValue: true,
-    },
-    {
-      name: 'stock',
-      type: 'number',
-      min: 0,
-      defaultValue: 0,
+          defaultValue: 'Imagem do produto',
+        },
+      ],
     },
     {
       name: 'featured',
       type: 'checkbox',
       defaultValue: false,
+      label: 'Produto em Destaque',
       admin: {
-        description: 'Mostrar na página inicial'
-      }
+        description: 'Mostrar na página inicial',
+      },
     },
-    // Campos para migração do WordPress
-    {
-      name: 'wpId',
-      type: 'number',
-      admin: {
-        description: 'ID do produto no WordPress (para migração)'
-      }
-    },
-    {
-      name: 'publishedAt',
-      type: 'date',
-      defaultValue: () => new Date(),
-    }
   ],
   hooks: {
     beforeChange: [
@@ -127,11 +89,13 @@ export const Products: CollectionConfig = {
         if (!data.slug && data.name) {
           data.slug = data.name
             .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '') // Remove acentos
             .replace(/[^a-z0-9]+/g, '-')
             .replace(/(^-|-$)/g, '');
         }
         return data;
-      }
-    ]
-  }
+      },
+    ],
+  },
 };

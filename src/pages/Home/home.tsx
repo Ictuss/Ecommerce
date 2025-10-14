@@ -1,26 +1,46 @@
 import React from "react";
 import "./Home.css";
 import { Link } from "react-router-dom";
-import { mockProducts } from "../../mock/mockProdutcs.js";
 import litman from "../../assets/1.png";
 import NewsletterSignup from "../../components/header/newLetter/newLetter.js";
 import logoInverno from "../../assets/logoInverno.png";
 import logoMae from "../../assets/logoMae.png";
 import logoMove from "../../assets/logoMove.png";
-import ProductHome from "../../models/product.js";
-
-
+import { useHomeViewModel } from "./viewModel/home_viewModel"; // ✅ IMPORTAR
+import { Product } from "../../services/products_services"; // ✅ IMPORTAR
 
 const Home: React.FC = () => {
-  const inverno = (mockProducts as ProductHome[]).filter(
-    (p) => p.category === "inverno"
-  );
-  const maeBebe = (mockProducts as ProductHome[]).filter(
-    (p) => p.category === "mae-bebe"
-  );
-  const mobilidade = (mockProducts as ProductHome[]).filter(
-    (p) => p.category === "mobilidade"
-  );
+  // ✅ USAR O VIEWMODEL
+  const { loading, error, getProductsByCategory, getImageUrl } = useHomeViewModel();
+
+  // ✅ LOADING STATE
+  if (loading) {
+    return (
+      <>
+        <NewsletterSignup />
+        <div style={{ textAlign: 'center', padding: '50px', fontSize: '24px' }}>
+          Carregando produtos...
+        </div>
+      </>
+    );
+  }
+
+  // ✅ ERROR STATE
+  if (error) {
+    return (
+      <>
+        <NewsletterSignup />
+        <div style={{ textAlign: 'center', padding: '50px', fontSize: '24px', color: 'red' }}>
+          Erro: {error}
+        </div>
+      </>
+    );
+  }
+
+  // ✅ BUSCAR PRODUTOS POR CATEGORIA
+  const inverno = getProductsByCategory('inverno');
+  const maeBebe = getProductsByCategory('mae-bebe');
+  const mobilidade = getProductsByCategory('mobilidade');
 
   return (
     <>
@@ -32,6 +52,7 @@ const Home: React.FC = () => {
         products={inverno}
         bannerSrc={logoInverno}
         bannerAlt="Banner Inverno"
+        getImageUrl={getImageUrl}
       />
 
       <Section
@@ -39,6 +60,7 @@ const Home: React.FC = () => {
         products={maeBebe}
         bannerSrc={logoMae}
         bannerAlt="Banner Mamãe e bebê"
+        getImageUrl={getImageUrl}
       />
 
       <Section
@@ -46,6 +68,7 @@ const Home: React.FC = () => {
         products={mobilidade}
         bannerSrc={logoMove}
         bannerAlt="Banner Mobilidade"
+        getImageUrl={getImageUrl}
       />
     </>
   );
@@ -58,11 +81,17 @@ const chunk = <T,>(arr: T[], size: number) =>
 
 const Section: React.FC<{
   title: string;
-  products: ProductHome[];
+  products: Product[]; // ✅ TROCAR ProductHome por Product
   bannerSrc: string;
   bannerAlt: string;
-}> = ({ title, products, bannerSrc, bannerAlt }) => {
+  getImageUrl: (product: Product) => string; // ✅ ADICIONAR
+}> = ({ title, products, bannerSrc, bannerAlt, getImageUrl }) => {
   const chunks = chunk(products, 8);
+
+  // ✅ SE NÃO TIVER PRODUTOS, NÃO MOSTRA A SEÇÃO
+  if (products.length === 0) {
+    return null;
+  }
 
   return (
     <>
@@ -71,21 +100,35 @@ const Section: React.FC<{
       {chunks.map((group, idx) => (
         <React.Fragment key={`${title}-chunk-${idx}`}>
           <div className="home-container">
-            {group.map((product) => (
-              <Link to={product.path} key={product.id} className="product-link">
-                <div className="card-container">
-                  <div className="product-card">
-                    <img
-                      src={product.image === "litman" ? litman : product.image}
-                      alt={product.name}
-                      className="product-image"
-                    />
-                    <h2>{product.name}</h2>
-                    <p className="product-price">{product.price}</p>
+            {group.map((product) => {
+              const imageUrl = getImageUrl(product);
+              
+              return (
+                <Link 
+                  to={`/product/${product.slug}`} // ✅ USAR SLUG
+                  key={product.id} 
+                  className="product-link"
+                >
+                  <div className="card-container">
+                    <div className="product-card">
+                      <img
+                        src={imageUrl || litman} // ✅ USAR getImageUrl ou fallback
+                        alt={product.name}
+                        className="product-image"
+                        onError={(e) => {
+                          // ✅ FALLBACK SE IMAGEM FALHAR
+                          (e.target as HTMLImageElement).src = litman;
+                        }}
+                      />
+                      <h2>{product.name}</h2>
+                      <p className="product-price">
+                        R$ {product.price.toFixed(2).replace('.', ',')}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
           </div>
 
           {/* banner depois de cada bloco de 8 */}
@@ -101,7 +144,5 @@ const Section: React.FC<{
     </>
   );
 };
-
-
 
 export default Home;

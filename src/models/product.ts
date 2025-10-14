@@ -1,12 +1,13 @@
-type ProductHome = {
-  id: string | number;
+export default interface ProductHome {
+  id: string;
   name: string;
-  price: string;
-  image: string;
-  path: string;
-  category: "inverno" | "mae-bebe" | "mobilidade"; 
-};
-export default ProductHome
+  slug: string; // ✅ ADICIONAR
+  price: number | string;
+  category: string;
+  image?: string;
+  images?: any[]; // ✅ ADICIONAR
+  path?: string; // manter para compatibilidade
+}
 
 type ProductDetail = {
   id: string;

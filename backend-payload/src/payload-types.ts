@@ -207,59 +207,21 @@ export interface Product {
   id: number;
   name: string;
   /**
-   * URL amigável para o produto
+   * URL amigável (ex: camiseta-preta)
    */
   slug: string;
-  description: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  /**
-   * Descrição curta para listagens
-   */
-  shortDescription?: string | null;
+  description: string;
   price: number;
-  /**
-   * Preço promocional (opcional)
-   */
-  salePrice?: number | null;
-  /**
-   * Ex: roupas, acessórios, calçados
-   */
-  category: string;
-  tags?:
-    | {
-        tag?: string | null;
-        id?: string | null;
-      }[]
-    | null;
+  category: 'roupas' | 'acessorios' | 'calcados' | 'outros';
   images: {
     image: number | Media;
     alt: string;
     id?: string | null;
   }[];
-  inStock?: boolean | null;
-  stock?: number | null;
   /**
    * Mostrar na página inicial
    */
   featured?: boolean | null;
-  /**
-   * ID do produto no WordPress (para migração)
-   */
-  wpId?: number | null;
-  publishedAt?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -491,16 +453,8 @@ export interface ProductsSelect<T extends boolean = true> {
   name?: T;
   slug?: T;
   description?: T;
-  shortDescription?: T;
   price?: T;
-  salePrice?: T;
   category?: T;
-  tags?:
-    | T
-    | {
-        tag?: T;
-        id?: T;
-      };
   images?:
     | T
     | {
@@ -508,11 +462,7 @@ export interface ProductsSelect<T extends boolean = true> {
         alt?: T;
         id?: T;
       };
-  inStock?: T;
-  stock?: T;
   featured?: T;
-  wpId?: T;
-  publishedAt?: T;
   updatedAt?: T;
   createdAt?: T;
 }

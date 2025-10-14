@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useStrapi } from '../../context/StrapiContext';
+import { useProductsViewModel } from './viewModel/products_viewModel';
 
 const Products: React.FC = () => {
-  const { products, loading, error } = useStrapi();
+  const { products, loading, error, getImageUrl } = useProductsViewModel();
 
   if (loading) {
     return (
@@ -69,7 +69,7 @@ const Products: React.FC = () => {
         {products.length === 0 ? (
           <p style={{ fontSize: '28px' }}>Nenhum produto disponível no momento.</p>
         ) : (
-          products.map((product) => (
+          products.map((product: any) => (
             <div
               key={product.id}
               style={{
@@ -81,28 +81,66 @@ const Products: React.FC = () => {
                 textAlign: 'center',
               }}
             >
-              <h2 style={{ fontSize: '28px', marginBottom: '10px' }}>{product.attributes.name}</h2>
-              <p style={{ fontSize: '16px', color: '#333', marginBottom: '10px' }}>
-                {product.attributes.description.length > 100
-                  ? `${product.attributes.description.substring(0, 100)}...`
-                  : product.attributes.description}
-              </p>
-              <p style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '10px' }}>
-                R${product.attributes.price}
-              </p>
-              {product.attributes.imagem && product.attributes.imagem.data ? (
+              <h2 style={{ fontSize: '24px', marginBottom: '10px' }}>{product.name}</h2>
+              
+              {getImageUrl(product) ? (
                 <img
-                  src={`http://localhost:1337${product.attributes.imagem.data.attributes.url}`}
-                  alt={product.attributes.name}
-                  style={{ maxWidth: '200px', borderRadius: '5px', marginBottom: '10px' }}
+                  src={getImageUrl(product)}
+                  alt={product.images[0]?.alt || product.name}
+                  style={{
+                    width: '100%',
+                    height: '200px',
+                    objectFit: 'cover',
+                    borderRadius: '5px',
+                    marginBottom: '10px',
+                  }}
                 />
               ) : (
-                <p style={{ fontSize: '16px', color: '#666' }}>Imagem não disponível</p>
+                <div
+                  style={{
+                    width: '100%',
+                    height: '200px',
+                    backgroundColor: '#e0e0e0',
+                    borderRadius: '5px',
+                    marginBottom: '10px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#666',
+                  }}
+                >
+                  Sem imagem
+                </div>
               )}
-              <Link
-                to={`/product/${product.id}`}
+
+              <p style={{ fontSize: '16px', color: '#333', marginBottom: '10px' }}>
+                {product.description.length > 100
+                  ? `${product.description.substring(0, 100)}...`
+                  : product.description}
+              </p>
+
+              <p style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '10px' }}>
+                R$ {product.price.toFixed(2).replace('.', ',')}
+              </p>
+
+              <span
                 style={{
                   display: 'inline-block',
+                  fontSize: '14px',
+                  color: '#666',
+                  backgroundColor: '#f0f0f0',
+                  padding: '5px 10px',
+                  borderRadius: '5px',
+                  marginBottom: '10px',
+                }}
+              >
+                {product.category}
+              </span>
+
+              <Link
+                to={`/product/${product.slug}`}
+                style={{
+                  display: 'block',
                   fontFamily: "'Anton', sans-serif",
                   fontSize: '20px',
                   color: 'white',
