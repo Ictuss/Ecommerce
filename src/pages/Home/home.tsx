@@ -41,7 +41,7 @@ const Home: React.FC = () => {
   const inverno = getProductsByCategory('inverno');
   const maeBebe = getProductsByCategory('mae-bebe');
   const mobilidade = getProductsByCategory('mobilidade');
-
+  
   return (
     <>
       <NewsletterSignup />

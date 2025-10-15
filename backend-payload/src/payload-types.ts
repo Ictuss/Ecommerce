@@ -212,7 +212,7 @@ export interface Product {
   slug: string;
   description: string;
   price: number;
-  category: 'roupas' | 'acessorios' | 'calcados' | 'outros';
+  category: 'roupas' | 'acessorios' | 'calcados' | 'inverno' | 'mae-bebe' | 'mobilidade';
   images: {
     image: number | Media;
     alt: string;

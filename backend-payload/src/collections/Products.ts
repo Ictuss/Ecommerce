@@ -47,7 +47,9 @@ export const Products: CollectionConfig = {
         { label: 'Roupas', value: 'roupas' },
         { label: 'Acessórios', value: 'acessorios' },
         { label: 'Calçados', value: 'calcados' },
-        { label: 'Outros', value: 'outros' },
+        { label: 'inverno', value: 'inverno' },
+         { label: 'mae-bebe', value: 'mae-bebe' },
+          { label: 'mobilidade', value: 'mobilidade' },
       ],
     },
     {
