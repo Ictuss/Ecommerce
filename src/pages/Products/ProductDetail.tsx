@@ -1,39 +1,56 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import "./ProductDetail.css";
 import littmannImg from "../../assets/1.png";
-import a from "../../assets/1.png"
-import { PRODUCTS } from "../../mock/productDetail";
+import { useProductDetailViewModel } from "./viewModel/productsDetail_viewModel";
 
-
-function formatBRL(cents: number) {
-  const v = (cents || 0) / 100;
-  return v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+function formatBRL(price: number) {
+  return price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 }
 
 const ProductDetail: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-  const product = useMemo(() => {
-    return (id && PRODUCTS[id]) || PRODUCTS["littmann-class-iii-5627"] || Object.values(PRODUCTS)[0];
-  }, [id]);
-
+  const { slug } = useParams<{ slug: string }>();
+  const { product, loading, error, getAllImageUrls } = useProductDetailViewModel(slug);
+  
   const [qty, setQty] = useState(1);
   const [activeImg, setActiveImg] = useState(0);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     setActiveImg(0);
-  }, [id]);
+  }, [slug]);
 
-  if (!product) {
+  if (loading) {
     return (
       <div className="pd-page">
         <div className="pd-container">
-          <p>Produto não encontrado.</p>
+          <p style={{ textAlign: 'center', padding: '50px', fontSize: '24px' }}>
+            Carregando produto...
+          </p>
         </div>
       </div>
     );
   }
+
+  if (error || !product) {
+    return (
+      <div className="pd-page">
+        <div className="pd-container">
+          <p style={{ textAlign: 'center', padding: '50px', fontSize: '24px', color: 'red' }}>
+            {error || 'Produto não encontrado.'}
+          </p>
+          <div style={{ textAlign: 'center' }}>
+            <Link to="/" className="btn btn-primary">
+              Voltar para Home
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const productImages = getAllImageUrls();
+  const displayImages = productImages.length > 0 ? productImages : [littmannImg];
 
   const handleAddToCart = () => {
     alert(`Adicionado ao carrinho: ${product.name} (x${qty})`);
@@ -52,14 +69,17 @@ const ProductDetail: React.FC = () => {
           <section className="pd-gallery">
             <div className="pd-main-image">
               <img
-                src={product.images[activeImg]}
+                src={displayImages[activeImg]}
                 alt={`${product.name} - Imagem ${activeImg + 1}`}
                 className="pd-hero"
                 loading="eager"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = littmannImg;
+                }}
               />
             </div>
             <div className="pd-thumbnails">
-              {product.images.map((src, i) => (
+              {displayImages.map((src, i) => (
                 <button
                   key={`thumb-${i}`}
                   className={`pd-thumb ${i === activeImg ? "active" : ""}`}
@@ -67,7 +87,13 @@ const ProductDetail: React.FC = () => {
                   aria-label={`Ver imagem ${i + 1}`}
                   type="button"
                 >
-                  <img src={src} alt={`Miniatura ${i + 1}`} />
+                  <img 
+                    src={src} 
+                    alt={`Miniatura ${i + 1}`}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = littmannImg;
+                    }}
+                  />
                 </button>
               ))}
             </div>
@@ -77,7 +103,7 @@ const ProductDetail: React.FC = () => {
           <section className="pd-product-info">
             <h1 className="pd-title">{product.name}</h1>
             
-            <div className="pd-sku">Código: {product.sku}</div>
+            <div className="pd-sku">Código: {product.id}</div>
             
             <div className="pd-description">
               {product.description}
@@ -126,7 +152,7 @@ const ProductDetail: React.FC = () => {
           </section>
         </div>
 
-        {/* Seção "Sobre o produto" com faixa vermelha */}
+        {/* Seção "Sobre o produto" */}
         <section className="pd-about-section">
           <div className="pd-section-header">
             <h2 className="pd-section-title">Sobre o produto</h2>
@@ -136,75 +162,26 @@ const ProductDetail: React.FC = () => {
             
             <div className="pd-specs-grid">
               <div className="pd-spec-group">
-                <h4>Características:</h4>
-                <ul className="pd-spec-list">
-                  {product.specs.caracteristicas.map((item, i) => (
-                    <li key={i}>{item}</li>
-                  ))}
-                </ul>
+                <h4>Descrição Completa:</h4>
+                <p>{product.description}</p>
               </div>
 
               <div className="pd-spec-group">
-                <h4>Aplicação:</h4>
-                <ul className="pd-spec-list">
-                  {product.specs.aplicacao.map((item, i) => (
-                    <li key={i}>{item}</li>
-                  ))}
-                </ul>
+                <h4>Categoria:</h4>
+                <p>{product.category}</p>
               </div>
 
               <div className="pd-spec-group">
-                <h4>Especificações Técnicas:</h4>
+                <h4>Informações:</h4>
                 <ul className="pd-spec-list">
-                  {product.specs.especificacoes.map((item, i) => (
-                    <li key={i}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="pd-spec-group">
-                <h4>Garantia:</h4>
-                <ul className="pd-spec-list">
-                  {product.specs.garantia.map((item, i) => (
-                    <li key={i}>{item}</li>
-                  ))}
+                  <li>Produto verificado</li>
+                  <li>Entrega conforme região</li>
+                  <li>Atendimento personalizado</li>
                 </ul>
               </div>
             </div>
           </div>
         </section>
-
-        {/* Produtos relacionados */}
-        {!!product.related?.length && (
-          <section className="pd-related-section">
-            <div className="pd-related-header">
-              <h2 className="pd-related-title">Produtos relacionados</h2>
-            </div>
-            <div className="pd-related-content">
-              <div className="pd-related-grid">
-                {product.related.map((relatedProduct) => (
-                  <Link 
-                    to={`/product/${relatedProduct.id}`} 
-                    key={relatedProduct.id} 
-                    className="pd-related-item"
-                  >
-                    <img 
-                      src={littmannImg} 
-                      alt={relatedProduct.name}
-                      loading="lazy"
-                    />
-                    <div className="pd-related-name">{relatedProduct.name}</div>
-                    {typeof relatedProduct.price === "number" && (
-                      <div className="pd-related-price">
-                        {formatBRL(relatedProduct.price)}
-                      </div>
-                    )}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
 
         {/* SEO estruturado */}
         <script
@@ -214,17 +191,12 @@ const ProductDetail: React.FC = () => {
               "@context": "https://schema.org/",
               "@type": "Product",
               name: product.name,
-              sku: product.sku,
-              image: product.images,
+              image: displayImages,
               description: product.description,
-              brand: {
-                "@type": "Brand",
-                name: "Littmann"
-              },
               offers: {
                 "@type": "Offer",
                 priceCurrency: "BRL",
-                price: (product.price || 0) / 100,
+                price: product.price,
                 availability: "https://schema.org/InStock"
               }
             })

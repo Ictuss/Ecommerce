@@ -20,7 +20,9 @@ function App() {
             <Route path="/blog/:slug" element={<BlogDetail />} />
             <Route path="/contato" element={<Contato />} />
             <Route path="/sobre-nos" element={<SobreNos />} />
-            <Route path="/product/:id" element={<ProductDetail />} /> 
+            {/* <Route path="/product/:id" element={<ProductDetail />} />  */}
+            // App.tsx ou routes.tsx
+            <Route path="/product/:slug" element={<ProductDetail />} />
           </Routes>
         
       </Router>
