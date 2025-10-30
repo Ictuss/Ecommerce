@@ -3,10 +3,10 @@ import Header from './components/header';
 import SobreNos from './pages/AboutUs/aboutus';
 import Blog from './pages/Blog/blog';
 import Contato from './pages/Contact/contact';
-import Modelos from './pages/Models/models';
 import ProductDetail from './pages/Products/ProductDetail';
 import Home from './pages/Home/home';
 import BlogDetail from './pages/BlogDetail/blogDetail';
+import Videos from './pages/Videos/videos';
 
 function App() {
   return (
@@ -23,6 +23,7 @@ function App() {
             {/* <Route path="/product/:id" element={<ProductDetail />} />  */}
             // App.tsx ou routes.tsx
             <Route path="/product/:slug" element={<ProductDetail />} />
+            <Route path="/videos" element={<Videos />} />
           </Routes>
         
       </Router>

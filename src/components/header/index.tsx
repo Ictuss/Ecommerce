@@ -48,6 +48,11 @@ const Header: React.FC = () => {
                 Blog
               </Link>
             </li>
+                   <li>
+              <Link to="/videos" className="link" onClick={() => setMenuOpen(false)}>
+                Videos
+              </Link>
+            </li>
           </ul>
         </nav>
       </div>
