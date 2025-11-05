@@ -1,10 +1,12 @@
 // src/pages/Videos/Videos.tsx
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // ⬅️ ADICIONADO
 import VideoCard from '../Videos/videoCard/videoCard';
 import './Videos.css';
 
 const Videos = () => {
   const [selectedVideo, setSelectedVideo] = useState<number | null>(null);
+  const navigate = useNavigate(); // ⬅️ ADICIONADO
 
   const videosData = [
     {
@@ -53,7 +55,8 @@ const Videos = () => {
   ];
 
   const handlePlayClick = (videoId: number) => {
-    setSelectedVideo(videoId);
+    setSelectedVideo(videoId);          // mantém se quiser usar o modal ainda
+    navigate(`/videos/${videoId}`);     // ⬅️ AGORA LEVA PRO DETALHE
     console.log(`Reproduzindo vídeo ${videoId}`);
   };
 

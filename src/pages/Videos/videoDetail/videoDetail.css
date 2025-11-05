@@ -1,0 +1,236 @@
+/* Página / área geral */
+.video-detail-page {
+  padding: 40px 16px;
+  background-color: #f5f5f5; /* segue o fundo do resto do site */
+}
+
+.video-detail {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* TOPO: vídeo esquerda + info direita */
+.video-detail__header {
+  display: flex;
+  align-items: stretch;
+  gap: 32px;
+  margin-bottom: 40px;
+}
+
+/* VÍDEO À ESQUERDA */
+.video-detail__media {
+  position: relative;
+  flex: 0 0 320px; /* largura do vídeo, vertical */
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  padding: 0;
+  border: none;
+  background: none;
+}
+
+.video-detail__thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* overlay + botão play */
+.video-detail__media-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.3),
+    rgba(0, 0, 0, 0.6)
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-detail__play-button svg circle {
+  fill: rgba(0, 0, 0, 0.7);
+}
+
+.video-detail__play-button svg path {
+  fill: #ffffff;
+}
+
+/* label no rodapé do vídeo (ex: ICTUS) */
+.video-detail__media-footer {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background-color: #ffffff;
+  color: #e32626;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* INFO À DIREITA: título + descrição */
+.video-detail__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.video-detail__title {
+  margin: 0 0 16px;
+  font-size: 52px;
+  line-height: 1.05;
+  font-weight: 800;
+  color: #e32626;
+}
+
+.video-detail__description {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.8;
+  color: #e32626; /* tu gosta tudo vermelho 😈 */
+  max-width: 520px;
+}
+
+/* SEÇÃO "PRODUTOS NESSE VÍDEO" */
+.video-detail__products {
+  margin-top: 32px;
+}
+
+.video-detail__products-title {
+  margin: 0 0 18px;
+  font-size: 24px;
+  font-weight: 800;
+  color: #e32626;
+}
+
+/* linha de produtos + bloco + */
+.video-detail__products-row {
+  display: flex;
+  align-items: stretch;
+  gap: 16px;
+}
+
+/* lista de cards de produto (horizontal) */
+.video-detail__products-list {
+  flex: 1;
+  display: flex;
+  gap: 16px;
+  overflow-x: auto; /* se tiver mais produtos, cria scroll horizontal */
+  padding-bottom: 4px;
+}
+
+/* estilizinho do scroll (opcional) */
+.video-detail__products-list::-webkit-scrollbar {
+  height: 6px;
+}
+.video-detail__products-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.video-detail__products-list::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 999px;
+}
+
+/* CARD DE PRODUTO */
+.video-detail__product-card {
+  min-width: 140px;
+  max-width: 160px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 12px 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.video-detail__product-image-wrapper {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.video-detail__product-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.video-detail__product-info {
+  text-align: center;
+}
+
+.video-detail__product-name {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #e32626;
+}
+
+.video-detail__product-description {
+  margin: 2px 0;
+  font-size: 12px;
+  color: #4a5568;
+}
+
+.video-detail__product-price {
+  margin: 4px 0 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #e32626;
+}
+
+/* BLOCO DO "+" À DIREITA */
+.video-detail__products-more {
+  flex: 0 0 60px;
+  border-radius: 8px;
+  border: 2px solid #e32626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-detail__products-more-icon {
+  font-size: 40px;
+  line-height: 1;
+  color: #e32626;
+  font-weight: 800;
+}
+
+/* RESPONSIVO */
+@media (max-width: 900px) {
+  .video-detail__header {
+    flex-direction: column;
+  }
+
+  .video-detail__media {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+  }
+
+  .video-detail__info {
+    margin-top: 16px;
+  }
+
+  .video-detail__title {
+    font-size: 38px;
+  }
+
+  .video-detail__description {
+    max-width: none;
+  }
+
+  .video-detail__products-row {
+    flex-direction: column;
+  }
+
+  .video-detail__products-more {
+    align-self: flex-start;
+    width: 60px;
+  }
+}

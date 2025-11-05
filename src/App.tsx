@@ -7,6 +7,7 @@ import ProductDetail from './pages/Products/ProductDetail';
 import Home from './pages/Home/home';
 import BlogDetail from './pages/BlogDetail/blogDetail';
 import Videos from './pages/Videos/videos';
+import VideoDetail from './pages/Videos/videoDetail/videoDetail';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             // App.tsx ou routes.tsx
             <Route path="/product/:slug" element={<ProductDetail />} />
             <Route path="/videos" element={<Videos />} />
+            <Route path="/videos/:id" element={<VideoDetail />} />
           </Routes>
         
       </Router>
