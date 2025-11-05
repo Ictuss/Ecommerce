@@ -1,132 +1,104 @@
-/* VideoCard.css */
+/* src/components/VideoCard/VideoCard.css */
 
-.video-card-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #f5f5f5;
-  padding: 20px;
-  font-family: Arial, sans-serif;
-}
-
+/* CARD PRINCIPAL: 2 COLUNAS */
 .video-card {
   display: flex;
-  max-width: 900px;
+  flex-direction: row;        /* lado a lado */
+  align-items: stretch;
   width: 100%;
-  background-color: white;
+  max-width: 900px;
+  margin: 0 auto 24px;        /* espaço entre cards na lista */
+  padding: 24px;
+  gap: 32px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* ESQUERDA – VÍDEO (COLUNA FIXA) */
+.video-card__media {
+  position: relative;
+  flex: 0 0 260px;            /* largura fixa do vídeo */
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-}
-
-/* Seção do Vídeo */
-.video-section {
-  flex: 0 0 280px;
-  background-color: #4a5568;
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 30px 20px;
-}
-
-.video-overlay {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   cursor: pointer;
-  transition: transform 0.2s;
+  padding: 0;
+  border: none;
+  background: none;
 }
 
-.video-overlay:hover {
-  transform: translate(-50%, -50%) scale(1.1);
+.video-card__thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
-.play-button {
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+/* OVERLAY + PLAY */
+.video-card__media-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.3),
+    rgba(0, 0, 0, 0.6)
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.video-text {
-  position: relative;
-  z-index: 1;
-  margin-top: auto;
+.video-card__play-button svg circle {
+  fill: rgba(0, 0, 0, 0.7);
 }
 
-.video-description {
-  color: white;
-  font-size: 13px;
-  line-height: 1.6;
-  margin: 0;
-  font-weight: 500;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+.video-card__play-button svg path {
+  fill: #ffffff;
 }
 
-.highlight {
-  color: #ff3b3b;
-  font-weight: bold;
-  font-size: 14px;
-}
-
-.logo {
-  color: #ff3b3b;
-  font-size: 28px;
-  font-weight: bold;
-  letter-spacing: 2px;
-  margin-top: 20px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-/* Seção de Texto */
-.text-section {
+/* DIREITA – TEXTO (COLUNA FLEXÍVEL) */
+.video-card__content {
   flex: 1;
-  padding: 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border-left: 4px solid #ff3b3b;
 }
 
-.title {
-  font-size: 56px;
-  font-weight: bold;
-  color: #ff3b3b;
-  margin: 0 0 30px 0;
-  line-height: 1.1;
-  letter-spacing: -1px;
+.video-card__title {
+  margin: 0 0 12px;
+  font-size: 44px;
+  line-height: 1.05;
+  font-weight: 800;
+  color: #e32626; /* vermelho forte */
 }
 
-.description {
-  color: #4a5568;
-}
-
-.description-text {
+.video-card__description {
+  margin: 0;
   font-size: 14px;
   line-height: 1.8;
-  margin: 0;
-  color: #4a5568;
+  color: #e32626;        /* <<< DEIXA VERMELHO */
+  font-weight: 600;      /* opcional: dá uma reforçada igual na arte */
 }
 
-/* Responsividade */
+/* MOBILE: AÍ SIM VIRA COLUNA */
 @media (max-width: 768px) {
   .video-card {
     flex-direction: column;
+    padding: 16px;
+    gap: 16px;
   }
 
-  .video-section {
-    flex: 0 0 300px;
+  .video-card__media {
+    flex: 0 0 auto;
+    width: 100%;
+    height: 260px;
   }
 
-  .text-section {
-    border-left: none;
-    border-top: 4px solid #ff3b3b;
-    padding: 30px 20px;
+  .video-card__thumbnail {
+    height: 100%;
   }
 
-  .title {
-    font-size: 42px;
+  .video-card__title {
+    font-size: 32px;
   }
 }

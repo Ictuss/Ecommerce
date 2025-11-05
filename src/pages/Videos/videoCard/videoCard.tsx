@@ -1,93 +1,65 @@
-// ...existing code...
+// src/components/VideoCard/VideoCard.tsx
 import React from 'react';
+import './VideoCard.css'; // <-- ISSO AQUI É O QUE TÁ FALTANDO
 
 interface VideoCardProps {
-  videoThumbnail?: string;
-  videoTitle?: string;
-  videoDescription?: string;
-  highlightText?: string;
-  logoText?: React.ReactNode;
-  mainTitle?: string;
-  descriptionText?: string;
-  onPlayClick?: React.MouseEventHandler<HTMLDivElement>;
+  videoThumbnail: string;
+  mainTitle: string;
+  descriptionText: string;
+  onPlayClick?: () => void;
 }
+
+const renderLinesWithBreaks = (text: string) =>
+  text.split('\n').map((line, index, arr) => (
+    <React.Fragment key={index}>
+      {line}
+      {index < arr.length - 1 && <br />}
+    </React.Fragment>
+  ));
 
 const VideoCard: React.FC<VideoCardProps> = ({
   videoThumbnail,
-  videoTitle,
-  videoDescription = '',
-  highlightText,
-  logoText,
-  mainTitle = '',
-  descriptionText = '',
-  onPlayClick
+  mainTitle,
+  descriptionText,
+  onPlayClick,
 }) => {
-  const videoDescriptionLines = videoDescription.split('\n');
-  const mainTitleLines = mainTitle.split('\n');
-
   return (
-    <div className="video-card-container">
-      <div className="video-card">
-        {/* Seção do Vídeo */}
-        <div
-          className="video-section"
-          style={{
-            backgroundImage: videoThumbnail
-              ? `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${videoThumbnail})`
-              : 'linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3))'
-          }}
-        >
-          <div className="video-overlay" onClick={onPlayClick}>
-            <div className="play-button">
-              <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-                <circle cx="30" cy="30" r="30" fill="rgba(0,0,0,0.7)" />
-                <path d="M24 18L42 30L24 42V18Z" fill="white" />
-              </svg>
-            </div>
-          </div>
+    <article className="video-card">
+      {/* ESQUERDA: VÍDEO */}
+      <button
+        type="button"
+        className="video-card__media"
+        onClick={onPlayClick}
+        aria-label={mainTitle}
+      >
+        <img
+          src={videoThumbnail}
+          alt={mainTitle}
+          className="video-card__thumbnail"
+        />
 
-          <div className="video-text">
-            <p className="video-description">
-              {videoDescriptionLines.map((line, index) => (
-                <React.Fragment key={index}>
-                  {line}
-                  {index < videoDescriptionLines.length - 1 && <br />}
-                </React.Fragment>
-              ))}
-              {highlightText && (
-                <>
-                  <br />
-                  <span className="highlight">{highlightText}</span>
-                </>
-              )}
-            </p>
-          </div>
-
-          <div className="logo">{logoText}</div>
-        </div>
-
-        {/* Seção de Texto */}
-        <div className="text-section">
-          <h1 className="title">
-            {mainTitleLines.map((line, index) => (
-              <React.Fragment key={index}>
-                {line}
-                {index < mainTitleLines.length - 1 && <br />}
-              </React.Fragment>
-            ))}
-          </h1>
-
-          <div className="description">
-            <p
-              className="description-text"
-              dangerouslySetInnerHTML={{ __html: descriptionText }}
-            />
+        <div className="video-card__media-overlay">
+          <div className="video-card__play-button">
+            <svg width="60" height="60" viewBox="0 0 60 60" aria-hidden="true">
+              <circle cx="30" cy="30" r="30" />
+              <path d="M24 18L42 30L24 42V18Z" />
+            </svg>
           </div>
         </div>
+      </button>
+
+      {/* DIREITA: TÍTULO + DESCRIÇÃO */}
+      <div className="video-card__content">
+        <h2 className="video-card__title">
+          {renderLinesWithBreaks(mainTitle)}
+        </h2>
+
+        <p className="video-card__description">
+          {renderLinesWithBreaks(descriptionText)}
+        </p>
       </div>
-    </div>
+    </article>
   );
 };
 
 export default VideoCard;
-// ...existing code...
