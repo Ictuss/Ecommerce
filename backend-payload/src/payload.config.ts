@@ -1,6 +1,5 @@
 // storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres'
-import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
@@ -15,6 +14,8 @@ import { BlogPosts } from './collections/BlogPosts'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+
+console.log('>>> DATABASE_URI no payload.config:', process.env.DATABASE_URI)
 
 export default buildConfig({
   cors: [
