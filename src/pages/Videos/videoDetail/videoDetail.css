@@ -234,3 +234,78 @@
     width: 60px;
   }
 }
+/* ------------------------------ */
+/* PRODUTOS RELACIONADOS (ABAIXO) */
+/* ------------------------------ */
+
+.video-related-products {
+  margin-top: 60px;
+  padding: 20px 0;
+}
+
+.video-related-title {
+  text-align: center;
+  font-size: 24px;
+  color: #e32626;
+  font-weight: 800;
+  margin-bottom: 25px;
+  border-top: 8px solid #e32626;
+  padding-top: 10px;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.video-related-list {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.video-related-card {
+  width: 160px;
+  text-align: center;
+}
+
+.video-related-image-wrapper {
+  width: 160px;
+  height: 160px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 8px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.video-related-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.video-related-name {
+  margin-top: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #444;
+}
+
+.video-related-price {
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: 800;
+  color: #e32626;
+}
+
+/* RESPONSIVO */
+@media (max-width: 600px) {
+  .video-related-card {
+    width: 140px;
+  }
+
+  .video-related-image-wrapper {
+    width: 140px;
+    height: 140px;
+  }
+}

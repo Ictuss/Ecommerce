@@ -102,11 +102,8 @@ const VideoDetail: React.FC = () => {
             <p className="video-detail__description">
               {video.descriptionText}
             </p>
-          </div>
-        </div>
 
-        {/* SEÇÃO PRODUTOS NESSE VÍDEO */}
-        <div className="video-detail__products">
+                    <div className="video-detail__products">
           <h2 className="video-detail__products-title">Produtos nesse vídeo</h2>
 
           <div className="video-detail__products-row">
@@ -144,6 +141,32 @@ const VideoDetail: React.FC = () => {
             </div>
           </div>
         </div>
+          </div>
+        </div>
+
+        {/* SEÇÃO PRODUTOS NESSE VÍDEO */}
+{/* PRODUTOS RELACIONADOS */}
+<section className="video-related-products">
+  <h2 className="video-related-title">Produtos relacionados:</h2>
+
+  <div className="video-related-list">
+    {products.map((product) => (
+      <article key={product.id} className="video-related-card">
+        <div className="video-related-image-wrapper">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="video-related-image"
+          />
+        </div>
+
+        <p className="video-related-name">{product.name}</p>
+        <p className="video-related-price">{product.price}</p>
+      </article>
+    ))}
+  </div>
+</section>
+
       </section>
     </div>
   );

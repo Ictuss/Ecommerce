@@ -6,6 +6,7 @@ import logoBlog from "../../assets/logoBlog.png";
 import ContactInfo from "./component/contactInfo/contactInfo";
 import SearchInfo from "./component/searchInfo/searchInfo";
 import NewsletterSignup from "./newLetter/newLetter";
+import logoVideo from "../../assets/logoVideo.png";
 
 const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -14,7 +15,16 @@ const Header: React.FC = () => {
   const isBlog = location.pathname.startsWith("/blog");
   const isProductDetail = Boolean(useMatch("/product/:id")); // ✅ /product/<id>
 
-  const logoToShow = isBlog ? logoBlog : principalLogo;
+  //const logoToShow = isBlog ? logoBlog : principalLogo;
+  const isVideoPage = location.pathname === "/videos";
+  const isVideoDetail = Boolean(useMatch("/video/:id"));
+  const logoToShow =
+    isVideoPage || isVideoDetail
+      ? logoVideo
+      : isBlog
+      ? logoBlog
+      : principalLogo;
+
   return (
     <>
       <ContactInfo />
