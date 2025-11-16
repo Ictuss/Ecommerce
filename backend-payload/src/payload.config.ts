@@ -29,7 +29,8 @@ export default buildConfig({
   cors: [
     serverURL,
     'http://localhost:3000', // admin local
-    'http://localhost:5173', // front Vite local
+    'http://localhost:5173',
+    'https://ecommerce-inky-chi.vercel.app/' // front Vite local
   ],
   csrf: [
     serverURL,
