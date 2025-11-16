@@ -15,23 +15,27 @@ import { BlogPosts } from './collections/BlogPosts';
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
-// Só pra conferir no build local, pode remover depois se quiser
-console.log('>>> DATABASE_URL:', process.env.DATABASE_URL);
-console.log('>>> DATABASE_URI:', process.env.DATABASE_URI);
-console.log('>>> PAYLOAD_PUBLIC_SERVER_URL:', process.env.PAYLOAD_PUBLIC_SERVER_URL);
+const serverURL =
+  process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3000';
 
 export default buildConfig({
-  // URL pública onde o Payload está rodando (na Vercel)
-  // Na Vercel: PAYLOAD_PUBLIC_SERVER_URL=https://seu-projeto.vercel.app
-  serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3000',
+  // URL pública onde o app está rodando (Vercel em produção)
+  serverURL,
 
-  // 🔐 Obrigatório no Payload v3
-  // Na Vercel: PAYLOAD_SECRET=uma_string_grande_e_aleatoria
+  // Obrigatório no Payload v3
   secret: process.env.PAYLOAD_SECRET || 'dev-secret-change-me',
 
-  // Pra não dar pau de CORS/CSRF em produção (depois você pode apertar isso)
-  cors: ['*'],
-  //csrf: false,
+  // CORS / CSRF alinhados com admin + front
+  cors: [
+    serverURL,
+    'http://localhost:3000', // admin local
+    'http://localhost:5173', // front Vite local
+  ],
+  csrf: [
+    serverURL,
+    'http://localhost:3000',
+    'http://localhost:5173',
+  ],
 
   admin: {
     user: Users.slug,
@@ -56,7 +60,6 @@ export default buildConfig({
 
   db: postgresAdapter({
     pool: {
-      // Aceita DATABASE_URL (Vercel/Neon) e cai pra DATABASE_URI se precisar
       connectionString:
         process.env.DATABASE_URL ||
         process.env.DATABASE_URI ||
