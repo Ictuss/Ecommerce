@@ -9,7 +9,10 @@ import { Products } from './collections/Products';
 import { Videos } from './collections/Videos';
 
 
-
+const allowedOrigins = [
+  'http://localhost:5173', // teu front (Vite)
+  'http://localhost:3000', // admin do Payload
+];
 export default buildConfig({
   // 🔐 obrigatório
   secret: process.env.PAYLOAD_SECRET || 'dev-secret-change-me',
@@ -41,6 +44,6 @@ export default buildConfig({
   serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL,
 
   // pra facilitar vida em front externo / testes
-  cors: ['*'],
-  csrf: ['*'],
+cors: allowedOrigins,
+  csrf: allowedOrigins,
 });
