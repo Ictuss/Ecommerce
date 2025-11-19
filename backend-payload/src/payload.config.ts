@@ -11,7 +11,8 @@ import { Videos } from './collections/Videos';
 
 const allowedOrigins = [
   'http://localhost:5173', // teu front (Vite)
-  'http://localhost:3000', // admin do Payload
+  'http://localhost:3000',
+  'https://ecommerce-za3e.onrender.com', // admin do Payload
 ];
 export default buildConfig({
   // 🔐 obrigatório
