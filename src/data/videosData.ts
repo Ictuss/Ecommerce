@@ -1,5 +1,6 @@
 // src/data/videosData.ts
 export interface VideoData {
+  category: string;
   id: number;
   videoThumbnail: string;
   mainTitle: string;
@@ -9,45 +10,49 @@ export interface VideoData {
 export const videosData: VideoData[] = [
   {
     id: 1,
+    category: "mobilidade",
     videoThumbnail:
-      'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400',
-    mainTitle: 'Assento\ngiratório',
+      "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400",
+    mainTitle: "Assento\ngiratório",
     descriptionText:
-      'Você trabalha com movimentos repetitivos?\n' +
-      'Passa muito tempo com as mãos no teclado ou mouse?\n' +
-      'Especialistas relatam comumente o aumento de pacientes com LER.\n' +
-      'Confira alguns produtos que podem te ajudar!',
+      "Você trabalha com movimentos repetitivos?\n" +
+      "Passa muito tempo com as mãos no teclado ou mouse?\n" +
+      "Especialistas relatam comumente o aumento de pacientes com LER.\n" +
+      "Confira alguns produtos que podem te ajudar!",
   },
   {
     id: 2,
+    category: "mobilidade",
     videoThumbnail:
-      'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400',
-    mainTitle: 'Suporte\nlombar',
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400",
+    mainTitle: "Suporte\nlombar",
     descriptionText:
-      'Trabalha muitas horas sentado?\n' +
-      'O Suporte Lombar Ergonômico pode ajudar a manter a postura correta\n' +
-      'e prevenir dores nas costas.\n' +
-      'Cuide da sua saúde!',
+      "Trabalha muitas horas sentado?\n" +
+      "O Suporte Lombar Ergonômico pode ajudar a manter a postura correta\n" +
+      "e prevenir dores nas costas.\n" +
+      "Cuide da sua saúde!",
   },
   {
     id: 3,
+    category: "mobilidade",
     videoThumbnail:
-      'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=400',
-    mainTitle: 'Apoio para\npés',
+      "https://images.unsplash.com/photo-1559757175-5700dde675bc?w=400",
+    mainTitle: "Apoio para\npés",
     descriptionText:
-      'Sente desconforto nas pernas durante o dia?\n' +
-      'O Apoio para Pés Ajustável melhora a circulação\n' +
-      'e reduz o cansaço.\n' +
-      'Experimente a diferença!',
+      "Sente desconforto nas pernas durante o dia?\n" +
+      "O Apoio para Pés Ajustável melhora a circulação\n" +
+      "e reduz o cansaço.\n" +
+      "Experimente a diferença!",
   },
   {
     id: 4,
+    category: "mobilidade",
     videoThumbnail:
-      'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=400',
-    mainTitle: 'Estetos',
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=400",
+    mainTitle: "Estetos",
     descriptionText:
-      'Equipamentos de alta qualidade para profissionais de saúde.\n' +
-      'Descubra nossa linha de estetoscópios\n' +
-      'com desempenho e conforto superiores.',
+      "Equipamentos de alta qualidade para profissionais de saúde.\n" +
+      "Descubra nossa linha de estetoscópios\n" +
+      "com desempenho e conforto superiores.",
   },
 ];

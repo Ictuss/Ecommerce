@@ -1,57 +1,92 @@
 // src/pages/Videos/VideoDetail.tsx
-import React, { useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import './VideoDetail.css';
-import { videosData } from '../../../data/videosData';
+import React, { useEffect, useMemo, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import "./VideoDetail.css";
+import { videosData } from "../../../data/videosData";
+import { apiService } from "../../../services/api";
+
+type VideoProduct = {
+  id: string | number;
+  image: string;
+  name: string;
+  description?: string;
+  price: string;
+  category?: string;
+  slug?: string;
+};
 
 const VideoDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
+  // vídeo ainda é estático (mock)
   const video = useMemo(
     () => videosData.find((v) => v.id === Number(id)),
     [id]
   );
 
-  // Se id não existe, dá um fallback simples
+  // ⬇️ estados PRECISAM vir antes de qualquer return condicional
+  const [products, setProducts] = useState<VideoProduct[]>([]);
+  const [loadingProducts, setLoadingProducts] = useState(false);
+  const [errorProducts, setErrorProducts] = useState<string | null>(null);
+
+  useEffect(() => {
+    // se não tiver vídeo ou categoria, não faz nada
+    if (!video?.category) return;
+
+    const loadProducts = async () => {
+      try {
+        setLoadingProducts(true);
+        setErrorProducts(null);
+
+        // Busca produtos da MESMA categoria no Payload
+        const docs = await apiService.fetchProducts(video.category);
+
+        // Mapeia pro formato usado na tela
+        const formatted: VideoProduct[] = docs.map((product: any) => ({
+          id: product.id,
+          name: product.name,
+          price: `R$ ${product.salePrice ?? product.price}`,
+          image:
+            product.images?.[0]?.image?.url || "/imgs/fallback-produto.png",
+          description: product.description ?? "",
+          category: product.category,
+          slug: product.slug,
+        }));
+
+        setProducts(formatted);
+      } catch (error) {
+        console.error(error);
+        setErrorProducts("Não foi possível carregar os produtos desse vídeo.");
+      } finally {
+        setLoadingProducts(false);
+      }
+    };
+
+    loadProducts();
+  }, [video?.category]);
+
+  // ⬇️ aqui pode retornar, mas depois dos hooks
   if (!video) {
     return (
       <div className="video-detail-page">
         <div className="video-detail video-detail--notfound">
           <p>Vídeo não encontrado.</p>
-          <button onClick={() => navigate('/videos')}>Voltar para vídeos</button>
+          <button onClick={() => navigate("/videos")}>
+            Voltar para vídeos
+          </button>
         </div>
       </div>
     );
   }
 
-  // mock de produtos por enquanto, depois dá pra amarrar com o vídeo
-  const products = [
-    {
-      id: 1,
-      image: '/imgs/produto-aspirar-baby.png',
-      name: 'Aspirar baby',
-      description: 'Desentupidor de nariz',
-      price: 'R$ 8,00',
-    },
-    {
-      id: 2,
-      image: '/imgs/produto-aspirar-baby.png',
-      name: 'Aspirar baby',
-      description: 'Desentupidor de nariz',
-      price: 'R$ 8,00',
-    },
-    {
-      id: 3,
-      image: '/imgs/produto-aspirar-baby.png',
-      name: 'Aspirar baby',
-      description: 'Desentupidor de nariz',
-      price: 'R$ 8,00',
-    },
-  ];
+  const truncateText = (text: string, max = 180) => {
+    if (!text) return "";
+    return text.length > max ? `${text.slice(0, max)}...` : text;
+  };
 
   const renderLinesWithBreaks = (text: string) =>
-    text.split('\n').map((line, index, arr) => (
+    text.split("\n").map((line, index, arr) => (
       <React.Fragment key={index}>
         {line}
         {index < arr.length - 1 && <br />}
@@ -67,12 +102,15 @@ const VideoDetail: React.FC = () => {
           <button
             type="button"
             className="video-detail__media"
-            aria-label={`Reproduzir vídeo ${video.mainTitle.replace('\n', ' ')}`}
-            onClick={() => console.log('play vídeo', video.id)}
+            aria-label={`Reproduzir vídeo ${video.mainTitle.replace(
+              "\n",
+              " "
+            )}`}
+            onClick={() => console.log("play vídeo", video.id)}
           >
             <img
               src={video.videoThumbnail}
-              alt={video.mainTitle.replace('\n', ' ')}
+              alt={video.mainTitle.replace("\n", " ")}
               className="video-detail__thumbnail"
             />
 
@@ -99,74 +137,86 @@ const VideoDetail: React.FC = () => {
               {renderLinesWithBreaks(video.mainTitle)}
             </h1>
 
-            <p className="video-detail__description">
-              {video.descriptionText}
-            </p>
+            <p className="video-detail__description">{video.descriptionText}</p>
 
-                    <div className="video-detail__products">
-          <h2 className="video-detail__products-title">Produtos nesse vídeo</h2>
+            {products.length > 0 && (
+              <div className="video-detail__products">
+                <h2 className="video-detail__products-title">
+                  Produtos nesse vídeo
+                </h2>
 
-          <div className="video-detail__products-row">
-            <div className="video-detail__products-list">
-              {products.map((product) => (
-                <article
-                  key={product.id}
-                  className="video-detail__product-card"
-                >
-                  <div className="video-detail__product-image-wrapper">
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="video-detail__product-image"
-                    />
+                <div className="video-detail__products-row">
+                  <div className="video-detail__products-list">
+                    {products.map((product) => (
+                      <article
+                        key={product.id}
+                        className="video-detail__product-card"
+                        onClick={() => navigate(`/product/${product.slug}`)}
+                        role="button"
+                        style={{ cursor: "pointer" }}
+                      >
+                        <div className="video-detail__product-image-wrapper">
+                          <img
+                            src={product.image}
+                            alt={product.name}
+                            className="video-detail__product-image"
+                          />
+                        </div>
+
+                        <div className="video-detail__product-info">
+                          <p className="video-detail__product-name">
+                            {product.name}
+                          </p>
+                          {product.description && (
+                            <p className="video-detail__product-description">
+                              {truncateText(product.description, 180)}
+                            </p>
+                          )}
+                          <p className="video-detail__product-price">
+                            {product.price}
+                          </p>
+                        </div>
+                      </article>
+                    ))}
                   </div>
 
-                  <div className="video-detail__product-info">
-                    <p className="video-detail__product-name">
-                      {product.name}
-                    </p>
-                    <p className="video-detail__product-description">
-                      {product.description}
-                    </p>
-                    <p className="video-detail__product-price">
-                      {product.price}
-                    </p>
+                  <div className="video-detail__products-more">
+                    <span className="video-detail__products-more-icon">+</span>
                   </div>
-                </article>
-              ))}
-            </div>
+                </div>
+              </div>
+            )}
 
-            <div className="video-detail__products-more">
-              <span className="video-detail__products-more-icon">+</span>
-            </div>
-          </div>
-        </div>
+            {loadingProducts && <p>Carregando produtos...</p>}
+            {errorProducts && <p>{errorProducts}</p>}
           </div>
         </div>
 
-        {/* SEÇÃO PRODUTOS NESSE VÍDEO */}
-{/* PRODUTOS RELACIONADOS */}
-<section className="video-related-products">
-  <h2 className="video-related-title">Produtos relacionados:</h2>
+        {/* PRODUTOS RELACIONADOS */}
+        <section className="video-related-products">
+          <h2 className="video-related-title">Produtos relacionados:</h2>
 
-  <div className="video-related-list">
-    {products.map((product) => (
-      <article key={product.id} className="video-related-card">
-        <div className="video-related-image-wrapper">
-          <img
-            src={product.image}
-            alt={product.name}
-            className="video-related-image"
-          />
-        </div>
+          <div className="video-related-list">
+            {products.map((product) => (
+              <article
+                key={product.id}
+                className="video-related-card"
+                onClick={() => navigate(`/product/${product.slug}`)}
+              >
+                <div className="video-related-image-wrapper">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="video-related-image"
+                  />
+                </div>
 
-        <p className="video-related-name">{product.name}</p>
-        <p className="video-related-price">{product.price}</p>
-      </article>
-    ))}
-  </div>
-</section>
-
+                <p className="video-related-name">{product.name}</p>
+                <p className="video-related-price">{product.price}</p>
+              </article>
+            ))}
+          </div>
+        </section>
       </section>
     </div>
   );

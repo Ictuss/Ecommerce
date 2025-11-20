@@ -10,8 +10,9 @@ function formatBRL(price: number) {
 
 const ProductDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { product, loading, error, getAllImageUrls } = useProductDetailViewModel(slug);
-  
+  const { product, loading, error, getAllImageUrls } =
+    useProductDetailViewModel(slug);
+
   const [qty, setQty] = useState(1);
   const [activeImg, setActiveImg] = useState(0);
 
@@ -24,7 +25,7 @@ const ProductDetail: React.FC = () => {
     return (
       <div className="pd-page">
         <div className="pd-container">
-          <p style={{ textAlign: 'center', padding: '50px', fontSize: '24px' }}>
+          <p style={{ textAlign: "center", padding: "50px", fontSize: "24px" }}>
             Carregando produto...
           </p>
         </div>
@@ -36,10 +37,17 @@ const ProductDetail: React.FC = () => {
     return (
       <div className="pd-page">
         <div className="pd-container">
-          <p style={{ textAlign: 'center', padding: '50px', fontSize: '24px', color: 'red' }}>
-            {error || 'Produto não encontrado.'}
+          <p
+            style={{
+              textAlign: "center",
+              padding: "50px",
+              fontSize: "24px",
+              color: "red",
+            }}
+          >
+            {error || "Produto não encontrado."}
           </p>
-          <div style={{ textAlign: 'center' }}>
+          <div style={{ textAlign: "center" }}>
             <Link to="/" className="btn btn-primary">
               Voltar para Home
             </Link>
@@ -50,7 +58,8 @@ const ProductDetail: React.FC = () => {
   }
 
   const productImages = getAllImageUrls();
-  const displayImages = productImages.length > 0 ? productImages : [littmannImg];
+  const displayImages =
+    productImages.length > 0 ? productImages : [littmannImg];
 
   const handleAddToCart = () => {
     alert(`Adicionado ao carrinho: ${product.name} (x${qty})`);
@@ -87,8 +96,8 @@ const ProductDetail: React.FC = () => {
                   aria-label={`Ver imagem ${i + 1}`}
                   type="button"
                 >
-                  <img 
-                    src={src} 
+                  <img
+                    src={src}
                     alt={`Miniatura ${i + 1}`}
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = littmannImg;
@@ -102,16 +111,12 @@ const ProductDetail: React.FC = () => {
           {/* Informações do produto */}
           <section className="pd-product-info">
             <h1 className="pd-title">{product.name}</h1>
-            
+
             <div className="pd-sku">Código: {product.id}</div>
-            
-            <div className="pd-description">
-              {product.description}
-            </div>
-            
-            <div className="pd-price">
-              {formatBRL(product.price)}
-            </div>
+
+            <div className="pd-description">{product.description}</div>
+
+            <div className="pd-price">{formatBRL(product.price)}</div>
 
             {/* Quantidade */}
             <div className="pd-quantity">
@@ -130,15 +135,15 @@ const ProductDetail: React.FC = () => {
             {/* Botões de ação */}
             <div className="pd-actions">
               <div className="pd-buttons">
-                <button 
-                  className="btn btn-primary" 
+                <button
+                  className="btn btn-primary"
                   onClick={handleAddToCart}
                   type="button"
                 >
                   Adicionar ao Carrinho
                 </button>
-                <button 
-                  className="btn btn-primary" 
+                <button
+                  className="btn btn-primary"
                   onClick={handleBuyNow}
                   type="button"
                 >
@@ -159,7 +164,7 @@ const ProductDetail: React.FC = () => {
           </div>
           <div className="pd-section-content">
             <h3 className="pd-product-name">{product.name}</h3>
-            
+
             <div className="pd-specs-grid">
               <div className="pd-spec-group">
                 <h4>Descrição Completa:</h4>
@@ -197,9 +202,9 @@ const ProductDetail: React.FC = () => {
                 "@type": "Offer",
                 priceCurrency: "BRL",
                 price: product.price,
-                availability: "https://schema.org/InStock"
-              }
-            })
+                availability: "https://schema.org/InStock",
+              },
+            }),
           }}
         />
       </div>
