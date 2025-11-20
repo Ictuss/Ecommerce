@@ -1,0 +1,138 @@
+.cart-modal__backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: flex-end;
+  z-index: 999;
+}
+
+.cart-modal {
+  width: min(380px, 100%);
+  height: 100%;
+  background: #fff;
+  box-shadow: -4px 0 16px rgba(0, 0, 0, 0.2);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.cart-modal__close-button {
+  border: none;
+  background: transparent;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.cart-modal__empty {
+  margin-top: 24px;
+  text-align: center;
+  color: #555;
+}
+
+.cart-modal__list {
+  flex: 1;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.cart-modal__item {
+  display: flex;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.cart-modal__item-image {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+
+.cart-modal__item-info {
+  flex: 1;
+}
+
+.cart-modal__item-name {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.cart-modal__item-price {
+  margin: 0 0 6px;
+  font-size: 13px;
+  color: #e32626;
+  font-weight: 700;
+}
+
+.cart-modal__item-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cart-modal__item-actions > button {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  background: #f9f9f9;
+  cursor: pointer;
+}
+
+.cart-modal__remove {
+  margin-left: auto;
+  border: none;
+  background: transparent;
+  font-size: 12px;
+  color: #999;
+  cursor: pointer;
+}
+
+.cart-modal__footer {
+  border-top: 1px solid #eee;
+  padding-top: 12px;
+  margin-top: 8px;
+}
+
+.cart-modal__total {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.cart-modal__footer-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.cart-modal__clear,
+.cart-modal__checkout {
+  flex: 1;
+  border-radius: 999px;
+  padding: 8px 12px;
+  border: 1px solid #e32626;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.cart-modal__clear {
+  background: #fff;
+  color: #e32626;
+}
+
+.cart-modal__checkout {
+  background: #e32626;
+  color: #fff;
+}

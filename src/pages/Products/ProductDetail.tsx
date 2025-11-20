@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import "./ProductDetail.css";
 import littmannImg from "../../assets/1.png";
 import { useProductDetailViewModel } from "./viewModel/productsDetail_viewModel";
+import { useCart } from "../../contexts/CartContext";
 
 function formatBRL(price: number) {
   return price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
@@ -15,6 +16,7 @@ const ProductDetail: React.FC = () => {
 
   const [qty, setQty] = useState(1);
   const [activeImg, setActiveImg] = useState(0);
+  const { addToCart, openCart } = useCart();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -62,11 +64,33 @@ const ProductDetail: React.FC = () => {
     productImages.length > 0 ? productImages : [littmannImg];
 
   const handleAddToCart = () => {
-    alert(`Adicionado ao carrinho: ${product.name} (x${qty})`);
+    addToCart(
+      {
+        id: product.id,
+        name: product.name,
+        price: product.price, // precisa ser number e já é!
+        image: displayImages[0] ?? littmannImg,
+        slug: product.slug,
+      },
+      qty
+    );
+
+    openCart();
   };
 
   const handleBuyNow = () => {
-    alert(`Comprar agora: ${product.name} (x${qty})`);
+    addToCart(
+      {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: displayImages[0] ?? littmannImg,
+        slug: product.slug,
+      },
+      qty
+    );
+
+    openCart();
   };
 
   return (
@@ -213,3 +237,31 @@ const ProductDetail: React.FC = () => {
 };
 
 export default ProductDetail;
+function getAllImageUrls() {
+  throw new Error("Function not implemented.");
+}
+
+function addToCart(
+  arg0: {
+    id: any;
+    name: any;
+    price: any; // precisa ser number e já é!
+    image: any;
+    slug: any;
+  },
+  qty: any
+) {
+  throw new Error("Function not implemented.");
+}
+
+function openCart() {
+  throw new Error("Function not implemented.");
+}
+
+function setActiveImg(i: any) {
+  throw new Error("Function not implemented.");
+}
+
+function setQty(arg0: number) {
+  throw new Error("Function not implemented.");
+}

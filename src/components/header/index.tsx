@@ -7,6 +7,7 @@ import ContactInfo from "./component/contactInfo/contactInfo";
 import SearchInfo from "./component/searchInfo/searchInfo";
 import NewsletterSignup from "./newLetter/newLetter";
 import logoVideo from "../../assets/logoVideo.png";
+import CartButton from "../cart/CartButton";
 
 const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -58,18 +59,27 @@ const Header: React.FC = () => {
                 Blog
               </Link>
             </li>
-                   <li>
-              <Link to="/videos" className="link" onClick={() => setMenuOpen(false)}>
+            <li>
+              <Link
+                to="/videos"
+                className="link"
+                onClick={() => setMenuOpen(false)}
+              >
                 Videos
               </Link>
             </li>
+            <CartButton />
           </ul>
         </nav>
       </div>
       {/* BANNER PRINCIPAL */}
-    {!isProductDetail && (
+      {!isProductDetail && (
         <div className="logoPrincipal-container">
-          <img src={logoToShow} className="logoPrincipal" alt="Banner Principal" />
+          <img
+            src={logoToShow}
+            className="logoPrincipal"
+            alt="Banner Principal"
+          />
         </div>
       )}
     </>
