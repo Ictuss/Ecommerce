@@ -136,3 +136,85 @@
   background: #e32626;
   color: #fff;
 }
+/* ADICIONE NO FINAL DO SEU CartModal.css */
+
+/* Botão de finalizar (verde WhatsApp) */
+.cart-modal__checkout {
+  background-color: #25d366 !important;
+  color: white !important;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.cart-modal__checkout:hover {
+  background-color: #20ba5a !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+}
+
+.cart-modal__checkout span {
+  font-size: 20px;
+}
+
+/* Container de opções de pagamento */
+.cart-modal__payment-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px 0;
+}
+
+.cart-modal__payment-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+/* Botões de pagamento */
+.cart-modal__payment-btn {
+  background-color: #fff;
+  border: 2px solid #ddd;
+  padding: 14px 20px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.cart-modal__payment-btn:hover {
+  border-color: #25d366;
+  background-color: #f0fff4;
+  transform: translateX(4px);
+}
+
+/* Botão de voltar */
+.cart-modal__payment-back {
+  background-color: #f5f5f5;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #666;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: all 0.2s ease;
+}
+
+.cart-modal__payment-back:hover {
+  background-color: #e0e0e0;
+}

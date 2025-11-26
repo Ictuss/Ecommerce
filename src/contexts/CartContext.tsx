@@ -31,6 +31,11 @@ type CartContextType = {
   openCart: () => void;
   closeCart: () => void;
   toggleCart: () => void;
+
+  // NOVOS: para o checkout
+  isCheckoutOpen: boolean;
+  openCheckout: () => void;
+  closeCheckout: () => void;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -50,6 +55,7 @@ type CartProviderProps = {
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false); // NOVO
 
   const addToCart = (product: CartProduct, quantity: number = 1) => {
     setItems((current) => {
@@ -86,6 +92,16 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const closeCart = () => setIsOpen(false);
   const toggleCart = () => setIsOpen((v) => !v);
 
+  // NOVAS FUNÇÕES para o checkout
+  const openCheckout = () => {
+    setIsCheckoutOpen(true);
+    setIsOpen(false); // fecha o carrinho quando abre o checkout
+  };
+
+  const closeCheckout = () => {
+    setIsCheckoutOpen(false);
+  };
+
   const { totalQuantity, totalPrice } = useMemo(() => {
     const quantity = items.reduce((sum, item) => sum + item.quantity, 0);
     const price = items.reduce(
@@ -107,6 +123,10 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     openCart,
     closeCart,
     toggleCart,
+    // NOVOS
+    isCheckoutOpen,
+    openCheckout,
+    closeCheckout,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useCart } from "../../contexts/CartContext";
 import "./CartModal.css";
 
@@ -21,14 +21,57 @@ const CartModal: React.FC = () => {
     clearCart,
   } = useCart();
 
+  const [showPaymentOptions, setShowPaymentOptions] = useState(false);
+
+  // Função que monta a mensagem e envia pro WhatsApp
+  const handleSendToWhatsApp = (paymentMethod: string) => {
+    // SEU NÚMERO AQUI (formato: 55 + DDD + número)
+    const businessWhatsApp = "5541999999999"; // TROQUE AQUI!
+
+    // Monta a mensagem
+    let message = `🛒 *NOVO PEDIDO - ICTUS*\n\n`;
+    message += `📦 *PRODUTOS:*\n`;
+    message += `━━━━━━━━━━━━━━━\n`;
+
+    items.forEach((item, index) => {
+      message += `${index + 1}. *${item.name}*\n`;
+      message += `   Qtd: ${item.quantity}x\n`;
+      message += `   Valor unitário: ${formatBRL(item.price)}\n`;
+      message += `   Subtotal: ${formatBRL(item.price * item.quantity)}\n\n`;
+    });
+
+    message += `━━━━━━━━━━━━━━━\n`;
+    message += `💰 *VALOR TOTAL: ${formatBRL(totalPrice)}*\n\n`;
+
+    const paymentText =
+      {
+        pix: "PIX",
+        card: "Cartão de Crédito/Débito",
+        boleto: "Boleto Bancário",
+        money: "Dinheiro",
+      }[paymentMethod] || "A combinar";
+
+    message += `💳 *Forma de Pagamento Preferencial:* ${paymentText}\n\n`;
+    message += `✅ Aguardo confirmação do pedido!\n`;
+    message += `Obrigado pela preferência! 😊`;
+
+    // Codifica a mensagem para URL
+    const encodedMessage = encodeURIComponent(message);
+
+    // Abre o WhatsApp
+    const whatsappUrl = `https://wa.me/${businessWhatsApp}?text=${encodedMessage}`;
+    window.open(whatsappUrl, "_blank");
+
+    // Fecha o modal
+    setShowPaymentOptions(false);
+    closeCart();
+  };
+
   if (!isOpen) return null;
 
   return (
     <div className="cart-modal__backdrop" onClick={closeCart}>
-      <div
-        className="cart-modal"
-        onClick={(e) => e.stopPropagation()} // não fechar ao clicar dentro
-      >
+      <div className="cart-modal" onClick={(e) => e.stopPropagation()}>
         <header className="cart-modal__header">
           <h2>Carrinho ({totalQuantity})</h2>
           <button
@@ -103,24 +146,72 @@ const CartModal: React.FC = () => {
                 <strong>{formatBRL(totalPrice)}</strong>
               </div>
 
-              <div className="cart-modal__footer-actions">
-                <button
-                  type="button"
-                  className="cart-modal__clear"
-                  onClick={clearCart}
-                >
-                  Limpar carrinho
-                </button>
-                <button
-                  type="button"
-                  className="cart-modal__checkout"
-                  onClick={() =>
-                    console.log("TODO: redirecionar para checkout / WhatsApp")
-                  }
-                >
-                  Finalizar compra
-                </button>
-              </div>
+              {/* Modal de escolha de pagamento */}
+              {showPaymentOptions ? (
+                <div className="cart-modal__payment-options">
+                  <p className="cart-modal__payment-title">
+                    Escolha a forma de pagamento:
+                  </p>
+
+                  <button
+                    type="button"
+                    className="cart-modal__payment-btn"
+                    onClick={() => handleSendToWhatsApp("pix")}
+                  >
+                    💳 PIX
+                  </button>
+
+                  <button
+                    type="button"
+                    className="cart-modal__payment-btn"
+                    onClick={() => handleSendToWhatsApp("card")}
+                  >
+                    💳 Cartão de Crédito/Débito
+                  </button>
+
+                  <button
+                    type="button"
+                    className="cart-modal__payment-btn"
+                    onClick={() => handleSendToWhatsApp("boleto")}
+                  >
+                    📄 Boleto Bancário
+                  </button>
+
+                  <button
+                    type="button"
+                    className="cart-modal__payment-btn"
+                    onClick={() => handleSendToWhatsApp("money")}
+                  >
+                    💵 Dinheiro
+                  </button>
+
+                  <button
+                    type="button"
+                    className="cart-modal__payment-back"
+                    onClick={() => setShowPaymentOptions(false)}
+                  >
+                    ← Voltar
+                  </button>
+                </div>
+              ) : (
+                <div className="cart-modal__footer-actions">
+                  <button
+                    type="button"
+                    className="cart-modal__clear"
+                    onClick={clearCart}
+                  >
+                    Limpar carrinho
+                  </button>
+                  <button
+                    type="button"
+                    className="cart-modal__checkout"
+                    onClick={() => setShowPaymentOptions(true)}
+                  >
+                    <span>📱</span>
+                    Finalizar via WhatsApp
+                  </button>
+                </div>
+              )}
             </footer>
           </>
         )}

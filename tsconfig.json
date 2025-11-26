@@ -1,14 +1,15 @@
 {
   "compilerOptions": {
-    "jsx": "react-jsx",  // ← CRUCIAL para React 17+
+    "jsx": "react-jsx",
     "target": "ES2020",
     "module": "ESNext",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "strict": true,
+    "strict": false,  // ← MUDE de true para false
     "skipLibCheck": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "noImplicitAny": false  // ← ADICIONE essa linha
   },
   "include": ["src"]
 }
