@@ -54,7 +54,7 @@ export const productService = {
   async getBySlug(slug: string): Promise<Product> {
     try {
       const response = await fetch(
-        `${PAYLOAD_API_URL}api/products?where[slug][equals]=${slug}&depth=2`
+        `${PAYLOAD_API_URL}/api/products?where[slug][equals]=${slug}&depth=2`
       );
 
       if (!response.ok) {
