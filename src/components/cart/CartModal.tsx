@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useCart } from "../../contexts/CartContext";
 import "./CartModal.css";
-
+import { buildImageUrl } from "../../config/env"; // ✅ adicionar
 const formatBRL = (value: number) =>
   value.toLocaleString("pt-BR", {
     style: "currency",
@@ -92,7 +92,7 @@ const CartModal: React.FC = () => {
                 <li key={item.id} className="cart-modal__item">
                   {item.image && (
                     <img
-                      src={item.image}
+                      src={buildImageUrl(item.image)}
                       alt={item.name}
                       className="cart-modal__item-image"
                     />

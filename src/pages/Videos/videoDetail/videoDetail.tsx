@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./videoDetail.css";
 import { apiService } from "../../../services/api";
-
+import { buildImageUrl } from "../../../config/env";
 type CmsVideo = {
   id: string | number;
   title: string;
@@ -164,7 +164,8 @@ const VideoDetail: React.FC = () => {
           name: product.name,
           price: `R$ ${product.salePrice ?? product.price}`,
           image:
-            product.images?.[0]?.image?.url || "/imgs/fallback-produto.png",
+            buildImageUrl(product.images?.[0]?.image?.url) ||
+            "/imgs/fallback-produto.png", // ✅ usar buildImageUrl
           description: product.description ?? "",
           category: product.category,
           slug: product.slug,
@@ -306,7 +307,10 @@ const VideoDetail: React.FC = () => {
                 onClick={handlePlayClick}
               >
                 <img
-                  src={video.thumbnail?.url || "/imgs/fallback-video.png"}
+                  src={
+                    buildImageUrl(video.thumbnail?.url) ||
+                    "/imgs/fallback-video.png"
+                  }
                   alt="video"
                   className="video-detail__thumbnail"
                 />
