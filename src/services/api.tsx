@@ -2,7 +2,9 @@
 import { ENV } from "../config/env";
 import type { BlogPostFromPayload, BlogPostPageData } from "../types/blog";
 
-const API_BASE_URL = ENV.API_URL;
+const API_BASE_URL = `${
+  import.meta.env.VITE_API_URL || "http://localhost:3000"
+}/api`;
 
 class ApiService {
   async fetchProducts(category: string | null = null): Promise<any[]> {
