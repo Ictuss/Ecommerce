@@ -1,5 +1,5 @@
 import React from "react";
-import "./Home.css";
+import "./home.css";
 import { Link } from "react-router-dom";
 import litman from "../../assets/1.png";
 import NewsletterSignup from "../../components/header/newLetter/newLetter.js";
@@ -11,14 +11,15 @@ import { Product } from "../../services/products_services"; // ✅ IMPORTAR
 
 const Home: React.FC = () => {
   // ✅ USAR O VIEWMODEL
-  const { loading, error, getProductsByCategory, getImageUrl } = useHomeViewModel();
+  const { loading, error, getProductsByCategory, getImageUrl } =
+    useHomeViewModel();
 
   // ✅ LOADING STATE
   if (loading) {
     return (
       <>
         <NewsletterSignup />
-        <div style={{ textAlign: 'center', padding: '50px', fontSize: '24px' }}>
+        <div style={{ textAlign: "center", padding: "50px", fontSize: "24px" }}>
           Carregando produtos...
         </div>
       </>
@@ -30,7 +31,14 @@ const Home: React.FC = () => {
     return (
       <>
         <NewsletterSignup />
-        <div style={{ textAlign: 'center', padding: '50px', fontSize: '24px', color: 'red' }}>
+        <div
+          style={{
+            textAlign: "center",
+            padding: "50px",
+            fontSize: "24px",
+            color: "red",
+          }}
+        >
           Erro: {error}
         </div>
       </>
@@ -38,10 +46,10 @@ const Home: React.FC = () => {
   }
 
   // ✅ BUSCAR PRODUTOS POR CATEGORIA
-  const inverno = getProductsByCategory('inverno');
-  const maeBebe = getProductsByCategory('mae-bebe');
-  const mobilidade = getProductsByCategory('mobilidade');
-  
+  const inverno = getProductsByCategory("inverno");
+  const maeBebe = getProductsByCategory("mae-bebe");
+  const mobilidade = getProductsByCategory("mobilidade");
+
   return (
     <>
       <NewsletterSignup />
@@ -102,11 +110,11 @@ const Section: React.FC<{
           <div className="home-container">
             {group.map((product) => {
               const imageUrl = getImageUrl(product);
-              
+
               return (
-                <Link 
+                <Link
                   to={`/product/${product.slug}`} // ✅ USAR SLUG
-                  key={product.id} 
+                  key={product.id}
                   className="product-link"
                 >
                   <div className="card-container">
@@ -122,7 +130,7 @@ const Section: React.FC<{
                       />
                       <h2>{product.name}</h2>
                       <p className="product-price">
-                        R$ {product.price.toFixed(2).replace('.', ',')}
+                        R$ {product.price.toFixed(2).replace(".", ",")}
                       </p>
                     </div>
                   </div>
