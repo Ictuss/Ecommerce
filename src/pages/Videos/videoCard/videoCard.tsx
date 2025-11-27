@@ -1,6 +1,6 @@
 // src/components/VideoCard/VideoCard.tsx
-import React from 'react';
-import './VideoCard.css'; // <-- ISSO AQUI É O QUE TÁ FALTANDO
+import React from "react";
+import "./videoCard.css"; // <-- ISSO AQUI É O QUE TÁ FALTANDO
 
 interface VideoCardProps {
   videoThumbnail: string;
@@ -10,7 +10,7 @@ interface VideoCardProps {
 }
 
 const renderLinesWithBreaks = (text: string) =>
-  text.split('\n').map((line, index, arr) => (
+  text.split("\n").map((line, index, arr) => (
     <React.Fragment key={index}>
       {line}
       {index < arr.length - 1 && <br />}

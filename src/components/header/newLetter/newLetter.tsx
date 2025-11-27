@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import './newLetter.css';
+import React, { useState } from "react";
+import "./newLetter.css";
 
 const NewsletterSignup = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -14,7 +14,9 @@ const NewsletterSignup = () => {
 
   return (
     <div className="newsletter-container">
-      <p className="newsletter-text">Se cadastre para receber nossa Newsletter e novidades!</p>
+      <p className="newsletter-text">
+        Se cadastre para receber nossa Newsletter e novidades!
+      </p>
       <form onSubmit={handleSubmit} className="newsletter-form">
         <input
           type="text"
@@ -37,7 +39,9 @@ const NewsletterSignup = () => {
           onChange={(e) => setPhone(e.target.value)}
           className="input-field"
         />
-        <button type="submit" className="submit-button">Enviar!</button>
+        <button type="submit" className="submit-button">
+          Enviar!
+        </button>
       </form>
     </div>
   );

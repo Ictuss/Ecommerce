@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import VideoCard from "../Videos/videoCard/videoCard";
-import "./Videos.css";
+import "./videos.css";
 import { apiService } from "../../services/api";
 
 type CmsVideo = {

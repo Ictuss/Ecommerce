@@ -4,7 +4,7 @@ import telefone from "../../../..//assets/icons/telefone.png";
 import wpp from "../../../../assets/icons/whatsapp.png";
 import email from "../../../../assets/icons/email.png";
 import logoBranca from "../../../../assets/icons/logo_branca.png";
-import "./ContactInfo.css";
+import "./contactInfo.css";
 
 const ContactInfo: React.FC = () => {
   return (
@@ -18,7 +18,9 @@ const ContactInfo: React.FC = () => {
       <div className="contact-item address">
         <img src={loc} alt="" className="icon" aria-hidden="true" />
         <span className="contact-text">
-          <span className="addr-line">Rua Getúlio Vargas, 1951, Centro, Guarapuava - PR</span>
+          <span className="addr-line">
+            Rua Getúlio Vargas, 1951, Centro, Guarapuava - PR
+          </span>
           {/* <span className="addr-line">Centro</span>
           <span className="addr-line">Guarapuava - PR</span> */}
         </span>

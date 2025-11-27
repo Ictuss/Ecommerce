@@ -31,7 +31,7 @@ const SearchInfo: React.FC = () => {
             Fale Conosco!{" "}
             <img src={iconZap} alt="WhatsApp" className="link-icon" />
           </li>
-          <li className="link"> 
+          <li className="link">
             Sobre Nós{" "}
             <img src={iconInfo} alt="Informações" className="link-icon" />
           </li>

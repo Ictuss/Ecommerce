@@ -1,7 +1,7 @@
 // src/pages/Videos/VideoDetail.tsx
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import "./VideoDetail.css";
+import "./videoDetail.css";
 import { apiService } from "../../../services/api";
 
 type CmsVideo = {
