@@ -1,4 +1,4 @@
-const PAYLOAD_API_URL = import.meta.env.VITE_PAYLOAD_API_URL || "";
+const PAYLOAD_API_URL = import.meta.env.VITE_API_URL || "";
 
 export interface Product {
   id: string;
