@@ -47,14 +47,14 @@ class ApiService {
     }
   }
   async fetchVideos() {
-    const res = await fetch(`${API_BASE_URL}/videos?depth=1`);
+    const res = await fetch(`${API_BASE_URL}/videos?depth=2`);
     const json = await res.json();
     return json.docs;
   }
 
   // ✅ novo: busca vídeo por ID (pra VideoDetail)
   async fetchVideoById(id: string | number) {
-    const res = await fetch(`${API_BASE_URL}/videos/${id}?depth=1`);
+    const res = await fetch(`${API_BASE_URL}/videos/${id}?depth=2`);
     if (!res.ok) throw new Error("Vídeo não encontrado");
     return res.json();
   }

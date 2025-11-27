@@ -114,7 +114,7 @@ const Videos: React.FC = () => {
               <div className="videos-row">
                 {/* Primeiro card da linha */}
                 <VideoCard
-                  videoThumbnail={buildImageUrl(row[0].thumbnail?.url)}
+                  videoThumbnail={buildImageUrl(row[0].thumbnail?.url) || ""}
                   mainTitle={row[0].title}
                   descriptionText={row[0].description ?? ""}
                   onPlayClick={() => handlePlayClick(row[0].id)}
@@ -125,7 +125,9 @@ const Videos: React.FC = () => {
                   <>
                     <div className="videos-row__divider-vertical" />
                     <VideoCard
-                      videoThumbnail={buildImageUrl(row[0].thumbnail?.url)}
+                      videoThumbnail={
+                        buildImageUrl(row[1].thumbnail?.url) || ""
+                      }
                       mainTitle={row[1].title}
                       descriptionText={row[1].description ?? ""}
                       onPlayClick={() => handlePlayClick(row[1].id)}

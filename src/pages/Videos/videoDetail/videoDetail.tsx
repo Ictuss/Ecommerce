@@ -71,7 +71,8 @@ const VideoDetail: React.FC = () => {
         setLoadingVideo(true);
         const videos = await apiService.fetchVideos();
         const foundVideo = videos.find((v: any) => String(v.id) === String(id));
-
+        console.log("🎥 Video encontrado:", foundVideo); // ✅ adicionar esse log
+        console.log("🖼️ Thumbnail:", foundVideo?.thumbnail);
         if (foundVideo) {
           setVideo({
             id: foundVideo.id,
