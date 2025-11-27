@@ -26,7 +26,7 @@ const CartModal: React.FC = () => {
   // Função que monta a mensagem e envia pro WhatsApp
   const handleSendToWhatsApp = (paymentMethod: string) => {
     // SEU NÚMERO AQUI (formato: 55 + DDD + número)
-    const businessWhatsApp = "5541999999999"; // TROQUE AQUI!
+    const businessWhatsApp = "5541998308798"; // TROQUE AQUI!
 
     // Monta a mensagem
     let message = `🛒 *NOVO PEDIDO - ICTUS*\n\n`;
