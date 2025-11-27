@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { productService, Product } from '../../../services/products_services';
-
+import { useState, useEffect } from "react";
+import { productService, Product } from "../../../services/products_services";
+import { ENV } from "../../../config/env";
 export const useHomeViewModel = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -14,17 +14,17 @@ export const useHomeViewModel = () => {
     try {
       setLoading(true);
       setError(null);
-      
-      console.log('Buscando produtos para o home...'); // Debug
+
+      console.log("Buscando produtos para o home..."); // Debug
       const response = await productService.getAll();
-      
-      console.log('Produtos recebidos:', response.docs); // Debug
+
+      console.log("Produtos recebidos:", response.docs); // Debug
       setProducts(response.docs);
-      
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Erro ao carregar produtos';
+      const errorMessage =
+        err instanceof Error ? err.message : "Erro ao carregar produtos";
       setError(errorMessage);
-      console.error('Erro ao carregar produtos:', err);
+      console.error("Erro ao carregar produtos:", err);
     } finally {
       setLoading(false);
     }
@@ -34,39 +34,42 @@ export const useHomeViewModel = () => {
     try {
       if (product.images && product.images.length > 0) {
         const firstImage = product.images[0].image;
-        
-        if (typeof firstImage === 'string') {
-          console.warn('Imagem retornou como string (ID):', firstImage);
-          return '';
+
+        if (typeof firstImage === "string") {
+          console.warn("Imagem retornou como string (ID):", firstImage);
+          return "";
         }
-        
-        if (firstImage && typeof firstImage === 'object' && 'url' in firstImage) {
+
+        if (
+          firstImage &&
+          typeof firstImage === "object" &&
+          "url" in firstImage
+        ) {
           const imageUrl = firstImage.url;
-          
-          if (imageUrl.startsWith('http')) {
+
+          if (imageUrl.startsWith("http")) {
             return imageUrl;
           }
-          
-          const baseUrl = import.meta.env.VITE_PAYLOAD_API_URL?.replace('/api', '') || 'http://localhost:3000';
-          return `${baseUrl}${imageUrl}`;
+
+          return `${ENV.API_BASE_URL}${imageUrl}`;
         }
       }
-      
-      return '';
+
+      return "";
     } catch (err) {
-      console.error('Erro ao processar URL da imagem:', err);
-      return '';
+      console.error("Erro ao processar URL da imagem:", err);
+      return "";
     }
   };
 
   // Filtrar produtos por categoria
   const getProductsByCategory = (category: string) => {
-    return products.filter(p => p.category === category);
+    return products.filter((p) => p.category === category);
   };
 
   // Pegar produtos em destaque (featured)
   const getFeaturedProducts = () => {
-    return products.filter(p => p.featured);
+    return products.filter((p) => p.featured);
   };
 
   return {

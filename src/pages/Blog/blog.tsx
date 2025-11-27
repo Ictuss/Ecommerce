@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import dorPulso from "../../assets/dorPulso.png";
 import "./blog.css";
 import type { BlogPostFromPayload, FormattedBlogPost } from "../../types/blog";
-
+import { buildImageUrl } from "../../config/env";
 const Blog = () => {
   const [posts, setPosts] = useState<FormattedBlogPost[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -24,31 +24,14 @@ const Blog = () => {
         // Formatar posts para o componente
         const formattedPosts: FormattedBlogPost[] = blogPosts
           .map((post: BlogPostFromPayload) => {
-            let imageUrl = dorPulso; // Valor padrão
-
-            if (post.featuredImage && post.featuredImage.url) {
-              if (post.featuredImage.url.startsWith("http")) {
-                imageUrl = post.featuredImage.url;
-              } else {
-                const baseUrl = "http://localhost:3000";
-                const cleanBaseUrl = baseUrl.endsWith("/")
-                  ? baseUrl.slice(0, -1)
-                  : baseUrl;
-                const cleanImageUrl = post.featuredImage.url.startsWith("/")
-                  ? post.featuredImage.url
-                  : `/${post.featuredImage.url}`;
-                imageUrl = `${cleanBaseUrl}${cleanImageUrl}`;
-              }
-            }
+            const imageUrl = buildImageUrl(post.featuredImage?.url, dorPulso);
 
             return {
               id: post.id,
               slug: post.slug,
               title: post.title,
               excerpt: post.excerpt,
-              // aqui você mantém a data formatada para exibir
               date: new Date(post.publishedAt).toLocaleDateString("pt-BR"),
-              // mas também guarda a data bruta para ordenar
               rawDate: new Date(post.publishedAt),
               image: imageUrl,
               category: post.category,

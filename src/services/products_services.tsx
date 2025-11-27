@@ -1,4 +1,4 @@
-const PAYLOAD_API_URL = import.meta.env.VITE_PAYLOAD_API_URL || 'http://localhost:3000/api';
+const PAYLOAD_API_URL = import.meta.env.VITE_PAYLOAD_API_URL || "";
 
 export interface Product {
   id: string;
@@ -37,16 +37,16 @@ export const productService = {
       const response = await fetch(
         `${PAYLOAD_API_URL}/products?page=${page}&limit=${limit}&depth=2`
       );
-      
+
       if (!response.ok) {
         throw new Error(`Erro ao buscar produtos: ${response.statusText}`);
       }
-      
+
       const data = await response.json();
-      console.log('Dados recebidos do Payload:', data); // Debug
+      console.log("Dados recebidos do Payload:", data); // Debug
       return data;
     } catch (error) {
-      console.error('Erro no productService.getAll:', error);
+      console.error("Erro no productService.getAll:", error);
       throw error;
     }
   },
@@ -56,20 +56,20 @@ export const productService = {
       const response = await fetch(
         `${PAYLOAD_API_URL}/products?where[slug][equals]=${slug}&depth=2`
       );
-      
+
       if (!response.ok) {
         throw new Error(`Erro ao buscar produto: ${response.statusText}`);
       }
-      
+
       const data = await response.json();
-      
+
       if (data.docs.length === 0) {
-        throw new Error('Produto não encontrado');
+        throw new Error("Produto não encontrado");
       }
-      
+
       return data.docs[0];
     } catch (error) {
-      console.error('Erro no productService.getBySlug:', error);
+      console.error("Erro no productService.getBySlug:", error);
       throw error;
     }
   },

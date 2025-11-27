@@ -5,6 +5,7 @@ import "./blogDetail.css";
 import type { BlogPostPageData, BlogPostFromPayload } from "../../types/blog";
 import PostHighlight from "../Blog/components/blogCard";
 import dorPulso from "../../assets/dorPulso.png";
+import { buildImageUrl } from "../../config/env";
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -13,16 +14,6 @@ const BlogPost = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const buildImageUrl = (imageUrl?: string): string => {
-    if (!imageUrl) return dorPulso;
-    if (imageUrl.startsWith("http")) return imageUrl;
-    const baseUrl = "http://localhost:3000";
-    const cleanBaseUrl = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
-    const cleanImageUrl = imageUrl.startsWith("/") ? imageUrl : `/${imageUrl}`;
-    return `${cleanBaseUrl}${cleanImageUrl}`;
-  };
-
-  // 1) Carrega o post principal
   useEffect(() => {
     const loadPost = async () => {
       try {
@@ -44,66 +35,68 @@ const BlogPost = () => {
     if (slug) loadPost();
   }, [slug]);
 
-useEffect(() => {
-  const loadRelated = async () => {
-    try {
-      const allPosts: BlogPostFromPayload[] = await apiService.fetchBlogPosts();
-      if (!post) {
-        setRelated([]);
-        return;
-      }
-
-      // Helper: ordena por mais recente e limita
-      const topRecent = (list: BlogPostFromPayload[], limit = 3) =>
-        list
-          .filter((p) => p.slug !== post.slug)
-          .sort((a, b) => {
-            const da = new Date(a.publishedAt || 0).getTime();
-            const db = new Date(b.publishedAt || 0).getTime();
-            return db - da;
-          })
-          .slice(0, limit);
-
-      let sameCategorySorted: BlogPostFromPayload[] = [];
-
-      if (post.category) {
-        sameCategorySorted = topRecent(
-          allPosts.filter((p) => p.category === post.category)
-        );
-      }
-
-      // Fallback: se não houver da mesma categoria, pega os mais recentes gerais
-      if (sameCategorySorted.length === 0) {
-        setRelated(topRecent(allPosts));
-      } else {
-        setRelated(sameCategorySorted);
-      }
-    } catch (err) {
-      console.error("Erro ao carregar relacionados:", err);
-      // Fallback de rede/erro: tenta ao menos mostrar os mais recentes gerais
+  useEffect(() => {
+    const loadRelated = async () => {
       try {
-        const allPosts: BlogPostFromPayload[] = await apiService.fetchBlogPosts();
-        if (post) {
-          const recent = allPosts
+        const allPosts: BlogPostFromPayload[] =
+          await apiService.fetchBlogPosts();
+        if (!post) {
+          setRelated([]);
+          return;
+        }
+
+        // Helper: ordena por mais recente e limita
+        const topRecent = (list: BlogPostFromPayload[], limit = 3) =>
+          list
             .filter((p) => p.slug !== post.slug)
             .sort((a, b) => {
               const da = new Date(a.publishedAt || 0).getTime();
               const db = new Date(b.publishedAt || 0).getTime();
               return db - da;
             })
-            .slice(0, 3);
-          setRelated(recent);
+            .slice(0, limit);
+
+        let sameCategorySorted: BlogPostFromPayload[] = [];
+
+        if (post.category) {
+          sameCategorySorted = topRecent(
+            allPosts.filter((p) => p.category === post.category)
+          );
+        }
+
+        // Fallback: se não houver da mesma categoria, pega os mais recentes gerais
+        if (sameCategorySorted.length === 0) {
+          setRelated(topRecent(allPosts));
         } else {
+          setRelated(sameCategorySorted);
+        }
+      } catch (err) {
+        console.error("Erro ao carregar relacionados:", err);
+        // Fallback de rede/erro: tenta ao menos mostrar os mais recentes gerais
+        try {
+          const allPosts: BlogPostFromPayload[] =
+            await apiService.fetchBlogPosts();
+          if (post) {
+            const recent = allPosts
+              .filter((p) => p.slug !== post.slug)
+              .sort((a, b) => {
+                const da = new Date(a.publishedAt || 0).getTime();
+                const db = new Date(b.publishedAt || 0).getTime();
+                return db - da;
+              })
+              .slice(0, 3);
+            setRelated(recent);
+          } else {
+            setRelated([]);
+          }
+        } catch {
           setRelated([]);
         }
-      } catch {
-        setRelated([]);
       }
-    }
-  };
+    };
 
-  loadRelated();
-}, [post]);
+    loadRelated();
+  }, [post]);
 
   if (loading) {
     return (
@@ -125,8 +118,8 @@ useEffect(() => {
   }
 
   const featuredImageUrl = post.featuredImage
-    ? buildImageUrl(post.featuredImage.url)
-    : null;
+    ? buildImageUrl(post.featuredImage.url, dorPulso)
+    : dorPulso;
 
   return (
     <main className="blog-post">

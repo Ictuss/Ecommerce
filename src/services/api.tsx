@@ -1,7 +1,8 @@
 // src/services/api.js
+import { ENV } from "../config/env";
 import type { BlogPostFromPayload, BlogPostPageData } from "../types/blog";
 
-const API_BASE_URL = "http://localhost:3000/api";
+const API_BASE_URL = ENV.API_URL;
 
 class ApiService {
   async fetchProducts(category: string | null = null): Promise<any[]> {

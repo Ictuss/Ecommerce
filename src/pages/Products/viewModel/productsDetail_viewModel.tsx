@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
-import { productService, Product } from '../../../services/products_services';
+import { useState, useEffect } from "react";
+import { productService, Product } from "../../../services/products_services";
+import { ENV } from "../../../config/env";
 
 export const useProductDetailViewModel = (slug: string | undefined) => {
   const [product, setProduct] = useState<Product | null>(null);
@@ -16,17 +17,17 @@ export const useProductDetailViewModel = (slug: string | undefined) => {
     try {
       setLoading(true);
       setError(null);
-      
-      console.log('Buscando produto:', productSlug);
+
+      console.log("Buscando produto:", productSlug);
       const data = await productService.getBySlug(productSlug);
-      
-      console.log('Produto recebido:', data);
+
+      console.log("Produto recebido:", data);
       setProduct(data);
-      
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Erro ao carregar produto';
+      const errorMessage =
+        err instanceof Error ? err.message : "Erro ao carregar produto";
       setError(errorMessage);
-      console.error('Erro ao carregar produto:', err);
+      console.error("Erro ao carregar produto:", err);
     } finally {
       setLoading(false);
     }
@@ -34,27 +35,28 @@ export const useProductDetailViewModel = (slug: string | undefined) => {
 
   const getImageUrl = (imageUrl: string): string => {
     try {
-      if (imageUrl.startsWith('http')) {
+      if (imageUrl.startsWith("http")) {
         return imageUrl;
       }
-      
-      const baseUrl = import.meta.env.VITE_PAYLOAD_API_URL?.replace('/api', '') || 'http://localhost:3000';
-      return `${baseUrl}${imageUrl}`;
+
+      return `${ENV.API_BASE_URL}${imageUrl}`;
     } catch (err) {
-      console.error('Erro ao processar URL da imagem:', err);
-      return '';
+      console.error("Erro ao processar URL da imagem:", err);
+      return "";
     }
   };
 
   const getAllImageUrls = (): string[] => {
     if (!product?.images) return [];
-    
-    return product.images.map(img => {
-      if (typeof img.image === 'object' && 'url' in img.image) {
-        return getImageUrl(img.image.url);
-      }
-      return '';
-    }).filter(url => url !== '');
+
+    return product.images
+      .map((img) => {
+        if (typeof img.image === "object" && "url" in img.image) {
+          return getImageUrl(img.image.url);
+        }
+        return "";
+      })
+      .filter((url) => url !== "");
   };
 
   return {
