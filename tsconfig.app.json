@@ -9,7 +9,7 @@
 
     /* Bundler mode */
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": false,
+    "allowImportingTsExtensions": true,  // ← MUDE para true
     "isolatedModules": true,
     "moduleDetection": "force",
     "noEmit": true,
