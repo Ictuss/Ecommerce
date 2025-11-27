@@ -65,15 +65,34 @@ const VideoDetail: React.FC = () => {
   };
 
   // Carrega o vídeo do CMS
+  // Dentro do useEffect de loadVideo, mude para:
+
   useEffect(() => {
     const loadVideo = async () => {
       try {
         setLoadingVideo(true);
         const videos = await apiService.fetchVideos();
         const foundVideo = videos.find((v: any) => String(v.id) === String(id));
-        console.log("🎥 Video encontrado:", foundVideo); // ✅ adicionar esse log
+
+        console.log("🎥 Video encontrado:", foundVideo);
         console.log("🖼️ Thumbnail:", foundVideo?.thumbnail);
+
         if (foundVideo) {
+          // ✅ AJUSTE AQUI
+          let thumbnailUrl = "";
+
+          if (
+            typeof foundVideo.thumbnail === "object" &&
+            foundVideo.thumbnail !== null
+          ) {
+            thumbnailUrl =
+              foundVideo.thumbnail.url ||
+              foundVideo.thumbnail.sizes?.thumbnail?.url ||
+              "";
+          }
+
+          console.log("🖼️ Thumbnail URL final:", thumbnailUrl);
+
           setVideo({
             id: foundVideo.id,
             title: foundVideo.title,
@@ -81,9 +100,7 @@ const VideoDetail: React.FC = () => {
             videoUrl: foundVideo.videoUrl,
             category: foundVideo.category,
             thumbnail: {
-              url:
-                foundVideo.thumbnail?.url ||
-                foundVideo.thumbnail?.sizes?.thumbnail?.url,
+              url: thumbnailUrl,
             },
             instagramUrl: foundVideo.instagramUrl,
           });

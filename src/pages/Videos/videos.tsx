@@ -5,6 +5,7 @@ import VideoCard from "../Videos/videoCard/videoCard";
 import "./Videos.css";
 import { apiService } from "../../services/api";
 import { buildImageUrl } from "../../config/env";
+
 type CmsVideo = {
   id: string | number;
   title: string;
@@ -34,17 +35,34 @@ const Videos: React.FC = () => {
 
         const docs = await apiService.fetchVideos();
 
-        // garante o formato que o VideoCard espera
-        const mapped: CmsVideo[] = docs.map((v: any) => ({
-          id: v.id,
-          title: v.title,
-          description: v.description,
-          videoUrl: v.videoUrl,
-          category: v.category,
-          thumbnail: {
-            url: v.thumbnail?.url || v.thumbnail?.sizes?.thumbnail?.url,
-          },
-        }));
+        console.log("📹 Videos recebidos:", docs); // ✅ debug
+
+        const mapped: CmsVideo[] = docs.map((v: any) => {
+          // ✅ AJUSTE AQUI: thumbnail pode ser objeto completo
+          let thumbnailUrl = "";
+
+          if (typeof v.thumbnail === "object" && v.thumbnail !== null) {
+            // Se thumbnail é objeto, pega a URL
+            thumbnailUrl =
+              v.thumbnail.url || v.thumbnail.sizes?.thumbnail?.url || "";
+          } else if (typeof v.thumbnail === "string") {
+            // Se for string (ID), não conseguimos usar
+            thumbnailUrl = "";
+          }
+
+          console.log("🖼️ Thumbnail processada:", thumbnailUrl); // ✅ debug
+
+          return {
+            id: v.id,
+            title: v.title,
+            description: v.description,
+            videoUrl: v.videoUrl,
+            category: v.category,
+            thumbnail: {
+              url: thumbnailUrl,
+            },
+          };
+        });
 
         setVideos(mapped);
       } catch (err) {
@@ -63,7 +81,6 @@ const Videos: React.FC = () => {
     navigate(`/videos/${videoId}`);
   };
 
-  // enquanto carrega
   if (loading) {
     return (
       <div className="videos-page">
@@ -86,7 +103,6 @@ const Videos: React.FC = () => {
     );
   }
 
-  // se não tiver vídeo nenhum
   if (videos.length === 0) {
     return (
       <div className="videos-page">
@@ -99,7 +115,6 @@ const Videos: React.FC = () => {
     );
   }
 
-  // Agrupa em duplas como antes
   const rows: CmsVideo[][] = [];
   for (let i = 0; i < videos.length; i += 2) {
     rows.push(videos.slice(i, i + 2));
@@ -112,7 +127,6 @@ const Videos: React.FC = () => {
           {rows.map((row, rowIndex) => (
             <React.Fragment key={rowIndex}>
               <div className="videos-row">
-                {/* Primeiro card da linha */}
                 <VideoCard
                   videoThumbnail={buildImageUrl(row[0].thumbnail?.url) || ""}
                   mainTitle={row[0].title}
@@ -120,7 +134,6 @@ const Videos: React.FC = () => {
                   onPlayClick={() => handlePlayClick(row[0].id)}
                 />
 
-                {/* Segundo card + divisor, se existir */}
                 {row[1] && (
                   <>
                     <div className="videos-row__divider-vertical" />
