@@ -21,6 +21,23 @@ const CartModal: React.FC = () => {
     clearCart,
   } = useCart();
 
+  const getCartImageSrc = (image?: string) => {
+    if (!image) return "";
+
+    // Se já for URL completa, usa direto
+    if (image.startsWith("http")) {
+      return image;
+    }
+
+    // Se for caminho absoluto (ex: /static/media/..., /assets/...)
+    if (image.startsWith("/")) {
+      return image;
+    }
+
+    // Se for só o nome/caminho relativo vindo do backend, monta com baseURL
+    return buildImageUrl(image);
+  };
+
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
 
   // Função que monta a mensagem e envia pro WhatsApp
@@ -92,7 +109,7 @@ const CartModal: React.FC = () => {
                 <li key={item.id} className="cart-modal__item">
                   {item.image && (
                     <img
-                      src={buildImageUrl(item.image)}
+                      src={getCartImageSrc(item.image)}
                       alt={item.name}
                       className="cart-modal__item-image"
                     />
