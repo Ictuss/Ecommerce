@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { useCart } from "../../contexts/CartContext";
 import "./CartModal.css";
-import { buildImageUrl } from "../../config/env"; // ✅ adicionar
+import littmannImg from "../../assets/1.png"; // ⬅️ MESMA IMAGEM DO PRODUCT DETAIL
+// ❌ REMOVE isso se ainda estiver usando aqui
+// import { buildImageUrl } from "../../config/env";
+
 const formatBRL = (value: number) =>
   value.toLocaleString("pt-BR", {
     style: "currency",
@@ -21,31 +24,11 @@ const CartModal: React.FC = () => {
     clearCart,
   } = useCart();
 
-  const getCartImageSrc = (image?: string) => {
-    if (!image) return "";
-
-    // Se já for URL completa, usa direto
-    if (image.startsWith("http")) {
-      return image;
-    }
-
-    // Se for caminho absoluto (ex: /static/media/..., /assets/...)
-    if (image.startsWith("/")) {
-      return image;
-    }
-
-    // Se for só o nome/caminho relativo vindo do backend, monta com baseURL
-    return buildImageUrl(image);
-  };
-
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
 
-  // Função que monta a mensagem e envia pro WhatsApp
   const handleSendToWhatsApp = (paymentMethod: string) => {
-    // SEU NÚMERO AQUI (formato: 55 + DDD + número)
-    const businessWhatsApp = "5541998308798"; // TROQUE AQUI!
+    const businessWhatsApp = "5541998308798";
 
-    // Monta a mensagem
     let message = `🛒 *NOVO PEDIDO - ICTUS*\n\n`;
     message += `📦 *PRODUTOS:*\n`;
     message += `━━━━━━━━━━━━━━━\n`;
@@ -72,14 +55,10 @@ const CartModal: React.FC = () => {
     message += `✅ Aguardo confirmação do pedido!\n`;
     message += `Obrigado pela preferência! 😊`;
 
-    // Codifica a mensagem para URL
     const encodedMessage = encodeURIComponent(message);
-
-    // Abre o WhatsApp
     const whatsappUrl = `https://wa.me/${businessWhatsApp}?text=${encodedMessage}`;
     window.open(whatsappUrl, "_blank");
 
-    // Fecha o modal
     setShowPaymentOptions(false);
     closeCart();
   };
@@ -107,13 +86,15 @@ const CartModal: React.FC = () => {
             <ul className="cart-modal__list">
               {items.map((item) => (
                 <li key={item.id} className="cart-modal__item">
-                  {item.image && (
-                    <img
-                      src={getCartImageSrc(item.image)}
-                      alt={item.name}
-                      className="cart-modal__item-image"
-                    />
-                  )}
+                  {/* ⬇️ MESMA IDEIA DO PRODUCTDETAIL: usa image direto, fallback pro littmann */}
+                  <img
+                    src={item.image || littmannImg}
+                    alt={item.name}
+                    className="cart-modal__item-image"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = littmannImg;
+                    }}
+                  />
 
                   <div className="cart-modal__item-info">
                     <p className="cart-modal__item-name">{item.name}</p>
@@ -163,7 +144,6 @@ const CartModal: React.FC = () => {
                 <strong>{formatBRL(totalPrice)}</strong>
               </div>
 
-              {/* Modal de escolha de pagamento */}
               {showPaymentOptions ? (
                 <div className="cart-modal__payment-options">
                   <p className="cart-modal__payment-title">
