@@ -1,13 +1,14 @@
-import type { CollectionConfig } from 'payload';
+import type { CollectionConfig } from 'payload'
+import path from 'path'
 
 export const Media: CollectionConfig = {
   slug: 'media',
   labels: {
     singular: 'Mídia',
-    plural: 'Mídias'
+    plural: 'Mídias',
   },
   admin: {
-    description: 'Gerencie imagens e arquivos do site'
+    description: 'Gerencie imagens e arquivos do site',
   },
   access: {
     read: () => true,
@@ -16,6 +17,10 @@ export const Media: CollectionConfig = {
     delete: () => true,
   },
   upload: {
+    // ✅ MANTÉM staticDir para funcionar localmente
+    // O plugin do Vercel Blob vai sobrescrever isso em produção
+    staticDir: path.resolve(__dirname, '../../media'),
+
     imageSizes: [
       {
         name: 'thumbnail',
@@ -36,6 +41,7 @@ export const Media: CollectionConfig = {
         position: 'centre',
       },
     ],
+
     adminThumbnail: 'thumbnail',
     mimeTypes: ['image/*'],
   },
@@ -44,17 +50,29 @@ export const Media: CollectionConfig = {
       name: 'alt',
       label: 'Texto Alternativo',
       type: 'text',
+      required: true,
       admin: {
-        description: 'Descrição da imagem para acessibilidade (obrigatório para SEO)'
-      }
+        description: 'Descrição da imagem para acessibilidade (obrigatório para SEO)',
+      },
     },
     {
       name: 'caption',
       label: 'Legenda',
       type: 'text',
       admin: {
-        description: 'Legenda que aparecerá abaixo da imagem (opcional)'
-      }
-    }
-  ]
-};
+        description: 'Legenda que aparecerá abaixo da imagem (opcional)',
+      },
+    },
+  ],
+
+  hooks: {
+    beforeValidate: [
+      ({ data }) => {
+        if (!data?.alt && data?.filename) {
+          data.alt = data.filename.replace(/\.[^/.]+$/, '').replace(/-|_/g, ' ')
+        }
+        return data
+      },
+    ],
+  },
+}
