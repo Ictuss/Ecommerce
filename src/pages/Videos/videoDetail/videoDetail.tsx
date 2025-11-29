@@ -18,12 +18,16 @@ type CmsVideo = {
 
 type VideoProduct = {
   id: string | number;
-  image: string;
   name: string;
   price: string;
   description?: string;
   category?: string;
   slug?: string;
+  images: {
+    image: {
+      url: string;
+    };
+  }[];
 };
 
 const VideoDetail: React.FC = () => {
@@ -57,6 +61,21 @@ const VideoDetail: React.FC = () => {
     }
 
     return null;
+  };
+  const getFirstProductImageUrl = (
+    product: VideoProduct
+  ): string | undefined => {
+    if (!product.images || product.images.length === 0) {
+      return undefined;
+    }
+
+    const rawUrl = product.images[0]?.image?.url;
+    if (!rawUrl) {
+      return undefined;
+    }
+
+    // Mesmo esquema do ProductDetail: path relativo -> buildImageUrl
+    return buildImageUrl(rawUrl);
   };
 
   // Verifica se é URL do YouTube
@@ -181,9 +200,7 @@ const VideoDetail: React.FC = () => {
           id: product.id,
           name: product.name,
           price: `R$ ${product.salePrice ?? product.price}`,
-          image:
-            buildImageUrl(product.images?.[0]?.image?.url) ||
-            "/imgs/fallback-produto.png", // ✅ usar buildImageUrl
+          images: product.images ?? [], // 👈 guarda as imagens como vêm do Payload
           description: product.description ?? "",
           category: product.category,
           slug: product.slug,
@@ -363,19 +380,27 @@ const VideoDetail: React.FC = () => {
             <h2 className="video-related-title">Produtos relacionados:</h2>
 
             <div className="video-related-list">
-              {products.map((p) => (
-                <article
-                  key={p.id}
-                  className="video-related-card"
-                  onClick={() => navigate(`/product/${p.slug}`)}
-                >
-                  <div className="video-related-image-wrapper">
-                    <img src={p.image} alt={p.name} />
-                  </div>
-                  <p className="video-related-name">{p.name}</p>
-                  <p className="video-related-price">{p.price}</p>
-                </article>
-              ))}
+              {products.map((p) => {
+                const imageUrl = getFirstProductImageUrl(p);
+                console.log("VIDEO DETAIL PRODUCT IMG:", {
+                  images: p.images,
+                  imageUrl,
+                });
+
+                return (
+                  <article
+                    key={p.id}
+                    className="video-related-card"
+                    onClick={() => navigate(`/product/${p.slug}`)}
+                  >
+                    <div className="video-related-image-wrapper">
+                      {imageUrl && <img src={imageUrl} alt={p.name} />}
+                    </div>
+                    <p className="video-related-name">{p.name}</p>
+                    <p className="video-related-price">{p.price}</p>
+                  </article>
+                );
+              })}
             </div>
           </section>
         )}

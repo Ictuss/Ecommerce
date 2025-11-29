@@ -7,13 +7,17 @@ const API_BASE_URL = `${
 }/api`;
 
 class ApiService {
+  // ✅ CORRIGIDO: SEMPRE USA depth=2 para popular as imagens
   async fetchProducts(category: string | null = null): Promise<any[]> {
     try {
-      let url = `${API_BASE_URL}/products?limit=100`;
+      // ✅ IMPORTANTE: depth=2 é necessário para popular as relações (imagens)
+      let url = `${API_BASE_URL}/products?limit=100&depth=2`;
 
       if (category) {
         url += `&where[category][equals]=${category}`;
       }
+
+      console.log("🔍 Buscando produtos em:", url); // Debug
 
       const response = await fetch(url);
 
@@ -22,18 +26,31 @@ class ApiService {
       }
 
       const data = await response.json();
+
+      console.log("📦 Resposta completa da API:", data); // Debug
+      console.log("📦 Produtos (data.docs):", data.docs); // Debug
+
+      // ✅ Verifica se as imagens estão populadas
+      if (data.docs && data.docs.length > 0) {
+        console.log(
+          "🖼️ Primeira imagem do primeiro produto:",
+          data.docs[0]?.images?.[0]
+        );
+      }
+
       return data.docs; // Payload retorna dados em 'docs'
     } catch (error) {
-      console.error("Erro ao buscar produtos:", error);
+      console.error("❌ Erro ao buscar produtos:", error);
       return [];
     }
   }
 
   async fetchFeaturedProducts() {
     try {
-      const url = `${API_BASE_URL}/products?where[featured][equals]=true&limit=20`;
+      // ✅ Adiciona depth=2 aqui também
+      const url = `${API_BASE_URL}/products?where[featured][equals]=true&limit=20&depth=2`;
       const response = await fetch(url);
-      console.log(`${response}`);
+      console.log(`Resposta: ${response.status}`);
 
       if (!response.ok) {
         throw new Error(`Erro HTTP: ${response.status}`);
@@ -46,21 +63,23 @@ class ApiService {
       return [];
     }
   }
+
   async fetchVideos() {
     const res = await fetch(`${API_BASE_URL}/videos?depth=2`);
     const json = await res.json();
     return json.docs;
   }
 
-  // ✅ novo: busca vídeo por ID (pra VideoDetail)
   async fetchVideoById(id: string | number) {
     const res = await fetch(`${API_BASE_URL}/videos/${id}?depth=2`);
     if (!res.ok) throw new Error("Vídeo não encontrado");
     return res.json();
   }
+
   async fetchProductBySlug(slug: any) {
     try {
-      const url = `${API_BASE_URL}/products?where[slug][equals]=${slug}`;
+      // ✅ Adiciona depth=2 para popular imagens
+      const url = `${API_BASE_URL}/products?where[slug][equals]=${slug}&depth=2`;
       const response = await fetch(url);
 
       if (!response.ok) {
@@ -88,13 +107,14 @@ class ApiService {
 
       console.log(
         `Status: ${response.status}, Status Text: ${response.statusText}`
-      ); // Melhor depuração
+      );
+
       if (!response.ok) {
         throw new Error(`Erro HTTP: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log("Dados retornados:", data); // Log dos dados para depuração
+      console.log("Dados retornados:", data);
       return data.docs || [];
     } catch (error) {
       console.error("Erro ao buscar posts do blog:", error);
@@ -104,7 +124,7 @@ class ApiService {
 
   async fetchBlogPostBySlug(slug: string): Promise<BlogPostPageData | null> {
     try {
-      const url = `${API_BASE_URL}/blog-posts?where[slug][equals]=${slug}&where[status][equals]=published`;
+      const url = `${API_BASE_URL}/blog-posts?where[slug][equals]=${slug}&where[status][equals]=published&depth=2`;
       const response = await fetch(url);
 
       if (!response.ok) {
@@ -119,24 +139,7 @@ class ApiService {
     }
   }
 
-  // async fetchVideos() {
-  //   try {
-  //     const url = `${API_BASE_URL}/videos?limit=50`;
-  //     const response = await fetch(url);
-
-  //     if (!response.ok) {
-  //       throw new Error(`Erro HTTP: ${response.status}`);
-  //     }
-
-  //     const data = await response.json();
-  //     return data.docs;
-  //   } catch (error) {
-  //     console.error("Erro ao buscar vídeos:", error);
-  //     return [];
-  //   }
-  // }
-
-  // Função helper para formatar produto do Payload para o formato do seu mock
+  // Função helper para formatar produto do Payload para o formato do mock
   formatProductForHome(product: {
     id: any;
     name: any;
@@ -150,7 +153,7 @@ class ApiService {
       id: product.id,
       name: product.name,
       price: `R$ ${product.salePrice || product.price}`,
-      image: product.images?.[0]?.image?.url || "litman", // fallback para imagem
+      image: product.images?.[0]?.image?.url || "litman",
       path: `/produto/${product.slug}`,
       category: product.category,
     };

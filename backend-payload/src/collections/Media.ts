@@ -1,5 +1,4 @@
 import type { CollectionConfig } from 'payload'
-import path from 'path'
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -17,10 +16,6 @@ export const Media: CollectionConfig = {
     delete: () => true,
   },
   upload: {
-    // ✅ MANTÉM staticDir para funcionar localmente
-    // O plugin do Vercel Blob vai sobrescrever isso em produção
-    staticDir: path.resolve(__dirname, '../../media'),
-
     imageSizes: [
       {
         name: 'thumbnail',
@@ -41,7 +36,6 @@ export const Media: CollectionConfig = {
         position: 'centre',
       },
     ],
-
     adminThumbnail: 'thumbnail',
     mimeTypes: ['image/*'],
   },
@@ -50,7 +44,6 @@ export const Media: CollectionConfig = {
       name: 'alt',
       label: 'Texto Alternativo',
       type: 'text',
-      required: true,
       admin: {
         description: 'Descrição da imagem para acessibilidade (obrigatório para SEO)',
       },
@@ -64,15 +57,4 @@ export const Media: CollectionConfig = {
       },
     },
   ],
-
-  hooks: {
-    beforeValidate: [
-      ({ data }) => {
-        if (!data?.alt && data?.filename) {
-          data.alt = data.filename.replace(/\.[^/.]+$/, '').replace(/-|_/g, ' ')
-        }
-        return data
-      },
-    ],
-  },
 }

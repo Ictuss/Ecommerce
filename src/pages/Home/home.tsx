@@ -89,7 +89,7 @@ const chunk = <T,>(arr: T[], size: number) =>
 
 const Section: React.FC<{
   title: string;
-  products: Product[]; // ✅ TROCAR ProductHome por Product
+  products: Product; // ✅ TROCAR ProductHome por Product
   bannerSrc: string;
   bannerAlt: string;
   getImageUrl: (product: Product) => string; // ✅ ADICIONAR
@@ -120,13 +120,9 @@ const Section: React.FC<{
                   <div className="card-container">
                     <div className="product-card">
                       <img
-                        src={imageUrl || litman} // ✅ USAR getImageUrl ou fallback
+                        src={imageUrl} // ✅ SÓ A IMAGEM REAL
                         alt={product.name}
                         className="product-image"
-                        onError={(e) => {
-                          // ✅ FALLBACK SE IMAGEM FALHAR
-                          (e.target as HTMLImageElement).src = litman;
-                        }}
                       />
                       <h2>{product.name}</h2>
                       <p className="product-price">

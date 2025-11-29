@@ -13,23 +13,32 @@ const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const location = useLocation();
-  const isBlog = location.pathname.startsWith("/blog");
-  const isProductDetail = Boolean(useMatch("/product/:id")); // ✅ /product/<id>
 
-  //const logoToShow = isBlog ? logoBlog : principalLogo;
-  const isVideoPage = location.pathname === "/videos";
-  const isVideoDetail = Boolean(useMatch("/video/:id"));
-  const logoToShow =
-    isVideoPage || isVideoDetail
-      ? logoVideo
-      : isBlog
-      ? logoBlog
-      : principalLogo;
+  // BLOG
+  const blogMatch = useMatch("/blog/*"); // cobre /blog e /blog/alguma-coisa
+  const isBlog = Boolean(blogMatch);
+
+  // PRODUCT DETAIL – alinhar com ProductDetail (usa slug)
+  const productDetailMatch = useMatch("/product/:slug");
+  const isProductDetail = Boolean(productDetailMatch);
+
+  // VIDEOS – lista e detalhe
+  const videoListMatch = useMatch("/videos");
+  const videoDetailMatch = useMatch("/videos/:id"); // ajuste conforme sua rota real
+  const isVideoPage = Boolean(videoListMatch || videoDetailMatch);
+
+  // LOGO DINÂMICO
+  const logoToShow = isVideoPage
+    ? logoVideo
+    : isBlog
+    ? logoBlog
+    : principalLogo;
 
   return (
     <>
       <ContactInfo />
       <SearchInfo />
+
       <div className="navbar-container">
         <nav className="">
           <button
@@ -38,13 +47,12 @@ const Header: React.FC = () => {
             onClick={() => setMenuOpen((v) => !v)}
           ></button>
 
-          <ul className={`nav-links`}>
+          <ul className={`nav-links ${menuOpen ? "open" : ""}`}>
             <li>
               <Link to="/" className="link" onClick={() => setMenuOpen(false)}>
                 Inicio
               </Link>
             </li>
-            {/* <li><Link to="/modelos" className="link" onClick={() => setMenuOpen(false)}>Modelos</Link></li> */}
             <li>
               <Link to="/" className="link" onClick={() => setMenuOpen(false)}>
                 Produtos
@@ -72,6 +80,7 @@ const Header: React.FC = () => {
           </ul>
         </nav>
       </div>
+
       {/* BANNER PRINCIPAL */}
       {!isProductDetail && (
         <div className="logoPrincipal-container">

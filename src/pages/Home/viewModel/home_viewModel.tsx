@@ -1,84 +1,68 @@
-import { useState, useEffect } from "react";
+// viewModel/home_viewModel.ts
+import { useEffect, useState } from "react";
 import { productService, Product } from "../../../services/products_services";
-import { ENV } from "../../../config/env";
+
+const PAYLOAD_API_URL = import.meta.env.VITE_API_URL || "";
+
+const isAbsoluteUrl = (url: string) => /^https?:\/\//i.test(url);
+
 export const useHomeViewModel = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    loadProducts();
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const data = await productService.getAll(1, 100);
+        setProducts(data.docs || []);
+      } catch (err: any) {
+        setError(err.message || "Erro ao carregar produtos");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
   }, []);
 
-  const loadProducts = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      console.log("Buscando produtos para o home..."); // Debug
-      const response = await productService.getAll();
-
-      console.log("Produtos recebidos:", response.docs); // Debug
-      setProducts(response.docs);
-    } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Erro ao carregar produtos";
-      setError(errorMessage);
-      console.error("Erro ao carregar produtos:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const getProductsByCategory = (category: string) =>
+    products.filter((p) => p.category === category);
 
   const getImageUrl = (product: Product): string => {
-    try {
-      if (product.images && product.images.length > 0) {
-        const firstImage = product.images[0].image;
+    if (!product.images || product.images.length === 0) return "";
 
-        if (typeof firstImage === "string") {
-          console.warn("Imagem retornou como string (ID):", firstImage);
-          return "";
-        }
+    const wrapper = product.images[0];
+    if (!wrapper || !wrapper.image) return "";
 
-        if (
-          firstImage &&
-          typeof firstImage === "object" &&
-          "url" in firstImage
-        ) {
-          const imageUrl = firstImage.url;
+    const media = wrapper.image;
 
-          if (imageUrl.startsWith("http")) {
-            return imageUrl;
-          }
+    // 1) Usa a URL principal (é onde está vindo a imagem hoje)
+    let rawUrl = media.url || "";
+    console.log("URL imagem do produto", product.name, media.url, media.sizes);
 
-          return `${ENV.API_BASE_URL}${imageUrl}`;
-        }
-      }
-
-      return "";
-    } catch (err) {
-      console.error("Erro ao processar URL da imagem:", err);
-      return "";
+    // 2) Se um dia os sizes vierem preenchidos, você pode priorizar:
+    if (media.sizes) {
+      rawUrl =
+        media.sizes.card?.url || media.sizes.thumbnail?.url || media.url || "";
     }
-  };
 
-  // Filtrar produtos por categoria
-  const getProductsByCategory = (category: string) => {
-    return products.filter((p) => p.category === category);
-  };
+    if (!rawUrl) return "";
 
-  // Pegar produtos em destaque (featured)
-  const getFeaturedProducts = () => {
-    return products.filter((p) => p.featured);
+    // Se já for absoluta (https://...), usa direto
+    if (isAbsoluteUrl(rawUrl)) return rawUrl;
+
+    // Se for relativa (/media/...), prefixa com a API
+    const base = PAYLOAD_API_URL.replace(/\/$/, "");
+    const path = rawUrl.startsWith("/") ? rawUrl : `/${rawUrl}`;
+    return `${base}${path}`;
   };
 
   return {
-    products,
     loading,
     error,
-    getImageUrl,
     getProductsByCategory,
-    getFeaturedProducts,
-    refetch: loadProducts,
+    getImageUrl,
   };
 };

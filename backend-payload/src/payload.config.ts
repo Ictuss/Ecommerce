@@ -7,7 +7,7 @@ import { BlogPosts } from './collections/BlogPosts'
 import { Media } from './collections/Media'
 import { Products } from './collections/Products'
 import { Videos } from './collections/Videos'
-
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 const allowedOrigins = [
   'http://localhost:5173',
   'https://ecommerce-frontend-five-wheat.vercel.app',
@@ -16,6 +16,9 @@ const allowedOrigins = [
   'http://localhost:3000',
   'https://ecommerce-za3e.onrender.com', // admin do Payload
 ]
+
+console.log('[payload] BLOB_READ_WRITE_TOKEN definido?', !!process.env.BLOB_READ_WRITE_TOKEN)
+
 export default buildConfig({
   // 🔐 obrigatório
   secret: process.env.PAYLOAD_SECRET || 'dev-secret-change-me',
@@ -35,7 +38,20 @@ export default buildConfig({
   graphQL: {
     schemaOutputFile: path.resolve(__dirname, 'generated-schema.graphql'),
   },
-
+  plugins: [
+    vercelBlobStorage({
+      enabled: true,
+      collections: {
+        media: {
+          // 👇 ESSA LINHA É A CHAVE:
+          disablePayloadAccessControl: true,
+          // se quiser, depois podemos testar clientUploads tb:
+          // clientUploads: true,
+        },
+      },
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+    }),
+  ],
   db: postgresAdapter({
     pool: {
       // usa DATABASE_URL (mas como setamos DATABASE_URI também, você pode logar os dois)
