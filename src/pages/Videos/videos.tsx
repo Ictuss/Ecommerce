@@ -38,19 +38,17 @@ const Videos: React.FC = () => {
         console.log("📹 Videos recebidos:", docs); // ✅ debug
 
         const mapped: CmsVideo[] = docs.map((v: any) => {
-          // ✅ AJUSTE AQUI: thumbnail pode ser objeto completo
           let thumbnailUrl = "";
 
-          if (typeof v.thumbnail === "object" && v.thumbnail !== null) {
-            // Se thumbnail é objeto, pega a URL
-            thumbnailUrl =
-              v.thumbnail.url || v.thumbnail.sizes?.thumbnail?.url || "";
-          } else if (typeof v.thumbnail === "string") {
-            // Se for string (ID), não conseguimos usar
-            thumbnailUrl = "";
+          // thumbnail vem populado como objeto (porque usamos depth=2)
+          if (v.thumbnail && typeof v.thumbnail === "object") {
+            const thumb = v.thumbnail as any;
+
+            // tenta usar o size "thumbnail" do media; se não tiver, cai pra url normal
+            thumbnailUrl = thumb.sizes?.thumbnail?.url || thumb.url || "";
           }
 
-          console.log("🖼️ Thumbnail processada:", thumbnailUrl); // ✅ debug
+          console.log("🖼️ Thumbnail processada:", v.title, thumbnailUrl);
 
           return {
             id: v.id,

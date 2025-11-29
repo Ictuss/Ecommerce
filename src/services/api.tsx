@@ -1,7 +1,7 @@
 // src/services/api.js
 import { ENV } from "../config/env";
 import type { BlogPostFromPayload, BlogPostPageData } from "../types/blog";
-
+const API_URL = import.meta.env.VITE_API_URL || "";
 const API_BASE_URL = `${
   import.meta.env.VITE_API_URL || "http://localhost:3000"
 }/api`;
@@ -65,9 +65,14 @@ class ApiService {
   }
 
   async fetchVideos() {
-    const res = await fetch(`${API_BASE_URL}/videos?depth=2`);
-    const json = await res.json();
-    return json.docs;
+    const res = await fetch(`${API_URL}/api/videos?depth=2`);
+    if (!res.ok) {
+      throw new Error("Erro ao buscar vídeos");
+    }
+
+    const data = await res.json();
+    // payload sempre retorna { docs: [...] }
+    return data.docs;
   }
 
   async fetchVideoById(id: string | number) {
