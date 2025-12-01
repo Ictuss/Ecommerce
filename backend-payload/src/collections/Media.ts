@@ -37,7 +37,13 @@ export const Media: CollectionConfig = {
       },
     ],
     adminThumbnail: 'thumbnail',
-    mimeTypes: ['image/*'],
+    mimeTypes: [
+      'image/*', // continua aceitando imagens
+      'video/mp4', // vídeos mp4
+      'video/webm', // webm (se usar)
+      'video/ogg', // ogg/ogv (opcional)
+      // se quiser ser mais genérico: 'video/*'
+    ],
   },
   fields: [
     {

@@ -31,8 +31,8 @@ const Header: React.FC = () => {
   const logoToShow = isVideoPage
     ? logoVideo
     : isBlog
-    ? logoBlog
-    : principalLogo;
+      ? logoBlog
+      : principalLogo;
 
   return (
     <>
