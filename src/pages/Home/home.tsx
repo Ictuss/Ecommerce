@@ -89,7 +89,7 @@ const chunk = <T,>(arr: T[], size: number) =>
 
 const Section: React.FC<{
   title: string;
-  products: Product; // ✅ TROCAR ProductHome por Product
+  products: Product[]; // ✅ TROCAR ProductHome por Product
   bannerSrc: string;
   bannerAlt: string;
   getImageUrl: (product: Product) => string; // ✅ ADICIONAR

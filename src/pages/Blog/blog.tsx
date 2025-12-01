@@ -24,7 +24,7 @@ const Blog = () => {
         // Formatar posts para o componente
         const formattedPosts: FormattedBlogPost[] = blogPosts
           .map((post: BlogPostFromPayload) => {
-            const imageUrl = buildImageUrl(post.featuredImage?.url, dorPulso);
+            const imageUrl = buildImageUrl(post.featuredImage?.url);
 
             return {
               id: post.id,
