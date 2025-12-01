@@ -118,7 +118,7 @@ const BlogPost = () => {
   }
 
   const featuredImageUrl = post.featuredImage
-    ? buildImageUrl(post.featuredImage.url, dorPulso)
+    ? buildImageUrl(post.featuredImage.url)
     : dorPulso;
 
   return (
