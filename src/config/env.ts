@@ -11,27 +11,35 @@ export const ENV = {
   API_URL: `${import.meta.env.VITE_API_URL || "http://localhost:3000"}/api`,
 } as const;
 
-// src/config/env.ts
-const API_URL = import.meta.env.VITE_API_URL || "";
+// Base "crua" para arquivos (imagens, vídeos, etc.)
+const RAW_API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
-export const buildImageUrl = (url?: string) => {
+// remove barra final, se tiver
+const cleanBaseUrl = RAW_API_URL.replace(/\/$/, "");
+
+// helper pra saber se já é URL absoluta
+const isAbsoluteUrl = (url: string) => /^https?:\/\//i.test(url);
+
+/**
+ * Helper genérico para construir URL de arquivo (imagem, vídeo, etc.)
+ */
+const buildFileUrl = (url?: string) => {
   if (!url) return "";
-  // se já é absoluta (Blob / https), retorna direto
-  if (/^https?:\/\//i.test(url)) return url;
-  // senão, prefixa com a URL do backend
-  return `${API_URL.replace(/\/$/, "")}/${url.replace(/^\//, "")}`;
+
+  // Se já é absoluta (Blob, YouTube, etc.), retorna direto
+  if (isAbsoluteUrl(url)) return url;
+
+  // Se for caminho relativo, prefixa com a URL base do backend
+  const cleanPath = url.replace(/^\//, "");
+  return `${cleanBaseUrl}/${cleanPath}`;
 };
 
 /**
  * Helper para construir URLs de imagens do Payload
  */
-// export const buildImageUrl = (imageUrl?: string, fallback?: string): string => {
-//   if (!imageUrl) return fallback || "";
-//   if (imageUrl.startsWith("http")) return imageUrl;
+export const buildImageUrl = (url?: string) => buildFileUrl(url);
 
-//   const baseUrl = ENV.API_BASE_URL;
-//   const cleanBaseUrl = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
-//   const cleanImageUrl = imageUrl.startsWith("/") ? imageUrl : `/${imageUrl}`;
-
-//   return `${cleanBaseUrl}${cleanImageUrl}`;
-// };
+/**
+ * Helper para construir URLs de vídeos do Payload / Blob
+ */
+export const buildVideoUrl = (url?: string) => buildFileUrl(url);

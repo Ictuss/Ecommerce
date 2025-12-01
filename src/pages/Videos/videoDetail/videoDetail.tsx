@@ -3,12 +3,13 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./videoDetail.css";
 import { apiService } from "../../../services/api";
-import { buildImageUrl } from "../../../config/env";
+import { buildImageUrl, buildVideoUrl } from "../../../config/env";
+
 type CmsVideo = {
   id: string | number;
   title: string;
   description?: string;
-  videoUrl: string;
+  videoUrl: string; // sempre preenchido no setVideo
   category?: string;
   thumbnail?: {
     url?: string;
@@ -47,7 +48,6 @@ const VideoDetail: React.FC = () => {
   const getYouTubeVideoId = (url: string): string | null => {
     if (!url) return null;
 
-    // Padrões de URL do YouTube
     const patterns = [
       /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
       /^([a-zA-Z0-9_-]{11})$/, // ID direto
@@ -62,6 +62,7 @@ const VideoDetail: React.FC = () => {
 
     return null;
   };
+
   const getFirstProductImageUrl = (
     product: VideoProduct
   ): string | undefined => {
@@ -74,7 +75,6 @@ const VideoDetail: React.FC = () => {
       return undefined;
     }
 
-    // Mesmo esquema do ProductDetail: path relativo -> buildImageUrl
     return buildImageUrl(rawUrl);
   };
 
@@ -84,8 +84,6 @@ const VideoDetail: React.FC = () => {
   };
 
   // Carrega o vídeo do CMS
-  // Dentro do useEffect de loadVideo, mude para:
-
   useEffect(() => {
     const loadVideo = async () => {
       try {
@@ -97,7 +95,7 @@ const VideoDetail: React.FC = () => {
         console.log("🖼️ Thumbnail:", foundVideo?.thumbnail);
 
         if (foundVideo) {
-          // ✅ AJUSTE AQUI
+          // THUMBNAIL
           let thumbnailUrl = "";
 
           if (
@@ -105,18 +103,41 @@ const VideoDetail: React.FC = () => {
             foundVideo.thumbnail !== null
           ) {
             thumbnailUrl =
-              foundVideo.thumbnail.url ||
               foundVideo.thumbnail.sizes?.thumbnail?.url ||
+              foundVideo.thumbnail.url ||
               "";
           }
 
           console.log("🖼️ Thumbnail URL final:", thumbnailUrl);
 
+          // 🎬 VIDEO: prioridade para arquivo da media (videoFile), depois campo texto videoUrl
+          let rawVideoUrl = "";
+
+          // Se tiver campo upload "videoFile" (relationTo: 'media')
+          if (
+            foundVideo.videoFile &&
+            typeof foundVideo.videoFile === "object"
+          ) {
+            const media = foundVideo.videoFile as any;
+            // Payload geralmente manda url absoluta ou caminho relativo
+            rawVideoUrl = media.url || media.filename || "";
+            console.log("🎬 URL vinda de videoFile (media):", rawVideoUrl);
+          }
+
+          // Se não tiver arquivo, usa campo texto (YouTube, Vimeo, etc.)
+          if (!rawVideoUrl && typeof foundVideo.videoUrl === "string") {
+            rawVideoUrl = foundVideo.videoUrl;
+            console.log("🎬 URL vinda de videoUrl (texto):", rawVideoUrl);
+          }
+
+          const finalVideoUrl = buildVideoUrl(rawVideoUrl);
+          console.log("🎬 URL final normalizada do vídeo:", finalVideoUrl);
+
           setVideo({
             id: foundVideo.id,
             title: foundVideo.title,
             description: foundVideo.description,
-            videoUrl: foundVideo.videoUrl,
+            videoUrl: finalVideoUrl,
             category: foundVideo.category,
             thumbnail: {
               url: thumbnailUrl,
@@ -200,7 +221,7 @@ const VideoDetail: React.FC = () => {
           id: product.id,
           name: product.name,
           price: `R$ ${product.salePrice ?? product.price}`,
-          images: product.images ?? [], // 👈 guarda as imagens como vêm do Payload
+          images: product.images ?? [],
           description: product.description ?? "",
           category: product.category,
           slug: product.slug,
@@ -314,13 +335,13 @@ const VideoDetail: React.FC = () => {
                 <div className="video-detail__media-footer">ICTUS</div>
               </div>
             ) : showVideoPlayer && video.videoUrl ? (
-              // Player HTML5 para vídeos hospedados
+              // Player HTML5 para vídeos hospedados (Blob / backend)
               <div className="video-detail__player-wrapper">
                 <video
                   controls
                   autoPlay
                   controlsList="nodownload"
-                  poster={video.thumbnail?.url}
+                  poster={buildImageUrl(video.thumbnail?.url)}
                   style={{
                     width: "100%",
                     maxWidth: "100%",
@@ -402,6 +423,10 @@ const VideoDetail: React.FC = () => {
                 );
               })}
             </div>
+
+            {errorProducts && (
+              <p className="video-related-error">{errorProducts}</p>
+            )}
           </section>
         )}
       </section>
