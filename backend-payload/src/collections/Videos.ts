@@ -25,14 +25,29 @@ export const Videos: CollectionConfig = {
       name: 'description', // vira descriptionText
       type: 'textarea',
     },
+
+    // ✅ NOVO: escolhe um arquivo de vídeo da coleção "media"
+    {
+      name: 'videoFile',
+      label: 'Vídeo (upload)',
+      type: 'upload',
+      relationTo: 'media',
+      required: false,
+      admin: {
+        description: 'Selecione um arquivo de vídeo da biblioteca de mídias (MP4, WebM, etc).',
+      },
+    },
+
+    // ✅ ANTIGO: mantém como opcional pra YouTube / Vimeo / URL externa
     {
       name: 'videoUrl', // YouTube / arquivo / o que você quiser
       type: 'text',
-      required: true,
+      required: false,
       admin: {
-        description: 'URL do YouTube, Vimeo ou arquivo de vídeo',
+        description: 'Opcional: URL do YouTube, Vimeo ou outro arquivo de vídeo externo.',
       },
     },
+
     {
       name: 'thumbnail',
       type: 'upload',
