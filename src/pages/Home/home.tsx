@@ -89,10 +89,10 @@ const chunk = <T,>(arr: T[], size: number) =>
 
 const Section: React.FC<{
   title: string;
-  products: Product[]; // ✅ TROCAR ProductHome por Product
+  products: Product[];
   bannerSrc: string;
   bannerAlt: string;
-  getImageUrl: (product: Product) => string; // ✅ ADICIONAR
+  getImageUrl: (product: Product) => string;
 }> = ({ title, products, bannerSrc, bannerAlt, getImageUrl }) => {
   const chunks = chunk(products, 8);
 
@@ -105,22 +105,23 @@ const Section: React.FC<{
     <>
       <h2 className="section-title">{title}</h2>
 
-      {chunks.map((group, idx) => (
-        <React.Fragment key={`${title}-chunk-${idx}`}>
-          <div className="home-container">
+      {/* ✅ UMA faixa com scroll, contendo “páginas” de 8 produtos */}
+      <div className="home-scroll">
+        {chunks.map((group, idx) => (
+          <div className="home-container" key={`${title}-page-${idx}`}>
             {group.map((product) => {
               const imageUrl = getImageUrl(product);
 
               return (
                 <Link
-                  to={`/product/${product.slug}`} // ✅ USAR SLUG
+                  to={`/product/${product.slug}`}
                   key={product.id}
                   className="product-link"
                 >
                   <div className="card-container">
                     <div className="product-card">
                       <img
-                        src={imageUrl} // ✅ SÓ A IMAGEM REAL
+                        src={imageUrl}
                         alt={product.name}
                         className="product-image"
                       />
@@ -134,17 +135,17 @@ const Section: React.FC<{
               );
             })}
           </div>
+        ))}
+      </div>
 
-          {/* banner depois de cada bloco de 8 */}
-          <div className="home-container-image">
-            <div className="card-container" style={{ width: "100%" }}>
-              <div className="banner-card">
-                <img src={bannerSrc} alt={bannerAlt} className="banner-image" />
-              </div>
-            </div>
+      {/* ✅ 1 banner só por categoria */}
+      <div className="home-container-image">
+        <div className="card-container" style={{ width: "100%" }}>
+          <div className="banner-card">
+            <img src={bannerSrc} alt={bannerAlt} className="banner-image" />
           </div>
-        </React.Fragment>
-      ))}
+        </div>
+      </div>
     </>
   );
 };

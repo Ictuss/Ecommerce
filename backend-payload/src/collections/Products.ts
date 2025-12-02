@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload';
+import type { CollectionConfig } from 'payload'
 
 export const Products: CollectionConfig = {
   slug: 'products',
@@ -34,7 +34,7 @@ export const Products: CollectionConfig = {
     {
       name: 'price',
       type: 'number',
-      required: true,
+      required: false,
       min: 0,
       label: 'Preço',
     },
@@ -48,8 +48,8 @@ export const Products: CollectionConfig = {
         { label: 'Acessórios', value: 'acessorios' },
         { label: 'Calçados', value: 'calcados' },
         { label: 'inverno', value: 'inverno' },
-         { label: 'mae-bebe', value: 'mae-bebe' },
-          { label: 'mobilidade', value: 'mobilidade' },
+        { label: 'mae-bebe', value: 'mae-bebe' },
+        { label: 'mobilidade', value: 'mobilidade' },
       ],
     },
     {
@@ -94,10 +94,10 @@ export const Products: CollectionConfig = {
             .normalize('NFD')
             .replace(/[\u0300-\u036f]/g, '') // Remove acentos
             .replace(/[^a-z0-9]+/g, '-')
-            .replace(/(^-|-$)/g, '');
+            .replace(/(^-|-$)/g, '')
         }
-        return data;
+        return data
       },
     ],
   },
-};
+}
