@@ -46,6 +46,7 @@ function parsePrice(raw: string): number {
  * - Prioriza "Descrição curta"
  * - Cai pra "Descrição" se a curta estiver vazia
  * - Remove HTML, converte tags de quebra em \n, normaliza espaços
+ * - Formata bullets (•) em linhas separadas
  */
 function getCleanDescription(row: CsvRow): string {
   const raw =
@@ -57,30 +58,62 @@ function getCleanDescription(row: CsvRow): string {
 
   let text = raw
 
-  // 1) normalizar quebras que vêm escapadas do WP / CSV
-  text = text.replace(/\\r\\n/g, '\n').replace(/\\n/g, '\n')
+  // 1) normalizar quebras escapadas do WP/CSV
+  text = text
+    .replace(/\\r\\n/g, '\n')
+    .replace(/\\n/g, '\n')
+    .replace(/\\t/g, '')
 
-  // 2) transformar tags que "quebram linha" em \n
-  text = text.replace(/<(br|br\/|br \/)?>/gi, '\n')
+  // 2) remover &nbsp; ANTES de processar (importante!)
+  text = text.replace(/&nbsp;/gi, ' ')
+
+  // 3) converter listas <li> em bullets
+  // Primeiro, garantir que cada <li> comece em nova linha
+  text = text.replace(/<li>/gi, '\n• ')
+  text = text.replace(/<\/li>/gi, '')
+
+  // 4) fechar listas
+  text = text.replace(/<\/?ul>/gi, '\n')
+  text = text.replace(/<\/?ol>/gi, '\n')
+
+  // 5) transformar outras tags de quebra
+  text = text.replace(/<br\s*\/?>/gi, '\n')
   text = text.replace(/<\/p>/gi, '\n\n')
-  text = text.replace(/<\/li>/gi, '\n• ') // vira bullet simples
+  text = text.replace(/<p>/gi, '')
   text = text.replace(/<\/h[1-6]>/gi, '\n\n')
+  text = text.replace(/<h[1-6][^>]*>/gi, '\n')
 
-  // 3) remover o resto das tags HTML
+  // 6) remover TODAS as outras tags HTML restantes
   text = text.replace(/<[^>]+>/g, '')
 
-  // 4) tratar entidades básicas
+  // 7) tratar entidades HTML
   text = text
-    .replace(/&nbsp;/gi, ' ')
     .replace(/&amp;/gi, '&')
     .replace(/&quot;/gi, '"')
     .replace(/&#39;/g, "'")
     .replace(/&lt;/gi, '<')
     .replace(/&gt;/gi, '>')
 
-  // 5) normalizar espaços e quebras de linha
-  text = text.replace(/[ \t]+/g, ' ') // múltiplos espaços -> 1
-  text = text.replace(/\n\s*\n+/g, '\n\n') // blocos de linhas em branco -> 1 bloco
+  // 8) normalizar espaços em branco (mas manter quebras de linha)
+  text = text.replace(/[ \t]+/g, ' ')
+
+  // 9) limpar linhas que só têm espaços
+  text = text
+    .split('\n')
+    .map((line) => line.trim())
+    .join('\n')
+
+  // 10) normalizar múltiplas quebras de linha (máximo 2)
+  text = text.replace(/\n{3,}/g, '\n\n')
+
+  // 11) garantir espaço após bullets
+  text = text.replace(/•([^\s])/g, '• $1')
+
+  // 12) remover bullets órfãos (linhas que só têm •)
+  text = text
+    .split('\n')
+    .filter((line) => line !== '•')
+    .join('\n')
 
   return text.trim()
 }
@@ -190,12 +223,33 @@ async function main() {
   console.log(`Encontrados ${mobilityRows.length} produtos de mobilidade.`)
   console.log(`Vamos importar apenas ${sample.length} para teste.\n`)
 
+  let imported = 0
+  let skipped = 0
+
   for (const row of sample) {
-    console.log('Importando:', row['Nome'])
+    console.log('Processando:', row['Nome'])
+
+    // ✅ VERIFICAÇÃO DE DUPLICATA
+    const existingProduct = await payload.find({
+      collection: 'products',
+      where: {
+        name: {
+          equals: row['Nome'],
+        },
+      },
+      limit: 1,
+    })
+
+    if (existingProduct.docs.length > 0) {
+      console.log('  ⏭️  Produto já existe (ID:', existingProduct.docs[0].id, '), pulando...\n')
+      skipped++
+      continue
+    }
 
     const imgInfo = await downloadFirstImageAsBuffer(row['Imagens'])
     if (!imgInfo) {
-      console.warn('  ⚠ Sem imagem válida, pulando produto.')
+      console.warn('  ⚠ Sem imagem válida, pulando produto.\n')
+      skipped++
       continue
     }
 
@@ -227,10 +281,17 @@ async function main() {
       },
     } as any)
 
-    console.log('  ✔ Produto criado:', product.id)
+    console.log('  ✔ Produto criado:', product.id, '\n')
+    imported++
   }
 
-  console.log('Fim da importação!')
+  console.log('─────────────────────────────────')
+  console.log('Resumo da importação:')
+  console.log(`  ✅ Importados: ${imported}`)
+  console.log(`  ⏭️  Pulados: ${skipped}`)
+  console.log(`  📊 Total processado: ${imported + skipped}`)
+  console.log('─────────────────────────────────')
+
   process.exit(0)
 }
 
