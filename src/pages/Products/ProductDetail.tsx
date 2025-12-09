@@ -138,7 +138,10 @@ const ProductDetail: React.FC = () => {
 
             <div className="pd-sku">Código: {product.id}</div>
 
-            <div className="pd-description">{product.description}</div>
+            <FormattedDescription
+              text={product.description}
+              className="pd-description"
+            />
 
             <div className="pd-price">{formatBRL(product.price)}</div>
 
