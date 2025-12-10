@@ -5,6 +5,9 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
+    "mobility:smart": "tsx scripts/import-mobility-smart.ts",
+    "import:category": "tsx scripts/import-category.ts",
+    "mobility:batch": "tsx scripts/import-mobility-batch.ts",
     "mobility:dry-run": "ts-node scripts/import-mobility-dry-run.ts",
     "mobility:import": "node --loader ts-node/esm scripts/import-mobility.ts",
     "seed:admin": "node --loader ts-node/esm src/seed/seedAdmin.ts",

@@ -47,9 +47,14 @@ export const Products: CollectionConfig = {
         { label: 'Roupas', value: 'roupas' },
         { label: 'Acessórios', value: 'acessorios' },
         { label: 'Calçados', value: 'calcados' },
-        { label: 'inverno', value: 'inverno' },
-        { label: 'mae-bebe', value: 'mae-bebe' },
-        { label: 'mobilidade', value: 'mobilidade' },
+        { label: 'Inverno', value: 'inverno' },
+        { label: 'Mamãe e Bebê', value: 'mae-bebe' },
+        { label: 'Mobilidade', value: 'mobilidade' },
+        // Adicionar mais:
+        { label: 'Produtos Ortopédicos', value: 'produtos-ortopedicos' },
+        { label: 'Produtos Terapêuticos', value: 'produtos-terapeuticos' },
+        { label: 'Estética', value: 'estetica' },
+        { label: 'COVID-19', value: 'covid-19' },
       ],
     },
     {
