@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Product } from "../../../services/products_services";
 import "./CategoryCarousel.css";
+import { Product } from "../../services/products_services";
 
 interface CategoryCarouselProps {
   title: string;
