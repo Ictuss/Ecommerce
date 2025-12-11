@@ -23,7 +23,6 @@ body {
 .banner-card {
   background-color: #fff;
   width: 100%;
-  /* Mesma largura dos cards no mobile */
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -90,8 +89,6 @@ body {
   width: 100%;
 }
 
-
-
 .h1 {
   font-size: 32px;
   text-align: center;
@@ -108,62 +105,67 @@ body {
 .home-container {
   display: flex;
   flex-direction: row;
-  /* horizontal no mobile */
   align-items: stretch;
   padding: 12px 16px 16px;
   gap: 16px;
-
   overflow-x: auto;
-  /* scroll lateral */
   scroll-snap-type: x mandatory;
-  /* snap por card */
   -webkit-overflow-scrolling: touch;
-  /* inércia iOS/Android */
   scrollbar-width: none;
-  /* Firefox: esconde barra */
 }
 
 .home-container::-webkit-scrollbar {
   display: none;
 }
 
-/* Chrome/Safari */
-
-/* Cada card vira um item "não quebrável" e com snap */
 .card-container {
   flex: 0 0 auto;
-  /* não encolher, não quebrar linha */
   scroll-snap-align: start;
-  /* cola no início a cada parada */
   display: block;
-  /* garante bloco simples */
 }
 
-/* Largura amigável no mobile */
 .product-card {
-
   background-color: #fff;
   border-radius: 10px;
   width: 75vw;
-  /* ocupa ~75% da tela */
   max-width: 260px;
-  /* limite para não exagerar */
   text-align: center;
   padding: 10px;
   font-family: 'Anton', sans-serif;
+  /* ✅ ALTURA MÍNIMA para evitar cards muito baixos */
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
+/* ✅ PADRONIZAÇÃO DAS IMAGENS */
 .product-image {
   width: 100%;
-  height: auto;
+  height: 180px;
+  /* altura fixa no mobile */
+  object-fit: contain;
+  /* mantém proporção sem cortar */
   border-radius: 5px;
   margin-bottom: 10px;
+  background-color: #f9f9f9;
+  /* fundo sutil */
 }
 
 .product-card h2 {
   font-size: 18px;
   margin: 10px 0;
   color: #b30000;
+  /* ✅ Limitar linhas do título */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  /* máximo 2 linhas */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+  min-height: 2.6em;
+  /* garante espaço para 2 linhas */
 }
 
 .product-description {
@@ -180,7 +182,8 @@ body {
   margin-bottom: 10px;
   text-align: right;
   width: 100%;
-  /* garante que ocupe toda a largura do card */
+  margin-top: auto;
+  /* empurra para o final do card */
 }
 
 .product-link {
@@ -226,30 +229,28 @@ body {
     font-size: 36px;
   }
 
-
-
-
-
   .home-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    /* 4 colunas iguais */
     gap: 20px;
     justify-items: center;
-    /* centraliza os cards em cada coluna */
     overflow: visible;
-    /* remove scroll horizontal */
   }
 
   .card-container {
     flex: unset;
-    /* remove o flex do mobile */
     scroll-snap-align: unset;
-    /* remove snap no desktop */
   }
 
   .product-card {
     width: 200px;
+    min-height: 360px;
+    /* altura mínima no desktop */
+  }
+
+  /* ✅ IMAGEM MAIOR NO DESKTOP */
+  .product-image {
+    height: 220px;
   }
 
   .product-card h2 {
@@ -271,16 +272,12 @@ body {
   .home-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    /* 4 colunas iguais */
     gap: 20px;
     justify-items: center;
-    /* centraliza os cards em cada coluna */
     overflow: visible;
-    /* remove scroll horizontal */
   }
 
   .banner-image {
     width: 100%;
   }
-
 }
