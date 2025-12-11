@@ -4,6 +4,7 @@ import "./ProductDetail.css";
 import littmannImg from "../../assets/1.png";
 import { useProductDetailViewModel } from "./viewModel/productsDetail_viewModel";
 import { useCart } from "../../contexts/CartContext";
+import { FormattedDescription } from "../../components/FormattedDescription";
 
 function formatBRL(price: number) {
   return price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
