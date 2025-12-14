@@ -2,7 +2,17 @@ import type { CollectionConfig } from 'payload'
 
 export const Users: CollectionConfig = {
   slug: 'users',
-  auth: true,
+  auth: {
+    // 🔐 Proteção contra brute force
+    maxLoginAttempts: 5, // máximo de tentativas
+    lockTime: 600 * 1000, // 10 minutos bloqueado
+
+    // 🍪 Cookies seguros
+    cookies: {
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'Lax', // ✅ Com L maiúsculo
+    },
+  },
   admin: {
     useAsTitle: 'email',
   },
@@ -17,7 +27,7 @@ export const Users: CollectionConfig = {
       return {
         id: {
           equals: user?.id,
-        }
+        },
       }
     },
     // Usuários podem editar apenas a si mesmos, admins editam todos
@@ -26,7 +36,7 @@ export const Users: CollectionConfig = {
       return {
         id: {
           equals: user?.id,
-        }
+        },
       }
     },
     // Apenas admins podem deletar usuários
@@ -58,7 +68,7 @@ export const Users: CollectionConfig = {
       access: {
         // Apenas admins podem alterar roles
         update: ({ req: { user } }) => user?.role === 'admin',
-      }
-    }
-  ]
-};
+      },
+    },
+  ],
+}

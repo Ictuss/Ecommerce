@@ -14,14 +14,13 @@ const allowedOrigins = [
   'https://ecommerce-frontend-git-main-mongemingaus-projects.vercel.app',
   'https://ecommerce-frontend-five-wheat.vercel.app', // teu front (Vite)
   'http://localhost:3000',
-  'https://ecommerce-za3e.onrender.com', // admin do Payload
 ]
 
 console.log('[payload] BLOB_READ_WRITE_TOKEN definido?', !!process.env.BLOB_READ_WRITE_TOKEN)
 
 export default buildConfig({
   // 🔐 obrigatório
-  secret: process.env.PAYLOAD_SECRET || 'dev-secret-change-me',
+  secret: process.env.PAYLOAD_SECRET!,
 
   admin: {
     user: Users.slug,
