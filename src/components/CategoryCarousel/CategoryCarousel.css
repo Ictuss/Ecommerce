@@ -174,7 +174,7 @@
 
     .carousel-btn:hover {
         background-color: #8b0000;
-        transform: translateY(-50%) scale(1.1);
+        transform: translateY(-50%) scale(0.9);
     }
 
     .carousel-btn:active {
