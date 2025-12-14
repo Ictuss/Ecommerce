@@ -27,7 +27,7 @@ const CartModal: React.FC = () => {
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
 
   const handleSendToWhatsApp = (paymentMethod: string) => {
-    const businessWhatsApp = "5541998308798";
+    const businessWhatsApp = "554291383593";
 
     let message = `🛒 *NOVO PEDIDO - ICTUS*\n\n`;
     message += `📦 *PRODUTOS:*\n`;

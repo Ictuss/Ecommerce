@@ -16,28 +16,20 @@ const ContactInfo: React.FC = () => {
 
       {/* Endereço */}
       <div className="contact-item address">
-        <img src={loc} alt="" className="icon" aria-hidden="true" />
-        <span className="contact-text">
-          <span className="addr-line">
-            Rua Getúlio Vargas, 1951, Centro, Guarapuava - PR
-          </span>
-          {/* <span className="addr-line">Centro</span>
-          <span className="addr-line">Guarapuava - PR</span> */}
-        </span>
-      </div>
-
-      {/* WhatsApp */}
-      {/* <div className="contact-item">
-        <img src={wpp} alt="" className="icon" aria-hidden="true" />
         <a
-          className="contact-text link"
-          href="https://wa.me/5542991383593"
+          href="https://www.google.com/maps/search/?api=1&query=ICTUS+Produtos+para+Saúde+Guarapuava+PR"
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
+          className="address-link"
         >
-          42 9 9138 3593
+          <img src={loc} alt="Localização" className="icon" />
+          <span className="contact-text">
+            <span className="addr-line">
+              Rua Getúlio Vargas, 1951, Centro, Guarapuava - PR
+            </span>
+          </span>
         </a>
-      </div> */}
+      </div>
 
       {/* Telefone */}
       <div className="contact-item">

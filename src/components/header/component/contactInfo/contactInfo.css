@@ -6,20 +6,38 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;                     /* antes 12px */
-  padding: 8px 12px;            /* antes 15px 20px */
+  gap: 8px;
+  /* antes 12px */
+  padding: 8px 12px;
+  /* antes 15px 20px */
   background: #cf0909;
   color: #fff;
+}
+
+.address-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.address-link:hover {
+  opacity: 0.85;
 }
 
 /* Logo */
 .logo {
   display: flex;
   align-items: center;
-  height: auto;                 /* tira altura fixa (antes 150px) */
+  height: auto;
+  /* tira altura fixa (antes 150px) */
 }
+
 .logo-branca {
-  width: 110px;                 /* antes 150px */
+  width: 110px;
+  /* antes 150px */
   height: auto;
   display: block;
 }
@@ -28,16 +46,20 @@
 .contact-item {
   display: flex;
   align-items: center;
-  gap: 8px;                     /* antes 10px */
-  min-height: 20px;             /* antes 24px */
+  gap: 8px;
+  /* antes 10px */
+  min-height: 20px;
+  /* antes 24px */
   flex: 0 0 auto;
-  min-width: 0;                 /* permite encolher sem quebrar layout */
+  min-width: 0;
+  /* permite encolher sem quebrar layout */
   max-width: 100%;
 }
 
 /* Ícones */
 .icon {
-  width: 28px;                  /* antes 24px */
+  width: 28px;
+  /* antes 24px */
   height: 28px;
   object-fit: contain;
   filter: brightness(0) invert(1);
@@ -45,37 +67,58 @@
 
 /* Texto/links */
 .contact-text {
-  font-size: 14px;              /* antes 18px */
+  font-size: 14px;
+  /* antes 18px */
   line-height: 1.1;
   letter-spacing: 0.2px;
   text-transform: none;
-  overflow-wrap: anywhere;      /* quebra palavras longas (e-mail) */
+  overflow-wrap: anywhere;
+  /* quebra palavras longas (e-mail) */
 }
+
 .link {
   color: inherit;
   text-decoration: none;
 }
+
 .link:hover,
-.link:focus { text-decoration: underline; }
+.link:focus {
+  text-decoration: underline;
+}
 
 /* Endereço em 2 linhas no mobile para reduzir altura */
 .address .contact-text {
   display: -webkit-box;
-  -webkit-line-clamp: 2;        /* limita a 2 linhas */
+  -webkit-line-clamp: 2;
+  /* limita a 2 linhas */
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-.addr-line { display: inline; } /* mantém tudo numa linha lógica */
+
+.addr-line {
+  display: inline;
+}
+
+/* mantém tudo numa linha lógica */
 
 /* ============== ≥640px (tablet) ============== */
 @media (min-width: 640px) {
-  .contact-bar { gap: 10px; padding: 10px 16px; }
+  .contact-bar {
+    gap: 10px;
+    padding: 10px 16px;
+  }
 
-  .logo-branca { width: 100px; }
+  .logo-branca {
+    width: 100px;
+  }
 
-  .contact-item { gap: 10px; }
+  .contact-item {
+    gap: 10px;
+  }
 
-  .contact-text { font-size: 15px; }
+  .contact-text {
+    font-size: 15px;
+  }
 
   /* Mostra endereço completo a partir daqui */
   .address .contact-text {
@@ -97,9 +140,13 @@
     gap: 16px;
   }
 
-  .contact-text { font-size: 16px; }
+  .contact-text {
+    font-size: 16px;
+  }
 
-  .logo-branca { width: 100px; }
+  .logo-branca {
+    width: 100px;
+  }
 }
 
 @media (min-width: 1400px) {
