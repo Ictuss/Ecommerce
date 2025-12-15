@@ -23,7 +23,7 @@ function App() {
           <Route path="/contato" element={<Contato />} />
           <Route path="/sobre-nos" element={<SobreNos />} />
           {/* <Route path="/product/:id" element={<ProductDetail />} />  */}
-          // App.tsx ou routes.tsx
+          // App.tsx ou routes.tsx //for git
           <Route path="/product/:slug" element={<ProductDetail />} />
           <Route path="/videos" element={<Videos />} />
           <Route path="/videos/:id" element={<VideoDetail />} />

@@ -4,6 +4,10 @@ import "./searchInfo.css";
 import iconZap from "../../../../assets/whatsapp.png";
 import iconInfo from "../../../../assets/info.png";
 const SearchInfo: React.FC = () => {
+  const whatsappNumber = "554291383593";
+
+  // Link completo para o WhatsApp
+  const whatsappLink = `https://wa.me/${whatsappNumber}`;
   return (
     <>
       <div className="container">
@@ -28,8 +32,15 @@ const SearchInfo: React.FC = () => {
         </div>
         <div className="link-div">
           <li className="link">
-            Fale Conosco!{" "}
-            <img src={iconZap} alt="WhatsApp" className="link-icon" />
+            <a
+              href={whatsappLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link link-whatsapp" // Adicionei uma classe para estilização, se necessário
+            >
+              Fale Conosco!{" "}
+              <img src={iconZap} alt="WhatsApp" className="link-icon" />
+            </a>
           </li>
           <li className="link">
             Sobre Nós{" "}
