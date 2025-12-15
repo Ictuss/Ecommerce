@@ -60,6 +60,7 @@ export const useHomeViewModel = () => {
   };
 
   return {
+    products,
     loading,
     error,
     getProductsByCategory,

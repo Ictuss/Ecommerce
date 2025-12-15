@@ -9,6 +9,7 @@ import BlogDetail from "./pages/BlogDetail/blogDetail";
 import Videos from "./pages/Videos/videos";
 import VideoDetail from "./pages/Videos/videoDetail/videoDetail";
 import CartModal from "./components/cart/CartModal";
+import SearchResults from "./pages/SearchResults/SearchResults";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/product/:slug" element={<ProductDetail />} />
           <Route path="/videos" element={<Videos />} />
           <Route path="/videos/:id" element={<VideoDetail />} />
+          <Route path="/busca" element={<SearchResults />} />
         </Routes>
       </Router>
       <CartModal />
