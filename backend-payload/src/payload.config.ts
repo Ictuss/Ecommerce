@@ -53,8 +53,7 @@ export default buildConfig({
   ],
   db: postgresAdapter({
     pool: {
-      // usa DATABASE_URL (mas como setamos DATABASE_URI também, você pode logar os dois)
-      connectionString: process.env.DATABASE_URL || process.env.DATABASE_URI || '',
+      connectionString: process.env.DATABASE_URI || '',
     },
   }),
 
