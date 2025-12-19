@@ -25,7 +25,7 @@ const ContactInfo: React.FC = () => {
           <img src={loc} alt="Localização" className="icon" />
           <span className="contact-text">
             <span className="addr-line">
-              Rua Getúlio Vargas, 1951, Centro, Guarapuava - PR
+              Rua Presidente Getúlio Vargas, 1951, Centro, Guarapuava - PR
             </span>
           </span>
         </a>

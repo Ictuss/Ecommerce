@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import logoPreta from "../../../../assets/logoPreta.png";
 import "./searchInfo.css";
 import iconZap from "../../../../assets/whatsapp.png";
@@ -69,8 +69,10 @@ const SearchInfo: React.FC = () => {
             </a>
           </li>
           <li className="link">
-            Sobre Nós{" "}
-            <img src={iconInfo} alt="Informações" className="link-icon" />
+            <Link to="/sobre" className="link-sobre">
+              Sobre Nós{" "}
+              <img src={iconInfo} alt="Informações" className="link-icon" />
+            </Link>
           </li>
         </div>
       </div>

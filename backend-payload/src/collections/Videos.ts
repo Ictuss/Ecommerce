@@ -1,4 +1,3 @@
-// payload/collections/Videos.ts
 import type { CollectionConfig } from 'payload'
 
 export const Videos: CollectionConfig = {
@@ -6,27 +5,42 @@ export const Videos: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
   },
+  // 🔐 ACCESS CONTROL
   access: {
-    read: () => true, // público pra listar no site
+    // Qualquer um pode ver vídeos (necessário pro site)
+    read: () => true,
+
+    // Admins e Editors podem criar vídeos
+    create: ({ req: { user } }) => {
+      return user?.role === 'admin' || user?.role === 'editor'
+    },
+
+    // Admins e Editors podem editar vídeos
+    update: ({ req: { user } }) => {
+      return user?.role === 'admin' || user?.role === 'editor'
+    },
+
+    // Apenas admins podem deletar vídeos
+    delete: ({ req: { user } }) => {
+      return user?.role === 'admin'
+    },
   },
   fields: [
     {
-      name: 'title', // vira mainTitle no front
+      name: 'title',
       type: 'text',
       required: true,
     },
     {
-      name: 'slug', // pra usar rota /videos/:slug no futuro
+      name: 'slug',
       type: 'text',
       required: true,
       unique: true,
     },
     {
-      name: 'description', // vira descriptionText
+      name: 'description',
       type: 'textarea',
     },
-
-    // ✅ NOVO: escolhe um arquivo de vídeo da coleção "media"
     {
       name: 'videoFile',
       label: 'Vídeo (upload)',
@@ -37,17 +51,14 @@ export const Videos: CollectionConfig = {
         description: 'Selecione um arquivo de vídeo da biblioteca de mídias (MP4, WebM, etc).',
       },
     },
-
-    // ✅ ANTIGO: mantém como opcional pra YouTube / Vimeo / URL externa
     {
-      name: 'videoUrl', // YouTube / arquivo / o que você quiser
+      name: 'videoUrl',
       type: 'text',
       required: false,
       admin: {
         description: 'Opcional: URL do YouTube, Vimeo ou outro arquivo de vídeo externo.',
       },
     },
-
     {
       name: 'thumbnail',
       type: 'upload',
@@ -56,7 +67,7 @@ export const Videos: CollectionConfig = {
     },
     {
       name: 'category',
-      type: 'text', // deixa texto livre p/ bater com "mobilidade", "aspirar-baby" etc
+      type: 'text',
       admin: {
         description: 'Use o mesmo texto da categoria de produtos (ex: "mobilidade").',
       },

@@ -89,7 +89,7 @@ const Contato: React.FC = () => {
           <p>🗓 Sábado: 8h30 – 13h</p>
 
           <h3>LOCALIZAÇÃO</h3>
-          <p>📍 Rua Getúlio Vargas 1951 – Centro, Guarapuava – PR</p>
+          <p>📍 Rua Presidente Getúlio Vargas 1951 – Centro, Guarapuava – PR</p>
         </div>
       </div>
     </section>

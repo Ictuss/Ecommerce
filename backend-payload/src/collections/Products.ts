@@ -6,8 +6,25 @@ export const Products: CollectionConfig = {
     useAsTitle: 'name',
     defaultColumns: ['name', 'price', 'category', 'featured'],
   },
+  // 🔐 ACCESS CONTROL
   access: {
-    read: () => true, // Público para leitura
+    // Qualquer um pode ver produtos (necessário pro e-commerce)
+    read: () => true,
+
+    // Apenas admins podem criar produtos
+    create: ({ req: { user } }) => {
+      return user?.role === 'admin'
+    },
+
+    // Apenas admins podem editar produtos
+    update: ({ req: { user } }) => {
+      return user?.role === 'admin'
+    },
+
+    // Apenas admins podem deletar produtos
+    delete: ({ req: { user } }) => {
+      return user?.role === 'admin'
+    },
   },
   fields: [
     {
@@ -50,7 +67,6 @@ export const Products: CollectionConfig = {
         { label: 'Inverno', value: 'inverno' },
         { label: 'Mamãe e Bebê', value: 'mae-bebe' },
         { label: 'Mobilidade', value: 'mobilidade' },
-        // Adicionar mais:
         { label: 'Produtos Ortopédicos', value: 'produtos-ortopedicos' },
         { label: 'Produtos Terapêuticos', value: 'produtos-terapeuticos' },
         { label: 'Estética', value: 'estetica' },
@@ -97,7 +113,7 @@ export const Products: CollectionConfig = {
           data.slug = data.name
             .toLowerCase()
             .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '') // Remove acentos
+            .replace(/[\u0300-\u036f]/g, '')
             .replace(/[^a-z0-9]+/g, '-')
             .replace(/(^-|-$)/g, '')
         }

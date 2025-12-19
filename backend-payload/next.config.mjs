@@ -4,16 +4,51 @@ import { withPayload } from '@payloadcms/next/withPayload'
 const nextConfig = {
   async headers() {
     return [
-      {
-        // Aplica headers em todas as rotas da API
-        source: '/api/:path*',
-        headers: [
-          { key: 'Access-Control-Allow-Credentials', value: 'true' },
-          { key: 'Access-Control-Allow-Origin', value: '*' }, // Permitir todos temporariamente
-          { key: 'Access-Control-Allow-Methods', value: 'GET,DELETE,PATCH,POST,PUT,OPTIONS' },
-          { key: 'Access-Control-Allow-Headers', value: 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization' },
-        ],
-      },
+             {
+            // Previne clickjacking - impede que seu site seja carregado em iframes
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            // Previne MIME type sniffing
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            // Ativa proteção XSS do navegador
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
+          },
+          {
+            // Controla informações enviadas no header Referer
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
+          {
+            // Força HTTPS
+            key: 'Strict-Transport-Security',
+            value: 'max-age=31536000; includeSubDomains',
+          },
+          {
+            // Controla quais recursos podem ser carregados
+            // Ajuste conforme necessário para seu projeto
+            key: 'Content-Security-Policy',
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval'", // unsafe necessário pro Next.js
+              "style-src 'self' 'unsafe-inline'",
+              "img-src 'self' data: https: blob:",
+              "font-src 'self' data:",
+              "connect-src 'self' https:",
+              "media-src 'self' https: blob:",
+              "frame-src 'self' https://www.youtube.com https://player.vimeo.com", // para vídeos embeddados
+            ].join('; '),
+          },
+          {
+            // Controla quais features do navegador podem ser usadas
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()',
+          },
     ]
   },
 }

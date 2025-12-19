@@ -1,33 +1,36 @@
 import React, { useState } from "react";
-import { Link, useLocation, useMatch } from "react-router-dom";
+import { Link, useMatch } from "react-router-dom";
 import "./Header.css";
 import principalLogo from "../../assets/icons/banner.png";
 import logoBlog from "../../assets/logoBlog.png";
 import ContactInfo from "./component/contactInfo/contactInfo";
 import SearchInfo from "./component/searchInfo/searchInfo";
-import NewsletterSignup from "./newLetter/newLetter";
 import logoVideo from "../../assets/logoVideo.png";
 import CartButton from "../cart/CartButton";
 
+const CATEGORIAS = [
+  { label: "Mobilidade", value: "mobilidade" },
+  { label: "Mamãe e Bebê", value: "mae-bebe" },
+  { label: "Inverno", value: "inverno" },
+  { label: "Ortopédicos", value: "produtos-ortopedicos" },
+  { label: "Terapêuticos", value: "produtos-terapeuticos" },
+  { label: "Estética", value: "estetica" },
+];
+
 const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [produtosOpen, setProdutosOpen] = useState(false);
 
-  const location = useLocation();
-
-  // BLOG
-  const blogMatch = useMatch("/blog/*"); // cobre /blog e /blog/alguma-coisa
+  const blogMatch = useMatch("/blog/*");
   const isBlog = Boolean(blogMatch);
 
-  // PRODUCT DETAIL – alinhar com ProductDetail (usa slug)
   const productDetailMatch = useMatch("/product/:slug");
   const isProductDetail = Boolean(productDetailMatch);
 
-  // VIDEOS – lista e detalhe
   const videoListMatch = useMatch("/videos");
-  const videoDetailMatch = useMatch("/videos/:id"); // ajuste conforme sua rota real
+  const videoDetailMatch = useMatch("/videos/:id");
   const isVideoPage = Boolean(videoListMatch || videoDetailMatch);
 
-  // LOGO DINÂMICO
   const logoToShow = isVideoPage
     ? logoVideo
     : isBlog
@@ -40,7 +43,7 @@ const Header: React.FC = () => {
       <SearchInfo />
 
       <div className="navbar-container">
-        <nav className="">
+        <nav>
           <button
             className="menu-toggle"
             aria-label="Abrir menu"
@@ -49,30 +52,50 @@ const Header: React.FC = () => {
 
           <ul className={`nav-links ${menuOpen ? "open" : ""}`}>
             <li>
-              <Link to="/" className="link" onClick={() => setMenuOpen(false)}>
+              <Link to="/" className="link">
                 Inicio
               </Link>
             </li>
-            <li>
-              <Link to="/" className="link" onClick={() => setMenuOpen(false)}>
-                Produtos
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/blog"
-                className="link"
-                onClick={() => setMenuOpen(false)}
+
+            {/* PRODUTOS COM DROPDOWN */}
+            <li className="dropdown">
+              <button
+                type="button"
+                className="link produtos-btn"
+                onClick={() => setProdutosOpen((v) => !v)}
               >
+                <span className="produtos-text">Produtos</span>
+                <span className={`arrow ${produtosOpen ? "open" : ""}`}>▼</span>
+              </button>
+
+              {produtosOpen && (
+                <ul className="dropdown-menu">
+                  <li>
+                    <Link to="/" onClick={() => setProdutosOpen(false)}>
+                      Ver Todos
+                    </Link>
+                  </li>
+                  {CATEGORIAS.map((cat) => (
+                    <li key={cat.value}>
+                      <Link
+                        to={`/produtos?categoria=${cat.value}`}
+                        onClick={() => setProdutosOpen(false)}
+                      >
+                        {cat.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+
+            <li>
+              <Link to="/blog" className="link">
                 Blog
               </Link>
             </li>
             <li>
-              <Link
-                to="/videos"
-                className="link"
-                onClick={() => setMenuOpen(false)}
-              >
+              <Link to="/videos" className="link">
                 Videos
               </Link>
             </li>
@@ -81,7 +104,6 @@ const Header: React.FC = () => {
         </nav>
       </div>
 
-      {/* BANNER PRINCIPAL */}
       {!isProductDetail && (
         <div className="logoPrincipal-container">
           <img

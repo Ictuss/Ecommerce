@@ -1,0 +1,75 @@
+/* ===================================
+   CATEGORY DETAIL PAGE
+   =================================== */
+
+.category-detail {
+    padding-bottom: 40px;
+}
+
+/* Banner */
+.category-detail-banner {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.category-detail-banner img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Título */
+.category-detail-title {
+    text-align: center;
+    font-size: 2rem;
+    color: #333;
+    margin: 20px 0 5px;
+    font-family: 'Anton', sans-serif;
+}
+
+.category-detail-count {
+    text-align: center;
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 30px;
+}
+
+/* Loading / Error / Empty */
+.category-detail-loading,
+.category-detail-error,
+.category-detail-empty {
+    text-align: center;
+    padding: 80px 20px;
+    font-size: 1.2rem;
+}
+
+.category-detail-error {
+    color: red;
+}
+
+.category-detail-empty h1 {
+    margin-bottom: 15px;
+}
+
+/* Botão voltar */
+.btn-voltar {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 25px;
+    background: #c41e3a;
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+.btn-voltar:hover {
+    background: #a01830;
+}
+
+/* Footer da página */
+.category-detail-footer {
+    text-align: center;
+    margin-top: 40px;
+}

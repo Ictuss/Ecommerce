@@ -9,11 +9,25 @@ export const Media: CollectionConfig = {
   admin: {
     description: 'Gerencie imagens e arquivos do site',
   },
+  // 🔐 ACCESS CONTROL
   access: {
+    // Qualquer um pode ver mídias (necessário pro e-commerce)
     read: () => true,
-    create: () => true,
-    update: () => true,
-    delete: () => true,
+
+    // Apenas usuários logados podem fazer upload
+    create: ({ req: { user } }) => {
+      return !!user // qualquer usuário logado
+    },
+
+    // Admins e Editors podem editar mídias
+    update: ({ req: { user } }) => {
+      return user?.role === 'admin' || user?.role === 'editor'
+    },
+
+    // Apenas admins podem deletar mídias
+    delete: ({ req: { user } }) => {
+      return user?.role === 'admin'
+    },
   },
   upload: {
     imageSizes: [
@@ -37,13 +51,7 @@ export const Media: CollectionConfig = {
       },
     ],
     adminThumbnail: 'thumbnail',
-    mimeTypes: [
-      'image/*', // continua aceitando imagens
-      'video/mp4', // vídeos mp4
-      'video/webm', // webm (se usar)
-      'video/ogg', // ogg/ogv (opcional)
-      // se quiser ser mais genérico: 'video/*'
-    ],
+    mimeTypes: ['image/*', 'video/mp4', 'video/webm', 'video/ogg'],
   },
   fields: [
     {

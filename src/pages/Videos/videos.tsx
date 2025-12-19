@@ -121,43 +121,31 @@ const Videos: React.FC = () => {
   return (
     <div className="videos-page">
       <section className="videos-section">
-        <div className="videos-section__list">
-          {rows.map((row, rowIndex) => (
-            <React.Fragment key={rowIndex}>
-              <div className="videos-row">
-                <VideoCard
-                  videoThumbnail={buildImageUrl(row[0].thumbnail?.url) || ""}
-                  mainTitle={row[0].title}
-                  descriptionText={row[0].description ?? ""}
-                  onPlayClick={() => handlePlayClick(row[0].id)}
-                />
+        <div className="videos-grid">
+          {videos.map((video, index) => (
+            <React.Fragment key={video.id}>
+              <VideoCard
+                videoThumbnail={buildImageUrl(video.thumbnail?.url) || ""}
+                mainTitle={video.title}
+                descriptionText={video.description ?? ""}
+                onPlayClick={() => handlePlayClick(video.id)}
+              />
 
-                {row[1] && (
-                  <>
-                    <div className="videos-row__divider-vertical" />
-                    <VideoCard
-                      videoThumbnail={
-                        buildImageUrl(row[1].thumbnail?.url) || ""
-                      }
-                      mainTitle={row[1].title}
-                      descriptionText={row[1].description ?? ""}
-                      onPlayClick={() => handlePlayClick(row[1].id)}
-                    />
-                  </>
-                )}
-              </div>
+              {/* Adiciona divisor vertical só se não for o último da linha (índice ímpar) */}
+              {index % 2 === 0 && index !== videos.length - 1 && (
+                <div className="videos-grid__divider-vertical" />
+              )}
 
-              <div className="videos-row__divider-horizontal" />
+              {/* Adiciona divisor horizontal ao final de cada linha completa (ou no último item) */}
+              {(index % 2 === 1 || index === videos.length - 1) && (
+                <>
+                  <div className="videos-grid__divider-horizontal" />
+                </>
+              )}
             </React.Fragment>
           ))}
         </div>
       </section>
-
-      {selectedVideo && (
-        <div className="video-modal">
-          <p>Vídeo {selectedVideo} selecionado</p>
-        </div>
-      )}
     </div>
   );
 };

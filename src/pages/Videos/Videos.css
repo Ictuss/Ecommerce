@@ -1,6 +1,4 @@
-/* src/pages/Videos/Videos.css */
-
-.videos-page {
+Videos.css .videos-page {
   padding: 40px 16px;
   background-color: #f5f5f5;
 }
@@ -10,52 +8,57 @@
   margin: 0 auto;
 }
 
-.videos-section__list {
-  display: flex;
-  flex-direction: column;
-  gap: 0; /* quem separa é o divider horizontal */
-}
-
-/* Linha com até dois VideoCards */
-.videos-row {
-  display: flex;
+/* Grid principal */
+.videos-grid {
+  display: grid;
+  grid-template-columns: 1fr 2px 1fr;
+  gap: 0 0;
+  /* só o divisor separa horizontalmente */
   align-items: stretch;
 }
 
-/* Ajuste pros VideoCards dentro da linha:
-   sem max-width/margin centralizado */
-.videos-row .video-card {
-  flex: 1;
-  max-width: none;
+/* Cada VideoCard ocupa sua coluna */
+.videos-grid>.video-card {
+  grid-column: auto;
   margin: 0;
+  max-width: none;
 }
 
-/* Divider vertical entre os dois cards */
-.videos-row__divider-vertical {
-  width: 2px;
-  margin: 0 16px;
+/* Divisor vertical (fica na coluna do meio) */
+.videos-grid__divider-vertical {
+  grid-row: span 1;
+  grid-column: 2;
   background-color: #e32626;
-}
-
-/* Divider horizontal abaixo de cada linha */
-.videos-row__divider-horizontal {
-  height: 2px;
   width: 100%;
-  margin: 16px 0;
-  background-color: #e32626;
+  /* espaçamento top/bottom igual ao card */
 }
 
-/* RESPONSIVO: em mobile vira coluna (sem divider vertical) */
+/* Divisor horizontal (linha completa abaixo da row) */
+.videos-grid__divider-horizontal {
+  grid-column: 1 / -1;
+  /* ocupa as 3 colunas */
+  height: 2px;
+  background-color: #e32626;
+  margin: 16px 0;
+}
+
+/* RESPONSIVO - Mobile: vira uma coluna só */
 @media (max-width: 900px) {
-  .videos-row {
-    flex-direction: column;
+  .videos-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
   }
 
-  .videos-row__divider-vertical {
+  .videos-grid__divider-vertical {
     display: none;
   }
 
-  .videos-row__divider-horizontal {
-    margin: 24px 0;
+  .videos-grid__divider-horizontal {
+    margin: 12px 0;
+  }
+
+  /* No mobile, o divisor horizontal continua ocupando toda a largura */
+  .videos-grid>.video-card {
+    grid-column: 1 / -1;
   }
 }

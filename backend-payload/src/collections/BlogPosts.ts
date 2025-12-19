@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload';
+import type { CollectionConfig } from 'payload'
 
 export const BlogPosts: CollectionConfig = {
   slug: 'blog-posts',
@@ -6,12 +6,25 @@ export const BlogPosts: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'status', 'publishedAt'],
   },
-  // TEMPORARIAMENTE removendo todas as restrições de acesso para debug
+  // 🔐 ACCESS CONTROL
   access: {
+    // Qualquer um pode ler posts publicados
     read: () => true,
-    create: () => true,
-    update: () => true,
-    delete: () => true,
+
+    // Admins e Editors podem criar posts
+    create: ({ req: { user } }) => {
+      return user?.role === 'admin' || user?.role === 'editor'
+    },
+
+    // Admins e Editors podem editar posts
+    update: ({ req: { user } }) => {
+      return user?.role === 'admin' || user?.role === 'editor'
+    },
+
+    // Apenas admins podem deletar posts
+    delete: ({ req: { user } }) => {
+      return user?.role === 'admin'
+    },
   },
   fields: [
     {
@@ -25,16 +38,16 @@ export const BlogPosts: CollectionConfig = {
       required: true,
       unique: true,
       admin: {
-        description: 'URL amigável do post (será gerada automaticamente se não preenchida)'
-      }
+        description: 'URL amigável do post (será gerada automaticamente se não preenchida)',
+      },
     },
     {
       name: 'excerpt',
       type: 'textarea',
       required: true,
       admin: {
-        description: 'Resumo do post para listagens'
-      }
+        description: 'Resumo do post para listagens',
+      },
     },
     {
       name: 'content',
@@ -42,14 +55,14 @@ export const BlogPosts: CollectionConfig = {
       required: true,
       admin: {
         rows: 10,
-        description: 'Conteúdo completo do post'
-      }
+        description: 'Conteúdo completo do post',
+      },
     },
     {
       name: 'featuredImage',
       type: 'upload',
       relationTo: 'media',
-      required: false, // Temporariamente não obrigatório
+      required: false,
     },
     {
       name: 'gallery',
@@ -59,8 +72,8 @@ export const BlogPosts: CollectionConfig = {
           name: 'image',
           type: 'upload',
           relationTo: 'media',
-        }
-      ]
+        },
+      ],
     },
     {
       name: 'category',
@@ -71,7 +84,7 @@ export const BlogPosts: CollectionConfig = {
         { label: 'Dicas', value: 'tips' },
         { label: 'Tendências', value: 'trends' },
         { label: 'Eventos', value: 'events' },
-      ]
+      ],
     },
     {
       name: 'tags',
@@ -80,8 +93,8 @@ export const BlogPosts: CollectionConfig = {
         {
           name: 'tag',
           type: 'text',
-        }
-      ]
+        },
+      ],
     },
     {
       name: 'status',
@@ -91,17 +104,16 @@ export const BlogPosts: CollectionConfig = {
       options: [
         { label: 'Rascunho', value: 'draft' },
         { label: 'Publicado', value: 'published' },
-      ]
+      ],
     },
     {
       name: 'featured',
       type: 'checkbox',
       defaultValue: false,
       admin: {
-        description: 'Post em destaque'
-      }
+        description: 'Post em destaque',
+      },
     },
-    // Campos SEO
     {
       name: 'seo',
       type: 'group',
@@ -110,51 +122,48 @@ export const BlogPosts: CollectionConfig = {
           name: 'metaTitle',
           type: 'text',
           admin: {
-            description: 'Título para SEO (se não preenchido, usará o título do post)'
-          }
+            description: 'Título para SEO (se não preenchido, usará o título do post)',
+          },
         },
         {
           name: 'metaDescription',
           type: 'textarea',
           admin: {
-            description: 'Descrição para SEO'
-          }
-        }
-      ]
+            description: 'Descrição para SEO',
+          },
+        },
+      ],
     },
-    // Campos para migração do WordPress
     {
       name: 'wpId',
       type: 'number',
       admin: {
-        hidden: true, // Oculta no admin, usado apenas para migração
-      }
+        hidden: true,
+      },
     },
     {
       name: 'publishedAt',
       type: 'date',
       defaultValue: () => new Date(),
       admin: {
-        description: 'Data de publicação'
-      }
-    }
+        description: 'Data de publicação',
+      },
+    },
   ],
   hooks: {
     beforeChange: [
       ({ data }) => {
-        // Auto-gerar slug se não existir
         if (!data.slug && data.title) {
           data.slug = data.title
             .toLowerCase()
             .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '') // Remove acentos
-            .replace(/[^a-z0-9\s]/g, '') // Remove caracteres especiais
-            .replace(/\s+/g, '-') // Substitui espaços por hífens
-            .replace(/(^-|-$)/g, ''); // Remove hífens no início e fim
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^a-z0-9\s]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/(^-|-$)/g, '')
         }
-
-        return data;
-      }
-    ]
-  }
-};
+        return data
+      },
+    ],
+  },
+}

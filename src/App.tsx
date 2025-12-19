@@ -10,6 +10,8 @@ import Videos from "./pages/Videos/videos";
 import VideoDetail from "./pages/Videos/videoDetail/videoDetail";
 import CartModal from "./components/cart/CartModal";
 import SearchResults from "./pages/SearchResults/SearchResults";
+import Footer from "./components/Footer/Footer";
+import CategoryDetail from "./pages/Products/CategoryDetail";
 
 function App() {
   return (
@@ -23,13 +25,14 @@ function App() {
           <Route path="/blog/:slug" element={<BlogDetail />} />
           <Route path="/contato" element={<Contato />} />
           <Route path="/sobre-nos" element={<SobreNos />} />
-          {/* <Route path="/product/:id" element={<ProductDetail />} />  */}
-          // App.tsx ou routes.tsx //for git
           <Route path="/product/:slug" element={<ProductDetail />} />
           <Route path="/videos" element={<Videos />} />
           <Route path="/videos/:id" element={<VideoDetail />} />
           <Route path="/busca" element={<SearchResults />} />
+          <Route path="/sobre" element={<SobreNos />} />
+          <Route path="/produtos" element={<CategoryDetail />} />
         </Routes>
+        <Footer />
       </Router>
       <CartModal />
     </>
