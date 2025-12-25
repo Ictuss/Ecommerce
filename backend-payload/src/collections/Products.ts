@@ -6,25 +6,11 @@ export const Products: CollectionConfig = {
     useAsTitle: 'name',
     defaultColumns: ['name', 'price', 'category', 'featured'],
   },
-  // 🔐 ACCESS CONTROL
   access: {
-    // Qualquer um pode ver produtos (necessário pro e-commerce)
     read: () => true,
-
-    // Apenas admins podem criar produtos
-    create: ({ req: { user } }) => {
-      return user?.role === 'admin'
-    },
-
-    // Apenas admins podem editar produtos
-    update: ({ req: { user } }) => {
-      return user?.role === 'admin'
-    },
-
-    // Apenas admins podem deletar produtos
-    delete: ({ req: { user } }) => {
-      return user?.role === 'admin'
-    },
+    create: ({ req: { user } }) => user?.role === 'admin',
+    update: ({ req: { user } }) => user?.role === 'admin',
+    delete: ({ req: { user } }) => user?.role === 'admin',
   },
   fields: [
     {
@@ -57,21 +43,10 @@ export const Products: CollectionConfig = {
     },
     {
       name: 'category',
-      type: 'select',
+      type: 'relationship',
+      relationTo: 'categories',
       required: true,
       label: 'Categoria',
-      options: [
-        { label: 'Roupas', value: 'roupas' },
-        { label: 'Acessórios', value: 'acessorios' },
-        { label: 'Calçados', value: 'calcados' },
-        { label: 'Inverno', value: 'inverno' },
-        { label: 'Mamãe e Bebê', value: 'mae-bebe' },
-        { label: 'Mobilidade', value: 'mobilidade' },
-        { label: 'Produtos Ortopédicos', value: 'produtos-ortopedicos' },
-        { label: 'Produtos Terapêuticos', value: 'produtos-terapeuticos' },
-        { label: 'Estética', value: 'estetica' },
-        { label: 'COVID-19', value: 'covid-19' },
-      ],
     },
     {
       name: 'images',
@@ -108,7 +83,6 @@ export const Products: CollectionConfig = {
   hooks: {
     beforeChange: [
       ({ data }) => {
-        // Auto-gerar slug se não existir
         if (!data.slug && data.name) {
           data.slug = data.name
             .toLowerCase()

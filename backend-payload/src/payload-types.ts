@@ -68,10 +68,11 @@ export interface Config {
   blocks: {};
   collections: {
     users: User;
-    media: Media;
+    categories: Category;
     products: Product;
-    videos: Video;
     'blog-posts': BlogPost;
+    videos: Video;
+    media: Media;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -80,10 +81,11 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
-    media: MediaSelect<false> | MediaSelect<true>;
+    categories: CategoriesSelect<false> | CategoriesSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
-    videos: VideosSelect<false> | VideosSelect<true>;
     'blog-posts': BlogPostsSelect<false> | BlogPostsSelect<true>;
+    videos: VideosSelect<false> | VideosSelect<true>;
+    media: MediaSelect<false> | MediaSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -92,6 +94,7 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
+  fallbackLocale: null;
   globals: {};
   globalsSelect: {};
   locale: null;
@@ -146,6 +149,19 @@ export interface User {
       }[]
     | null;
   password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: number;
+  name: string;
+  slug: string;
+  banner?: (number | null) | Media;
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * Gerencie imagens e arquivos do site
@@ -213,8 +229,8 @@ export interface Product {
    */
   slug: string;
   description: string;
-  price: number;
-  category: 'roupas' | 'acessorios' | 'calcados' | 'inverno' | 'mae-bebe' | 'mobilidade';
+  price?: number | null;
+  category: number | Category;
   images: {
     image: number | Media;
     alt: string;
@@ -223,24 +239,6 @@ export interface Product {
   /**
    * Mostrar na página inicial
    */
-  featured?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "videos".
- */
-export interface Video {
-  id: number;
-  title: string;
-  description?: string | null;
-  /**
-   * URL do YouTube, Vimeo ou arquivo de vídeo
-   */
-  videoUrl: string;
-  thumbnail: number | Media;
-  category?: ('tutorial' | 'product' | 'institutional') | null;
   featured?: boolean | null;
   updatedAt: string;
   createdAt: string;
@@ -303,6 +301,32 @@ export interface BlogPost {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "videos".
+ */
+export interface Video {
+  id: number;
+  title: string;
+  slug: string;
+  description?: string | null;
+  /**
+   * Selecione um arquivo de vídeo da biblioteca de mídias (MP4, WebM, etc).
+   */
+  videoFile?: (number | null) | Media;
+  /**
+   * Opcional: URL do YouTube, Vimeo ou outro arquivo de vídeo externo.
+   */
+  videoUrl?: string | null;
+  thumbnail: number | Media;
+  /**
+   * Use o mesmo texto da categoria de produtos (ex: "mobilidade").
+   */
+  category?: string | null;
+  featured?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -330,20 +354,24 @@ export interface PayloadLockedDocument {
         value: number | User;
       } | null)
     | ({
-        relationTo: 'media';
-        value: number | Media;
+        relationTo: 'categories';
+        value: number | Category;
       } | null)
     | ({
         relationTo: 'products';
         value: number | Product;
       } | null)
     | ({
+        relationTo: 'blog-posts';
+        value: number | BlogPost;
+      } | null)
+    | ({
         relationTo: 'videos';
         value: number | Video;
       } | null)
     | ({
-        relationTo: 'blog-posts';
-        value: number | BlogPost;
+        relationTo: 'media';
+        value: number | Media;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -413,6 +441,91 @@ export interface UsersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories_select".
+ */
+export interface CategoriesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  banner?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products_select".
+ */
+export interface ProductsSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  description?: T;
+  price?: T;
+  category?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        alt?: T;
+        id?: T;
+      };
+  featured?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-posts_select".
+ */
+export interface BlogPostsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  excerpt?: T;
+  content?: T;
+  featuredImage?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  category?: T;
+  tags?:
+    | T
+    | {
+        tag?: T;
+        id?: T;
+      };
+  status?: T;
+  featured?: T;
+  seo?:
+    | T
+    | {
+        metaTitle?: T;
+        metaDescription?: T;
+      };
+  wpId?: T;
+  publishedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "videos_select".
+ */
+export interface VideosSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  description?: T;
+  videoFile?: T;
+  videoUrl?: T;
+  thumbnail?: T;
+  category?: T;
+  featured?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
@@ -463,77 +576,6 @@ export interface MediaSelect<T extends boolean = true> {
               filename?: T;
             };
       };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "products_select".
- */
-export interface ProductsSelect<T extends boolean = true> {
-  name?: T;
-  slug?: T;
-  description?: T;
-  price?: T;
-  category?: T;
-  images?:
-    | T
-    | {
-        image?: T;
-        alt?: T;
-        id?: T;
-      };
-  featured?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "videos_select".
- */
-export interface VideosSelect<T extends boolean = true> {
-  title?: T;
-  description?: T;
-  videoUrl?: T;
-  thumbnail?: T;
-  category?: T;
-  featured?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "blog-posts_select".
- */
-export interface BlogPostsSelect<T extends boolean = true> {
-  title?: T;
-  slug?: T;
-  excerpt?: T;
-  content?: T;
-  featuredImage?: T;
-  gallery?:
-    | T
-    | {
-        image?: T;
-        id?: T;
-      };
-  category?: T;
-  tags?:
-    | T
-    | {
-        tag?: T;
-        id?: T;
-      };
-  status?: T;
-  featured?: T;
-  seo?:
-    | T
-    | {
-        metaTitle?: T;
-        metaDescription?: T;
-      };
-  wpId?: T;
-  publishedAt?: T;
-  updatedAt?: T;
-  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

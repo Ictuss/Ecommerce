@@ -14,7 +14,11 @@ export interface Product {
   slug: string;
   description: string;
   price: number;
-  category: string;
+  category: {
+  id: number;
+  name: string;
+  slug: string;
+} | number;
   featured: boolean;
   images: Array<{
     image: {
@@ -73,7 +77,7 @@ export const productService = {
   ): Promise<ProductsResponse> {
     try {
       const response = await fetch(
-        `${PAYLOAD_API_URL}/api/products?where[category][equals]=${category}&limit=${limit}&depth=2`
+       `${PAYLOAD_API_URL}/api/products?where[category.slug][equals]=${category}&limit=${limit}&depth=2`
       );
 
       if (!response.ok) {

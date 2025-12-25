@@ -8,6 +8,8 @@ import { Media } from './collections/Media'
 import { Products } from './collections/Products'
 import { Videos } from './collections/Videos'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
+import { Categories } from './collections/Categories'
+import { fileURLToPath } from 'url'
 const allowedOrigins = [
   'http://localhost:5173',
   'https://ecommerce-frontend-five-wheat.vercel.app',
@@ -17,7 +19,8 @@ const allowedOrigins = [
 ]
 
 console.log('[payload] BLOB_READ_WRITE_TOKEN definido?', !!process.env.BLOB_READ_WRITE_TOKEN)
-
+const filename = fileURLToPath(import.meta.url)
+const dirname = path.dirname(filename)
 export default buildConfig({
   // 🔐 obrigatório
   secret: process.env.PAYLOAD_SECRET!,
@@ -28,14 +31,14 @@ export default buildConfig({
 
   editor: lexicalEditor({}),
 
-  collections: [Users, Products, BlogPosts, Videos, Media],
+  collections: [Users, Categories, Products, BlogPosts, Videos, Media],
 
   typescript: {
-    outputFile: path.resolve(__dirname, 'payload-types.ts'),
+    outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
 
   graphQL: {
-    schemaOutputFile: path.resolve(__dirname, 'generated-schema.graphql'),
+    schemaOutputFile: path.resolve(dirname, 'generated-schema.graphql'),
   },
   plugins: [
     vercelBlobStorage({

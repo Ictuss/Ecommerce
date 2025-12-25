@@ -27,8 +27,14 @@ export const useHomeViewModel = () => {
     fetchProducts();
   }, []);
 
-  const getProductsByCategory = (category: string) =>
-    products.filter((p) => p.category === category);
+const getProductsByCategory = (categorySlug: string) =>
+  products.filter((p) => {
+    if (typeof p.category === 'object' && p.category !== null) {
+      return p.category.slug === categorySlug;
+    }
+    return false;
+  });
+      
 
   const getImageUrl = (product: Product): string => {
     if (!product.images || product.images.length === 0) return "";
