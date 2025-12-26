@@ -1,7 +1,7 @@
 /* Página / área geral */
 .video-detail-page {
   padding: 40px 16px;
-  background-color: #f5f5f5; /* segue o fundo do resto do site */
+  background-color: #f5f5f5;
 }
 
 .video-detail {
@@ -12,7 +12,7 @@
 /* TOPO: vídeo esquerda + info direita */
 .video-detail__header {
   display: flex;
-  align-items: stretch;
+  align-items: flex-start;
   gap: 32px;
   margin-bottom: 40px;
 }
@@ -20,42 +20,88 @@
 /* VÍDEO À ESQUERDA */
 .video-detail__media {
   position: relative;
-  flex: 0 0 320px; /* largura do vídeo, vertical */
-  border-radius: 8px;
+  flex: 0 0 400px;
+  border-radius: 12px;
   overflow: hidden;
-  cursor: pointer;
+  background: #000;
+}
+
+/* Botão de thumbnail (antes de dar play) */
+.video-detail__media-button {
+  display: block;
+  width: 100%;
   padding: 0;
   border: none;
   background: none;
+  cursor: pointer;
+  position: relative;
+}
+
+.video-detail__media-button::after {
+  content: "▶";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70px;
+  height: 70px;
+  background: rgba(227, 38, 38, 0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: #fff;
+  padding-left: 5px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.video-detail__media-button:hover::after {
+  transform: translate(-50%, -50%) scale(1.1);
+  background: rgba(227, 38, 38, 1);
 }
 
 .video-detail__thumbnail {
   width: 100%;
-  height: 100%;
+  height: auto;
+  aspect-ratio: 9 / 16;
   object-fit: cover;
   display: block;
+  border-radius: 12px;
 }
 
-/* overlay + botão play */
-.video-detail__media-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.3),
-    rgba(0, 0, 0, 0.6)
-  );
+/* PLAYER DE VÍDEO (quando está tocando) */
+.video-detail__player-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  max-height: 600px;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.video-detail__player-wrapper video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+}
+
+.video-detail__player-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Embed do Instagram */
+.video-detail__embed-wrapper {
+  width: 100%;
+  min-height: 500px;
   display: flex;
-  align-items: center;
   justify-content: center;
-}
-
-.video-detail__play-button svg circle {
-  fill: rgba(0, 0, 0, 0.7);
-}
-
-.video-detail__play-button svg path {
-  fill: #ffffff;
+  align-items: center;
 }
 
 /* label no rodapé do vídeo (ex: ICTUS) */
@@ -63,12 +109,13 @@
   position: absolute;
   left: 16px;
   bottom: 16px;
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: 999px;
   background-color: #ffffff;
   color: #e32626;
   font-size: 12px;
   font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* INFO À DIREITA: título + descrição */
@@ -76,22 +123,23 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+  padding-top: 20px;
 }
 
 .video-detail__title {
   margin: 0 0 16px;
-  font-size: 52px;
-  line-height: 1.05;
+  font-size: 42px;
+  line-height: 1.1;
   font-weight: 800;
   color: #e32626;
 }
 
 .video-detail__description {
   margin: 0;
-  font-size: 14px;
-  line-height: 1.8;
-  color: #e32626; /* tu gosta tudo vermelho 😈 */
+  font-size: 15px;
+  line-height: 1.7;
+  color: #555;
   max-width: 520px;
 }
 
@@ -119,11 +167,11 @@
   flex: 1;
   display: flex;
   gap: 16px;
-  overflow-x: auto; /* se tiver mais produtos, cria scroll horizontal */
+  overflow-x: auto;
   padding-bottom: 4px;
 }
 
-/* estilizinho do scroll (opcional) */
+/* estilizinho do scroll */
 .video-detail__products-list::-webkit-scrollbar {
   height: 6px;
 }
@@ -147,7 +195,6 @@
   flex-direction: column;
   align-items: center;
 }
-
 
 .video-detail__product-image-wrapper {
   width: 100%;
@@ -175,10 +222,8 @@
   margin: 2px 0;
   font-size: 12px;
   color: #4a5568;
-
-  /* 🍝 aqui que a mágica acontece */
   display: -webkit-box;
-  -webkit-line-clamp: 4;   /* quantidade de linhas */
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -222,8 +267,8 @@
   color: #e32626;
   font-weight: 800;
   margin-bottom: 25px;
-  border-top: 8px solid #e32626;
-  padding-top: 10px;
+  border-top: 4px solid #e32626;
+  padding-top: 15px;
   max-width: 300px;
   margin-left: auto;
   margin-right: auto;
@@ -234,12 +279,10 @@
   gap: 32px;
   overflow-x: auto;
   padding-bottom: 12px;
-  /* Mostra 4 produtos + um pouquinho do 5º */
   max-width: calc((160px * 4) + (32px * 3) + 80px);
   margin: 0 auto;
 }
 
-/* Estilização do scroll */
 .video-related-list::-webkit-scrollbar {
   height: 8px;
 }
@@ -277,7 +320,7 @@
   overflow: hidden;
   margin-bottom: 8px;
   background: #fff;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: box-shadow 0.2s ease;
 }
 
@@ -309,25 +352,32 @@
 @media (max-width: 900px) {
   .video-detail__header {
     flex-direction: column;
+    align-items: center;
   }
 
   .video-detail__media {
     flex: 0 0 auto;
     width: 100%;
-    max-width: 360px;
-    margin: 0 auto;
+    max-width: 350px;
+  }
+
+  .video-detail__player-wrapper {
+    max-height: 500px;
   }
 
   .video-detail__info {
-    margin-top: 16px;
+    margin-top: 24px;
+    padding-top: 0;
+    text-align: center;
   }
 
   .video-detail__title {
-    font-size: 38px;
+    font-size: 32px;
   }
 
   .video-detail__description {
     max-width: none;
+    margin: 0 auto;
   }
 
   .video-detail__products-row {
@@ -340,12 +390,23 @@
   }
 
   .video-related-list {
-    /* Em telas menores, mostra 3 produtos */
     max-width: calc((160px * 3) + (32px * 2) + 80px);
   }
 }
 
 @media (max-width: 600px) {
+  .video-detail__media {
+    max-width: 280px;
+  }
+
+  .video-detail__player-wrapper {
+    max-height: 450px;
+  }
+
+  .video-detail__title {
+    font-size: 26px;
+  }
+
   .video-related-card {
     min-width: 140px;
     width: 140px;
@@ -358,7 +419,6 @@
 
   .video-related-list {
     gap: 20px;
-    /* Em mobile, mostra 2 produtos */
     max-width: calc((140px * 2) + 20px + 70px);
   }
 }
