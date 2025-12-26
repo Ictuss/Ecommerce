@@ -5,13 +5,14 @@ import VideoCard from "../Videos/videoCard/videoCard";
 import "./Videos.css";
 import { apiService } from "../../services/api";
 import { buildImageUrl } from "../../config/env";
+import { Category } from "../../services/categories_services";
 
 type CmsVideo = {
   id: string | number;
   title: string;
   description?: string;
   videoUrl: string;
-  category?: string;
+  category?: Category;
   thumbnail?: {
     url?: string;
   };
