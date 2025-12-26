@@ -103,15 +103,17 @@ const VideoDetail: React.FC = () => {
 
         const finalVideoUrl = buildVideoUrl(rawVideoUrl);
 
-        const relatedProducts =
-          foundVideo.relatedProducts?.map((product: any) => ({
-            id: product.id,
-            name: product.name,
-            price: `R$ ${product.salePrice ?? product.price}`,
-            images: product.images ?? [],
-            description: product.description ?? "",
-            slug: product.slug,
-          })) ?? [];
+const relatedProducts =
+  foundVideo.relatedProducts
+    ?.filter((product: any) => product && typeof product === 'object' && product.id)
+    ?.map((product: any) => ({
+      id: product.id,
+      name: product.name,
+      price: `R$ ${product.salePrice ?? product.price ?? 0}`,
+      images: product.images ?? [],
+      description: product.description ?? "",
+      slug: product.slug,
+    })) ?? [];
 
         setVideo({
           id: foundVideo.id,

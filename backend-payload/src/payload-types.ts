@@ -318,9 +318,9 @@ export interface Video {
   videoUrl?: string | null;
   thumbnail: number | Media;
   /**
-   * Use o mesmo texto da categoria de produtos (ex: "mobilidade").
+   * Selecione manualmente os produtos que aparecem neste vídeo.
    */
-  category?: string | null;
+  relatedProducts?: (number | Product)[] | null;
   featured?: boolean | null;
   updatedAt: string;
   createdAt: string;
@@ -519,7 +519,7 @@ export interface VideosSelect<T extends boolean = true> {
   videoFile?: T;
   videoUrl?: T;
   thumbnail?: T;
-  category?: T;
+  relatedProducts?: T;
   featured?: T;
   updatedAt?: T;
   createdAt?: T;
