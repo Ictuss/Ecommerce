@@ -65,13 +65,16 @@ export const Videos: CollectionConfig = {
       relationTo: 'media',
       required: true,
     },
-    {
-      name: 'category',
-      type: 'text',
-      admin: {
-        description: 'Use o mesmo texto da categoria de produtos (ex: "mobilidade").',
-      },
-    },
+{
+  name: 'relatedProducts',
+  label: 'Produtos relacionados',
+  type: 'relationship',
+  relationTo: 'products',
+  hasMany: true,
+  admin: {
+    description: 'Selecione manualmente os produtos que aparecem neste vídeo.',
+  },
+},
     {
       name: 'featured',
       type: 'checkbox',

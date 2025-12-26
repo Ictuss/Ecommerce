@@ -201,7 +201,7 @@ const ProductDetail: React.FC = () => {
 
               <div className="pd-spec-group">
                 <h4>Categoria:</h4>
-                <p>{product.category}</p>
+               <p>{typeof product.category === 'object' ? product.category.name : product.category}</p>
               </div>
 
               <div className="pd-spec-group">

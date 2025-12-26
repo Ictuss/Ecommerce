@@ -1,28 +1,14 @@
-// src/pages/Videos/VideoDetail.tsx
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./videoDetail.css";
 import { apiService } from "../../../services/api";
 import { buildImageUrl, buildVideoUrl } from "../../../config/env";
 
-type CmsVideo = {
-  id: string | number;
-  title: string;
-  description?: string;
-  videoUrl: string; // sempre preenchido no setVideo
-  category?: string;
-  thumbnail?: {
-    url?: string;
-  };
-  instagramUrl?: string;
-};
-
 type VideoProduct = {
   id: string | number;
   name: string;
   price: string;
   description?: string;
-  category?: string;
   slug?: string;
   images: {
     image: {
@@ -31,120 +17,113 @@ type VideoProduct = {
   }[];
 };
 
+type CmsVideo = {
+  id: string | number;
+  title: string;
+  description?: string;
+  videoUrl: string;
+  thumbnail?: {
+    url?: string;
+  };
+  instagramUrl?: string;
+  relatedProducts?: VideoProduct[];
+};
+
 const VideoDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
   const [video, setVideo] = useState<CmsVideo | null>(null);
-  const [loadingVideo, setLoadingVideo] = useState(true);
   const [products, setProducts] = useState<VideoProduct[]>([]);
-  const [loadingProducts, setLoadingProducts] = useState(false);
-  const [errorProducts, setErrorProducts] = useState<string | null>(null);
-  const [instagramEmbed, setInstagramEmbed] = useState<string>("");
+  const [loadingVideo, setLoadingVideo] = useState(true);
+  const [instagramEmbed, setInstagramEmbed] = useState("");
   const [loadingEmbed, setLoadingEmbed] = useState(false);
   const [showVideoPlayer, setShowVideoPlayer] = useState(false);
 
-  // Função para extrair ID do YouTube de diferentes formatos de URL
   const getYouTubeVideoId = (url: string): string | null => {
     if (!url) return null;
 
     const patterns = [
       /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
-      /^([a-zA-Z0-9_-]{11})$/, // ID direto
+      /^([a-zA-Z0-9_-]{11})$/,
     ];
 
     for (const pattern of patterns) {
       const match = url.match(pattern);
-      if (match && match[1]) {
-        return match[1];
-      }
+      if (match && match[1]) return match[1];
     }
 
     return null;
   };
 
+  const isYouTubeUrl = (url: string) =>
+    url.includes("youtube.com") || url.includes("youtu.be");
+
   const getFirstProductImageUrl = (
     product: VideoProduct
   ): string | undefined => {
-    if (!product.images || product.images.length === 0) {
-      return undefined;
-    }
-
+    if (!product.images?.length) return undefined;
     const rawUrl = product.images[0]?.image?.url;
-    if (!rawUrl) {
-      return undefined;
-    }
-
-    return buildImageUrl(rawUrl);
+    return rawUrl ? buildImageUrl(rawUrl) : undefined;
   };
 
-  // Verifica se é URL do YouTube
-  const isYouTubeUrl = (url: string): boolean => {
-    return url?.includes("youtube.com") || url?.includes("youtu.be");
-  };
-
-  // Carrega o vídeo do CMS
+  // 🔹 LOAD VIDEO + RELATED PRODUCTS
   useEffect(() => {
     const loadVideo = async () => {
       try {
         setLoadingVideo(true);
+
         const videos = await apiService.fetchVideos();
-        const foundVideo = videos.find((v: any) => String(v.id) === String(id));
+        const foundVideo = videos.find(
+          (v: any) => String(v.id) === String(id)
+        );
 
-        console.log("🎥 Video encontrado:", foundVideo);
-        console.log("🖼️ Thumbnail:", foundVideo?.thumbnail);
+        if (!foundVideo) return;
 
-        if (foundVideo) {
-          // THUMBNAIL
-          let thumbnailUrl = "";
-
-          if (
-            typeof foundVideo.thumbnail === "object" &&
-            foundVideo.thumbnail !== null
-          ) {
-            thumbnailUrl =
-              foundVideo.thumbnail.sizes?.thumbnail?.url ||
-              foundVideo.thumbnail.url ||
-              "";
-          }
-
-          console.log("🖼️ Thumbnail URL final:", thumbnailUrl);
-
-          // 🎬 VIDEO: prioridade para arquivo da media (videoFile), depois campo texto videoUrl
-          let rawVideoUrl = "";
-
-          // Se tiver campo upload "videoFile" (relationTo: 'media')
-          if (
-            foundVideo.videoFile &&
-            typeof foundVideo.videoFile === "object"
-          ) {
-            const media = foundVideo.videoFile as any;
-            // Payload geralmente manda url absoluta ou caminho relativo
-            rawVideoUrl = media.url || media.filename || "";
-            console.log("🎬 URL vinda de videoFile (media):", rawVideoUrl);
-          }
-
-          // Se não tiver arquivo, usa campo texto (YouTube, Vimeo, etc.)
-          if (!rawVideoUrl && typeof foundVideo.videoUrl === "string") {
-            rawVideoUrl = foundVideo.videoUrl;
-            console.log("🎬 URL vinda de videoUrl (texto):", rawVideoUrl);
-          }
-
-          const finalVideoUrl = buildVideoUrl(rawVideoUrl);
-          console.log("🎬 URL final normalizada do vídeo:", finalVideoUrl);
-
-          setVideo({
-            id: foundVideo.id,
-            title: foundVideo.title,
-            description: foundVideo.description,
-            videoUrl: finalVideoUrl,
-            category: foundVideo.category,
-            thumbnail: {
-              url: thumbnailUrl,
-            },
-            instagramUrl: foundVideo.instagramUrl,
-          });
+        let thumbnailUrl = "";
+        if (foundVideo.thumbnail) {
+          thumbnailUrl =
+            foundVideo.thumbnail?.sizes?.thumbnail?.url ||
+            foundVideo.thumbnail?.url ||
+            "";
         }
+
+        let rawVideoUrl = "";
+
+        if (foundVideo.videoFile) {
+          rawVideoUrl =
+            foundVideo.videoFile?.url ||
+            foundVideo.videoFile?.filename ||
+            "";
+        }
+
+        if (!rawVideoUrl && foundVideo.videoUrl) {
+          rawVideoUrl = foundVideo.videoUrl;
+        }
+
+        const finalVideoUrl = buildVideoUrl(rawVideoUrl);
+
+        const relatedProducts =
+          foundVideo.relatedProducts?.map((product: any) => ({
+            id: product.id,
+            name: product.name,
+            price: `R$ ${product.salePrice ?? product.price}`,
+            images: product.images ?? [],
+            description: product.description ?? "",
+            slug: product.slug,
+          })) ?? [];
+
+        setVideo({
+          id: foundVideo.id,
+          title: foundVideo.title,
+          description: foundVideo.description,
+          videoUrl: finalVideoUrl,
+          thumbnail: { url: thumbnailUrl },
+          instagramUrl: foundVideo.instagramUrl,
+          relatedProducts,
+        });
+
+        setProducts(relatedProducts);
       } catch (error) {
         console.error("Erro ao carregar vídeo:", error);
       } finally {
@@ -155,7 +134,7 @@ const VideoDetail: React.FC = () => {
     loadVideo();
   }, [id]);
 
-  // Carrega embed do Instagram usando oEmbed API
+  // 🔹 INSTAGRAM OEMBED
   useEffect(() => {
     if (!video?.instagramUrl) return;
 
@@ -163,11 +142,11 @@ const VideoDetail: React.FC = () => {
       try {
         setLoadingEmbed(true);
 
-        const publicOembedUrl = `https://api.instagram.com/oembed/?url=${encodeURIComponent(
-          video.instagramUrl
-        )}`;
-
-        const response = await fetch(publicOembedUrl);
+        const response = await fetch(
+          `https://api.instagram.com/oembed/?url=${encodeURIComponent(
+            video.instagramUrl
+          )}`
+        );
         const data = await response.json();
 
         if (data.html) {
@@ -183,65 +162,29 @@ const VideoDetail: React.FC = () => {
     loadInstagramEmbed();
   }, [video?.instagramUrl]);
 
-  // Processa o embed HTML do Instagram
   useEffect(() => {
     if (!instagramEmbed) return;
 
     const container = document.getElementById("instagram-embed-container");
-    if (container) {
-      container.innerHTML = instagramEmbed;
+    if (!container) return;
 
-      const script = document.createElement("script");
-      script.src = "//www.instagram.com/embed.js";
-      script.async = true;
-      document.body.appendChild(script);
+    container.innerHTML = instagramEmbed;
 
-      if ((window as any).instgrm) {
-        (window as any).instgrm.Embeds.process();
-      }
+    const script = document.createElement("script");
+    script.src = "//www.instagram.com/embed.js";
+    script.async = true;
+    document.body.appendChild(script);
 
-      return () => {
-        if (script.parentNode) {
-          document.body.removeChild(script);
-        }
-      };
+    if ((window as any).instgrm) {
+      (window as any).instgrm.Embeds.process();
     }
+
+    return () => {
+      if (script.parentNode) document.body.removeChild(script);
+    };
   }, [instagramEmbed]);
 
-  // Carrega produtos relacionados
-  useEffect(() => {
-    if (!video?.category) return;
-
-    const loadProducts = async () => {
-      try {
-        setLoadingProducts(true);
-        const docs = await apiService.fetchProducts(video.category);
-
-        const formatted = docs.map((product: any) => ({
-          id: product.id,
-          name: product.name,
-          price: `R$ ${product.salePrice ?? product.price}`,
-          images: product.images ?? [],
-          description: product.description ?? "",
-          category: product.category,
-          slug: product.slug,
-        }));
-
-        setProducts(formatted);
-      } catch (error) {
-        console.error(error);
-        setErrorProducts("Não foi possível carregar os produtos desse vídeo.");
-      } finally {
-        setLoadingProducts(false);
-      }
-    };
-
-    loadProducts();
-  }, [video?.category]);
-
-  const handlePlayClick = () => {
-    setShowVideoPlayer(true);
-  };
+  const handlePlayClick = () => setShowVideoPlayer(true);
 
   if (loadingVideo) {
     return (
@@ -268,6 +211,9 @@ const VideoDetail: React.FC = () => {
     );
   }
 
+  const youtubeVideoId = getYouTubeVideoId(video.videoUrl);
+  const isYouTube = isYouTubeUrl(video.videoUrl);
+
   const renderLinesWithBreaks = (text: string) =>
     text.split("\n").map((line, i, arr) => (
       <React.Fragment key={i}>
@@ -276,23 +222,14 @@ const VideoDetail: React.FC = () => {
       </React.Fragment>
     ));
 
-  // Determina qual player usar
-  const youtubeVideoId = video.videoUrl
-    ? getYouTubeVideoId(video.videoUrl)
-    : null;
-  const isYouTube = video.videoUrl && isYouTubeUrl(video.videoUrl);
-
   return (
     <div className="video-detail-page">
       <section className="video-detail">
         <div className="video-detail__header">
-          {/* LADO ESQUERDO — VÍDEO */}
           <div className="video-detail__media">
             {video.instagramUrl ? (
-              // Embed do Instagram
               <div className="video-detail__embed-wrapper">
                 {loadingEmbed && <p>Carregando vídeo do Instagram...</p>}
-
                 <div
                   id="instagram-embed-container"
                   style={{
@@ -304,61 +241,28 @@ const VideoDetail: React.FC = () => {
                 />
               </div>
             ) : showVideoPlayer && isYouTube && youtubeVideoId ? (
-              // Player do YouTube
               <div className="video-detail__player-wrapper">
-                <div
-                  style={{
-                    position: "relative",
-                    paddingBottom: "56.25%", // 16:9
-                    height: 0,
-                    overflow: "hidden",
-                    maxWidth: "100%",
-                    borderRadius: "8px",
-                  }}
-                >
-                  <iframe
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      width: "100%",
-                      height: "100%",
-                      border: 0,
-                      borderRadius: "8px",
-                    }}
-                    src={`https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&rel=0`}
-                    title={video.title}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
-                </div>
+                <iframe
+                  src={`https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&rel=0`}
+                  title={video.title}
+                  allowFullScreen
+                />
                 <div className="video-detail__media-footer">ICTUS</div>
               </div>
-            ) : showVideoPlayer && video.videoUrl ? (
-              // Player HTML5 para vídeos hospedados (Blob / backend)
+            ) : showVideoPlayer ? (
               <div className="video-detail__player-wrapper">
                 <video
                   controls
                   autoPlay
                   controlsList="nodownload"
                   poster={buildImageUrl(video.thumbnail?.url)}
-                  style={{
-                    width: "100%",
-                    maxWidth: "100%",
-                    borderRadius: "8px",
-                    backgroundColor: "#000",
-                  }}
                 >
                   <source src={video.videoUrl} type="video/mp4" />
-                  <source src={video.videoUrl} type="video/webm" />
-                  Seu navegador não suporta a reprodução de vídeos.
                 </video>
                 <div className="video-detail__media-footer">ICTUS</div>
               </div>
             ) : (
-              // Thumbnail com botão de play
               <button
-                type="button"
                 className="video-detail__media-button"
                 onClick={handlePlayClick}
               >
@@ -370,32 +274,18 @@ const VideoDetail: React.FC = () => {
                   alt="video"
                   className="video-detail__thumbnail"
                 />
-
-                <div className="video-detail__media-overlay">
-                  <div className="video-detail__play-button">
-                    <svg width="80" height="80" viewBox="0 0 80 80">
-                      <circle cx="40" cy="40" r="40" />
-                      <path d="M32 24L54 40L32 56V24Z" />
-                    </svg>
-                  </div>
-                </div>
-
-                <div className="video-detail__media-footer">ICTUS</div>
               </button>
             )}
           </div>
 
-          {/* DIREITA — INFO */}
           <div className="video-detail__info">
             <h1 className="video-detail__title">
               {renderLinesWithBreaks(video.title)}
             </h1>
-
             <p className="video-detail__description">{video.description}</p>
           </div>
         </div>
 
-        {/* PRODUTOS RELACIONADOS */}
         {products.length > 0 && (
           <section className="video-related-products">
             <h2 className="video-related-title">Produtos relacionados:</h2>
@@ -403,10 +293,6 @@ const VideoDetail: React.FC = () => {
             <div className="video-related-list">
               {products.map((p) => {
                 const imageUrl = getFirstProductImageUrl(p);
-                console.log("VIDEO DETAIL PRODUCT IMG:", {
-                  images: p.images,
-                  imageUrl,
-                });
 
                 return (
                   <article
@@ -423,10 +309,6 @@ const VideoDetail: React.FC = () => {
                 );
               })}
             </div>
-
-            {errorProducts && (
-              <p className="video-related-error">{errorProducts}</p>
-            )}
           </section>
         )}
       </section>

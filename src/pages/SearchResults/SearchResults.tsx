@@ -19,7 +19,7 @@ const SearchResults: React.FC = () => {
         return (
           product.name.toLowerCase().includes(searchLower) ||
           product.description?.toLowerCase().includes(searchLower) ||
-          product.category.toLowerCase().includes(searchLower)
+          (typeof product.category === 'object' ? product.category.name : '').toLowerCase().includes(searchLower)
         );
       });
       setFilteredProducts(results);

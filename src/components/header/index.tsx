@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useMatch } from "react-router-dom";
 import "./Header.css";
 import principalLogo from "../../assets/icons/banner.png";
@@ -7,19 +7,18 @@ import ContactInfo from "./component/contactInfo/contactInfo";
 import SearchInfo from "./component/searchInfo/searchInfo";
 import logoVideo from "../../assets/logoVideo.png";
 import CartButton from "../cart/CartButton";
-
-const CATEGORIAS = [
-  { label: "Mobilidade", value: "mobilidade" },
-  { label: "Mamãe e Bebê", value: "mae-bebe" },
-  { label: "Inverno", value: "inverno" },
-  { label: "Ortopédicos", value: "produtos-ortopedicos" },
-  { label: "Terapêuticos", value: "produtos-terapeuticos" },
-  { label: "Estética", value: "estetica" },
-];
+import { categoryService, Category } from "../../services/categories_services";
 
 const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [produtosOpen, setProdutosOpen] = useState(false);
+  const [categorias, setCategorias] = useState<Category[]>([]);
+
+  useEffect(() => {
+    categoryService.getAll()
+      .then((data) => setCategorias(data.docs))
+      .catch((err) => console.error("Erro ao carregar categorias:", err));
+  }, []);
 
   const blogMatch = useMatch("/blog/*");
   const isBlog = Boolean(blogMatch);
@@ -57,7 +56,6 @@ const Header: React.FC = () => {
               </Link>
             </li>
 
-            {/* PRODUTOS COM DROPDOWN */}
             <li className="dropdown">
               <button
                 type="button"
@@ -75,13 +73,13 @@ const Header: React.FC = () => {
                       Ver Todos
                     </Link>
                   </li>
-                  {CATEGORIAS.map((cat) => (
-                    <li key={cat.value}>
+                  {categorias.map((cat) => (
+                    <li key={cat.id}>
                       <Link
-                        to={`/produtos?categoria=${cat.value}`}
+                        to={`/produtos?categoria=${cat.slug}`}
                         onClick={() => setProdutosOpen(false)}
                       >
-                        {cat.label}
+                        {cat.name}
                       </Link>
                     </li>
                   ))}

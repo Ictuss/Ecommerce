@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Footer.css";
+import { Category, categoryService } from "../../services/categories_services";
 
 // Ícones SVG inline para não precisar de dependências extras
 const InstagramIcon = () => (
@@ -41,9 +42,14 @@ const WhatsAppIcon = () => (
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
-
+ const [categorias, setCategorias] = useState<Category[]>([]);
   const whatsappNumber = "554291383593";
   const whatsappLink = `https://wa.me/${whatsappNumber}`;
+ useEffect(() => {
+    categoryService.getAll()
+      .then((data) => setCategorias(data.docs))
+      .catch((err) => console.error("Erro ao carregar categorias:", err));
+  }, []);
 
   return (
     <footer className="footer">
@@ -117,28 +123,11 @@ const Footer: React.FC = () => {
           <div className="footer-column">
             <h3 className="footer-title">Categorias</h3>
             <ul className="footer-links">
-              <li>
-                <Link to="/produtos?categoria=mobilidade">Mobilidade</Link>
-              </li>
-              <li>
-                <Link to="/produtos?categoria=mae-bebe">Mamãe e Bebê</Link>
-              </li>
-              <li>
-                <Link to="/produtos?categoria=inverno">Inverno</Link>
-              </li>
-              <li>
-                <Link to="/produtos?categoria=produtos-ortopedicos">
-                  Ortopédicos
-                </Link>
-              </li>
-              <li>
-                <Link to="/produtos?categoria=produtos-terapeuticos">
-                  Terapêuticos
-                </Link>
-              </li>
-              <li>
-                <Link to="/produtos?categoria=estetica">Estética</Link>
-              </li>
+            {categorias.map((cat) => (
+                <li key={cat.id}>
+                  <Link to={`/produtos?categoria=${cat.slug}`}>{cat.name}</Link>
+                </li>
+              ))}
             </ul>
           </div>
 

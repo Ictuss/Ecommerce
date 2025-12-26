@@ -2,13 +2,10 @@ import React from "react";
 import "./home.css";
 import NewsletterSignup from "../../components/header/newLetter/newLetter.js";
 import CategoryCarousel from "../../components/CategoryCarousel/CategoryCarousel";
-import logoInverno from "../../assets/logoInverno.png";
-import logoMae from "../../assets/logoMae.png";
-import logoMove from "../../assets/logoMove.png";
 import { useHomeViewModel } from "./viewModel/home_viewModel";
 
 const Home: React.FC = () => {
-  const { loading, error, getProductsByCategory, getImageUrl } =
+  const { loading, error, categories, getProductsByCategory, getImageUrl, getBannerUrl } =
     useHomeViewModel();
 
   if (loading) {
@@ -26,53 +23,35 @@ const Home: React.FC = () => {
     return (
       <>
         <NewsletterSignup />
-        <div
-          style={{
-            textAlign: "center",
-            padding: "50px",
-            fontSize: "24px",
-            color: "red",
-          }}
-        >
+        <div style={{ textAlign: "center", padding: "50px", fontSize: "24px", color: "red" }}>
           Erro: {error}
         </div>
       </>
     );
   }
 
-  const inverno = getProductsByCategory("inverno");
-  const maeBebe = getProductsByCategory("mae-bebe");
-  const mobilidade = getProductsByCategory("mobilidade");
-
   return (
     <>
       <NewsletterSignup />
       <h1 className="h1">DESTAQUES!</h1>
 
-      {/* ✅ USANDO O NOVO COMPONENTE DE CARROSSEL */}
-      <CategoryCarousel
-        title="Inverno"
-        products={inverno}
-        bannerSrc={logoInverno}
-        bannerAlt="Banner Inverno"
-        getImageUrl={getImageUrl}
-      />
+      {categories.map((category) => {
+        const produtos = getProductsByCategory(category.slug);
+        const bannerUrl = getBannerUrl(category);
+        
+        if (produtos.length === 0) return null;
 
-      <CategoryCarousel
-        title="Mamãe e bebê"
-        products={maeBebe}
-        bannerSrc={logoMae}
-        bannerAlt="Banner Mamãe e bebê"
-        getImageUrl={getImageUrl}
-      />
-
-      <CategoryCarousel
-        title="Mobilidade"
-        products={mobilidade}
-        bannerSrc={logoMove}
-        bannerAlt="Banner Mobilidade"
-        getImageUrl={getImageUrl}
-      />
+        return (
+          <CategoryCarousel
+            key={category.id}
+            title={category.name}
+            products={produtos}
+            bannerSrc={bannerUrl}
+            bannerAlt={`Banner ${category.name}`}
+            getImageUrl={getImageUrl}
+          />
+        );
+      })}
     </>
   );
 };
