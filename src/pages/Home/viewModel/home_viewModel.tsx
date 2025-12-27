@@ -17,7 +17,7 @@ export const useHomeViewModel = () => {
       try {
         setLoading(true);
         const [productsData, categoriesData] = await Promise.all([
-          productService.getAll(1, 100),
+          productService.getAll(1, 1000),
           categoryService.getAll(),
         ]);
         
