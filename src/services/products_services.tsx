@@ -53,7 +53,7 @@ export interface Product {
 }
 
 export const productService = {
-  async getAll(page = 1, limit = 100): Promise<ProductsResponse> {
+  async getAll(page = 1, limit = 1000): Promise<ProductsResponse> {
     try {
       const response = await fetch(
         `${PAYLOAD_API_URL}/api/products?page=${page}&limit=${limit}&depth=2`

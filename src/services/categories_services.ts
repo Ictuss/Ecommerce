@@ -19,7 +19,7 @@ export interface CategoriesResponse {
 export const categoryService = {
   async getAll(): Promise<CategoriesResponse> {
     const response = await fetch(
-      `${PAYLOAD_API_URL}/api/categories?limit=100&sort=order`
+      `${PAYLOAD_API_URL}/api/categories?limit=1000&sort=order`
     );
     if (!response.ok) {
       throw new Error("Erro ao buscar categorias");
