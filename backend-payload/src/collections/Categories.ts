@@ -4,7 +4,7 @@ export const Categories: CollectionConfig = {
   slug: 'categories',
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'slug', 'order'],
+    defaultColumns: ['name', 'slug', 'order', 'showOnHome'],
   },
   access: {
     read: () => true,
@@ -39,6 +39,16 @@ export const Categories: CollectionConfig = {
       required: false,
       defaultValue: 0,
       label: 'Ordem de exibição',
+    },
+    {
+      name: 'showOnHome',
+      type: 'checkbox',
+      required: false,
+      defaultValue: false,
+      label: 'Exibir na Home',
+      admin: {
+        description: 'Marque para mostrar esta categoria na página inicial',
+      },
     },
   ],
   hooks: {

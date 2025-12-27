@@ -20,20 +20,32 @@ export const useHomeViewModel = () => {
           productService.getAll(1, 100),
           categoryService.getAll(),
         ]);
+        
+        console.log('🔍 DEBUG - Produtos recebidos:', productsData.docs?.length);
+        console.log('🔍 DEBUG - Categorias recebidas:', categoriesData.docs?.length);
+        console.log('🔍 DEBUG - Todas as categorias:', categoriesData.docs);
+        
         setProducts(productsData.docs || []);
         
         // ✅ FILTRAR: só categorias com showOnHome = true
         // ✅ ORDENAR: por campo 'order' (crescente)
         const homeCategories = (categoriesData.docs || [])
-          .filter((cat: Category) => cat.showOnHome === true)
+          .filter((cat: Category) => {
+            console.log(`🔍 Categoria: ${cat.name} - showOnHome: ${cat.showOnHome}`);
+            return cat.showOnHome === true;
+          })
           .sort((a: Category, b: Category) => {
             const orderA = a.order ?? 999;
             const orderB = b.order ?? 999;
             return orderA - orderB;
           });
         
+        console.log('🔍 DEBUG - Categorias filtradas (showOnHome=true):', homeCategories.length);
+        console.log('🔍 DEBUG - Categorias para home:', homeCategories);
+        
         setCategories(homeCategories);
       } catch (err: any) {
+        console.error('❌ Erro ao buscar dados:', err);
         setError(err.message || "Erro ao carregar dados");
       } finally {
         setLoading(false);
@@ -43,13 +55,16 @@ export const useHomeViewModel = () => {
     fetchData();
   }, []);
 
-  const getProductsByCategory = (categorySlug: string) =>
-    products.filter((p) => {
+  const getProductsByCategory = (categorySlug: string) => {
+    const filtered = products.filter((p) => {
       if (typeof p.category === "object" && p.category !== null) {
         return p.category.slug === categorySlug;
       }
       return false;
     });
+    console.log(`🔍 Produtos na categoria ${categorySlug}:`, filtered.length);
+    return filtered;
+  };
 
   const getImageUrl = (product: Product): string => {
     if (!product.images || product.images.length === 0) return "";
