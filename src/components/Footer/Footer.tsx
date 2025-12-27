@@ -42,14 +42,25 @@ const WhatsAppIcon = () => (
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
- const [categorias, setCategorias] = useState<Category[]>([]);
+  const [categorias, setCategorias] = useState<Category[]>([]);
+  const [categoriasExpanded, setCategoriasExpanded] = useState(false); // ← NOVO
   const whatsappNumber = "554291383593";
   const whatsappLink = `https://wa.me/${whatsappNumber}`;
- useEffect(() => {
+
+  const LIMIT_INITIAL = 8; // ← Quantas categorias mostrar inicialmente
+
+  useEffect(() => {
     categoryService.getAll()
       .then((data) => setCategorias(data.docs))
       .catch((err) => console.error("Erro ao carregar categorias:", err));
   }, []);
+
+  // ← NOVO: Categorias a mostrar (limitadas ou todas)
+  const categoriasToShow = categoriasExpanded 
+    ? categorias 
+    : categorias.slice(0, LIMIT_INITIAL);
+
+  const hasMore = categorias.length > LIMIT_INITIAL;
 
   return (
     <footer className="footer">
@@ -123,11 +134,34 @@ const Footer: React.FC = () => {
           <div className="footer-column">
             <h3 className="footer-title">Categorias</h3>
             <ul className="footer-links">
-            {categorias.map((cat) => (
+              {/* ← ALTERADO: Usa categoriasToShow em vez de categorias */}
+              {categoriasToShow.map((cat) => (
                 <li key={cat.id}>
                   <Link to={`/produtos?categoria=${cat.slug}`}>{cat.name}</Link>
                 </li>
               ))}
+
+              {/* ← NOVO: Botão "Ver mais" / "Ver menos" */}
+              {hasMore && (
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => setCategoriasExpanded((v) => !v)}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: 'rgba(255, 255, 255, 0.8)',
+                      cursor: 'pointer',
+                      fontSize: '14px',
+                      padding: '4px 0',
+                      marginTop: '8px',
+                      textDecoration: 'underline',
+                    }}
+                  >
+                    {categoriasExpanded ? '▲ Ver menos' : '▼ Ver mais categorias'}
+                  </button>
+                </li>
+              )}
             </ul>
           </div>
 
