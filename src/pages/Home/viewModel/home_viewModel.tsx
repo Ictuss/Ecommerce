@@ -21,7 +21,18 @@ export const useHomeViewModel = () => {
           categoryService.getAll(),
         ]);
         setProducts(productsData.docs || []);
-        setCategories(categoriesData.docs || []);
+        
+        // ✅ FILTRAR: só categorias com showOnHome = true
+        // ✅ ORDENAR: por campo 'order' (crescente)
+        const homeCategories = (categoriesData.docs || [])
+          .filter((cat: Category) => cat.showOnHome === true)
+          .sort((a: Category, b: Category) => {
+            const orderA = a.order ?? 999;
+            const orderB = b.order ?? 999;
+            return orderA - orderB;
+          });
+        
+        setCategories(homeCategories);
       } catch (err: any) {
         setError(err.message || "Erro ao carregar dados");
       } finally {

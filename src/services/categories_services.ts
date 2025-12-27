@@ -8,6 +8,7 @@ export interface Category {
     url?: string;
   };
   order?: number;
+ showOnHome?: boolean;  
 }
 
 export interface CategoriesResponse {
