@@ -16,32 +16,28 @@ export const useHomeViewModel = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
+        
+        // 🚀 Busca TODOS os produtos automaticamente (com paginação interna)
         const [productsData, categoriesData] = await Promise.all([
-          productService.getAll(1, 1000),
+          productService.getAll(), // ← Agora busca TODOS
           categoryService.getAll(),
         ]);
-        
-        console.log('🔍 DEBUG - Produtos recebidos:', productsData.docs?.length);
-        console.log('🔍 DEBUG - Categorias recebidas:', categoriesData.docs?.length);
-        console.log('🔍 DEBUG - Todas as categorias:', categoriesData.docs);
+
+        console.log('✅ Produtos carregados:', productsData.docs?.length);
+        console.log('✅ Categorias carregadas:', categoriesData.docs?.length);
         
         setProducts(productsData.docs || []);
         
-        // ✅ FILTRAR: só categorias com showOnHome = true
-        // ✅ ORDENAR: por campo 'order' (crescente)
+        // Filtrar e ordenar categorias para a home
         const homeCategories = (categoriesData.docs || [])
-          .filter((cat: Category) => {
-            console.log(`🔍 Categoria: ${cat.name} - showOnHome: ${cat.showOnHome}`);
-            return cat.showOnHome === true;
-          })
+          .filter((cat: Category) => cat.showOnHome === true)
           .sort((a: Category, b: Category) => {
             const orderA = a.order ?? 999;
             const orderB = b.order ?? 999;
             return orderA - orderB;
           });
         
-        console.log('🔍 DEBUG - Categorias filtradas (showOnHome=true):', homeCategories.length);
-        console.log('🔍 DEBUG - Categorias para home:', homeCategories);
+        console.log('✅ Categorias na home:', homeCategories.length);
         
         setCategories(homeCategories);
       } catch (err: any) {
@@ -62,7 +58,7 @@ export const useHomeViewModel = () => {
       }
       return false;
     });
-    console.log(`🔍 Produtos na categoria ${categorySlug}:`, filtered.length);
+    
     return filtered;
   };
 
