@@ -6,8 +6,8 @@ import { Product } from "../../services/products_services";
 interface CategoryCarouselProps {
   title: string;
   products: Product[];
-  bannerSrc: string;
-  bannerAlt: string;
+  bannerSrc?: string; // ← ALTERADO: agora é opcional
+  bannerAlt?: string; // ← ALTERADO: agora é opcional
   getImageUrl: (product: Product) => string;
 }
 
@@ -111,10 +111,12 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
         </div>
       )}
 
-      {/* Banner da categoria */}
-      <div className="category-banner">
-        <img src={bannerSrc} alt={bannerAlt} className="banner-image" />
-      </div>
+      {/* Banner da categoria - SÓ RENDERIZA SE TIVER bannerSrc */}
+      {bannerSrc && (
+        <div className="category-banner">
+          <img src={bannerSrc} alt={bannerAlt || title} className="banner-image" />
+        </div>
+      )}
     </section>
   );
 };

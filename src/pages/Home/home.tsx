@@ -46,8 +46,9 @@ const Home: React.FC = () => {
             key={category.id}
             title={category.name}
             products={produtos}
-            bannerSrc={bannerUrl}
-            bannerAlt={`Banner ${category.name}`}
+            // ← ALTERADO: Só passa bannerSrc se tiver URL válida
+            bannerSrc={bannerUrl || undefined}
+            bannerAlt={bannerUrl ? `Banner ${category.name}` : undefined}
             getImageUrl={getImageUrl}
           />
         );
