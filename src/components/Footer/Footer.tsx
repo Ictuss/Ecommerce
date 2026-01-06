@@ -50,14 +50,15 @@ const Footer: React.FC = () => {
   const LIMIT_INITIAL = 8; // ← Quantas categorias mostrar inicialmente
 
   useEffect(() => {
-    categoryService.getAll()
+    categoryService
+      .getAll()
       .then((data) => setCategorias(data.docs))
       .catch((err) => console.error("Erro ao carregar categorias:", err));
   }, []);
 
   // ← NOVO: Categorias a mostrar (limitadas ou todas)
-  const categoriasToShow = categoriasExpanded 
-    ? categorias 
+  const categoriasToShow = categoriasExpanded
+    ? categorias
     : categorias.slice(0, LIMIT_INITIAL);
 
   const hasMore = categorias.length > LIMIT_INITIAL;
@@ -76,7 +77,7 @@ const Footer: React.FC = () => {
             </p>
             <div className="footer-social">
               <a
-                href="https://www.instagram.com/ictus_saude/"
+                href="https://www.instagram.com/ictussaude/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="social-link instagram"
@@ -148,17 +149,19 @@ const Footer: React.FC = () => {
                     type="button"
                     onClick={() => setCategoriasExpanded((v) => !v)}
                     style={{
-                      background: 'none',
-                      border: 'none',
-                      color: 'rgba(255, 255, 255, 0.8)',
-                      cursor: 'pointer',
-                      fontSize: '14px',
-                      padding: '4px 0',
-                      marginTop: '8px',
-                      textDecoration: 'underline',
+                      background: "none",
+                      border: "none",
+                      color: "rgba(255, 255, 255, 0.8)",
+                      cursor: "pointer",
+                      fontSize: "14px",
+                      padding: "4px 0",
+                      marginTop: "8px",
+                      textDecoration: "underline",
                     }}
                   >
-                    {categoriasExpanded ? '▲ Ver menos' : '▼ Ver mais categorias'}
+                    {categoriasExpanded
+                      ? "▲ Ver menos"
+                      : "▼ Ver mais categorias"}
                   </button>
                 </li>
               )}
