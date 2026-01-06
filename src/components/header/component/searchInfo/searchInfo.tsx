@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import logoPreta from "../../../../assets/logoPreta.png";
+import logoPreta from "../../../../assets/icons/logo_ictus.png";
 import "./searchInfo.css";
 import iconZap from "../../../../assets/whatsapp.png";
 import iconInfo from "../../../../assets/info.png";
