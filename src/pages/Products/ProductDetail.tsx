@@ -6,7 +6,10 @@ import { useProductDetailViewModel } from "./viewModel/productsDetail_viewModel"
 import { useCart } from "../../contexts/CartContext";
 import { FormattedDescription } from "../../components/FormattedDescription";
 
-function formatBRL(price: number) {
+function formatBRL(price: number | null | undefined): string {
+  if (price == null || isNaN(price)) {
+    return "Consulte-nos";
+  }
   return price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 }
 
@@ -69,7 +72,7 @@ const ProductDetail: React.FC = () => {
       {
         id: product.id,
         name: product.name,
-        price: product.price, // precisa ser number e já é!
+        price: product.price || 0, // Se for null, usa 0
         image: displayImages[0] ?? littmannImg,
         slug: product.slug,
       },
@@ -84,7 +87,7 @@ const ProductDetail: React.FC = () => {
       {
         id: product.id,
         name: product.name,
-        price: product.price,
+        price: product.price || 0, // Se for null, usa 0
         image: displayImages[0] ?? littmannImg,
         slug: product.slug,
       },
@@ -201,7 +204,11 @@ const ProductDetail: React.FC = () => {
 
               <div className="pd-spec-group">
                 <h4>Categoria:</h4>
-               <p>{typeof product.category === 'object' ? product.category.name : product.category}</p>
+                <p>
+                  {typeof product.category === "object"
+                    ? product.category.name
+                    : product.category}
+                </p>
               </div>
 
               <div className="pd-spec-group">
@@ -229,7 +236,7 @@ const ProductDetail: React.FC = () => {
               offers: {
                 "@type": "Offer",
                 priceCurrency: "BRL",
-                price: product.price,
+                price: product.price || 0,
                 availability: "https://schema.org/InStock",
               },
             }),
@@ -241,31 +248,3 @@ const ProductDetail: React.FC = () => {
 };
 
 export default ProductDetail;
-function getAllImageUrls() {
-  throw new Error("Function not implemented.");
-}
-
-function addToCart(
-  arg0: {
-    id: any;
-    name: any;
-    price: any; // precisa ser number e já é!
-    image: any;
-    slug: any;
-  },
-  qty: any
-) {
-  throw new Error("Function not implemented.");
-}
-
-function openCart() {
-  throw new Error("Function not implemented.");
-}
-
-function setActiveImg(i: any) {
-  throw new Error("Function not implemented.");
-}
-
-function setQty(arg0: number) {
-  throw new Error("Function not implemented.");
-}

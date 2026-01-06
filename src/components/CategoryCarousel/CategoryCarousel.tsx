@@ -6,8 +6,8 @@ import { Product } from "../../services/products_services";
 interface CategoryCarouselProps {
   title: string;
   products: Product[];
-  bannerSrc?: string; // ← ALTERADO: agora é opcional
-  bannerAlt?: string; // ← ALTERADO: agora é opcional
+  bannerSrc?: string;
+  bannerAlt?: string;
   getImageUrl: (product: Product) => string;
 }
 
@@ -39,6 +39,14 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
 
   const goToPrevPage = () => {
     setCurrentPage((prev) => (prev - 1 + totalPages) % totalPages);
+  };
+
+  // Função auxiliar para formatar preço
+  const formatPrice = (price: number | null | undefined): string => {
+    if (price == null || isNaN(price)) {
+      return "Consulte-nos";
+    }
+    return `R$ ${price.toFixed(2).replace(".", ",")}`;
   };
 
   return (
@@ -76,9 +84,7 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
                     className="product-image"
                   />
                   <h2>{product.name}</h2>
-                  <p className="product-price">
-                    R$ {product.price.toFixed(2).replace(".", ",")}
-                  </p>
+                  <p className="product-price">{formatPrice(product.price)}</p>
                 </div>
               </Link>
             );
@@ -114,7 +120,11 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
       {/* Banner da categoria - SÓ RENDERIZA SE TIVER bannerSrc */}
       {bannerSrc && (
         <div className="category-banner">
-          <img src={bannerSrc} alt={bannerAlt || title} className="banner-image" />
+          <img
+            src={bannerSrc}
+            alt={bannerAlt || title}
+            className="banner-image"
+          />
         </div>
       )}
     </section>
