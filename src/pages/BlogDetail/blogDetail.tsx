@@ -225,25 +225,25 @@ const BlogPost = () => {
 
       {/* Tags */}
       <div className="blog-post-content">
-        {post.tags && post.tags.length > 0 && (
-          <div className="post-tags">
-            <h4>Tags:</h4>
-            {post.tags.map((tagObj: any, index: number) => (
-              <span key={index} className="tag">
-                {tagObj.tag}
-              </span>
-            ))}
-          </div>
-        )}
+        // {post.tags && post.tags.length > 0 && (
+        //   <div className="post-tags">
+        //     <h4>Tags:</h4>
+        //     {post.tags.map((tagObj: any, index: number) => (
+        //       <span key={index} className="tag">
+        //         {tagObj.tag}
+        //       </span>
+        //     ))}
+        //   </div>
+        // )}
       </div>
 
       {/* SEO Meta */}
-      {post.seo && (
-        <div style={{ display: "none" }}>
-          <meta name="description" content={post.seo.metaDescription} />
-          <title>{post.seo.metaTitle || post.title}</title>
-        </div>
-      )}
+      // {post.seo && (
+      //   <div style={{ display: "none" }}>
+      //     <meta name="description" content={post.seo.metaDescription} />
+      //     <title>{post.seo.metaTitle || post.title}</title>
+      //   </div>
+      // )}
     </main>
   );
 };

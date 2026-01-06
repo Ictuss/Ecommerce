@@ -12,13 +12,11 @@ import { categoryService, Category } from "../../services/categories_services";
 const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [produtosOpen, setProdutosOpen] = useState(false);
-  const [categoriasExpanded, setCategoriasExpanded] = useState(false); // ← NOVO
   const [categorias, setCategorias] = useState<Category[]>([]);
 
-  const LIMIT_INITIAL = 6; // ← Quantas categorias mostrar inicialmente
-
   useEffect(() => {
-    categoryService.getAll()
+    categoryService
+      .getAll()
       .then((data) => setCategorias(data.docs))
       .catch((err) => console.error("Erro ao carregar categorias:", err));
   }, []);
@@ -38,13 +36,6 @@ const Header: React.FC = () => {
     : isBlog
       ? logoBlog
       : principalLogo;
-
-  // ← NOVO: Categorias a mostrar (limitadas ou todas)
-  const categoriasToShow = categoriasExpanded 
-    ? categorias 
-    : categorias.slice(0, LIMIT_INITIAL);
-
-  const hasMore = categorias.length > LIMIT_INITIAL;
 
   return (
     <>
@@ -77,49 +68,26 @@ const Header: React.FC = () => {
               </button>
 
               {produtosOpen && (
-                <ul className="dropdown-menu">
-                  <li>
-                    <Link to="/" onClick={() => setProdutosOpen(false)}>
-                      Ver Todos
-                    </Link>
-                  </li>
-                  
-                  {/* ← ALTERADO: Usa categoriasToShow em vez de categorias */}
-                  {categoriasToShow.map((cat) => (
-                    <li key={cat.id}>
-                      <Link
-                        to={`/produtos?categoria=${cat.slug}`}
-                        onClick={() => setProdutosOpen(false)}
-                      >
-                        {cat.name}
+                <div className="dropdown-menu-wrapper">
+                  <ul className="dropdown-menu dropdown-menu-grid">
+                    <li className="dropdown-header">
+                      <Link to="/" onClick={() => setProdutosOpen(false)}>
+                        Ver Todos os Produtos
                       </Link>
                     </li>
-                  ))}
 
-                  {/* ← NOVO: Botão "Ver mais" / "Ver menos" */}
-                  {hasMore && (
-                    <li>
-                      <button
-                        type="button"
-                        onClick={() => setCategoriasExpanded((v) => !v)}
-                        style={{
-                          width: '100%',
-                          textAlign: 'left',
-                          background: 'none',
-                          border: 'none',
-                          padding: '10px 16px',
-                          color: '#333',
-                          cursor: 'pointer',
-                          fontFamily: 'Arial, sans-serif',
-                          fontSize: '14px',
-                          fontWeight: '500',
-                        }}
-                      >
-                        {categoriasExpanded ? '▲ Ver menos' : '▼ Ver mais categorias'}
-                      </button>
-                    </li>
-                  )}
-                </ul>
+                    {categorias.map((cat) => (
+                      <li key={cat.id}>
+                        <Link
+                          to={`/produtos?categoria=${cat.slug}`}
+                          onClick={() => setProdutosOpen(false)}
+                        >
+                          {cat.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               )}
             </li>
 

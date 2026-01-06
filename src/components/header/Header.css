@@ -1,8 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
 
-
-
-
 /* Banner */
 .logoPrincipal-container {
   margin: 8px 0 10px;
@@ -14,7 +11,6 @@
   height: auto;
   display: block;
 }
-
 
 .icon {
   width: 24px;
@@ -79,8 +75,6 @@
   opacity: .8;
 }
 
-
-
 .search-icon {
   font-size: 18px;
   margin-right: 8px;
@@ -94,8 +88,6 @@
     padding: 10px 80px;
     display: flex;
     justify-content: flex-start;
-
-
   }
 
   nav {
@@ -111,16 +103,8 @@
 
   .logoPrincipal-container {
     width: 100%;
-
   }
-
-
 }
-
-/* ===================================
-   ADICIONE ISSO AO SEU HEADER.CSS
-   (no final do arquivo)
-   =================================== */
 
 /* Dropdown container */
 .dropdown {
@@ -153,39 +137,6 @@
   transform: rotate(180deg);
 }
 
-/* Menu dropdown */
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: white;
-  min-width: 180px;
-  border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  list-style: none;
-  padding: 8px 0;
-  margin-top: 8px;
-  z-index: 100;
-}
-
-.produtos-text {
-  text-decoration: none;
-}
-
-.dropdown-menu li a {
-  display: block;
-  padding: 10px 16px;
-  color: #333;
-  text-decoration: none;
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-}
-
-.dropdown-menu li a:hover {
-  background: #f5f5f5;
-  color: #c41e3a;
-}
-
 button.link {
   background: none;
   border: none;
@@ -195,4 +146,131 @@ button.link {
   font: inherit;
   cursor: pointer;
   text-decoration: none;
+}
+
+/* ============================================
+   DESKTOP - Menu em Grid (3 colunas)
+   ============================================ */
+@media (min-width: 769px) {
+  .dropdown-menu-wrapper {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    padding: 20px;
+    min-width: 600px;
+    max-width: 800px;
+    z-index: 1000;
+    margin-top: 8px;
+  }
+
+  .dropdown-menu-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px 20px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .dropdown-menu-grid .dropdown-header {
+    grid-column: 1 / -1;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 12px;
+    margin-bottom: 8px;
+  }
+
+  .dropdown-menu-grid .dropdown-header a {
+    font-weight: 600;
+    font-size: 16px;
+    color: #d32f2f;
+    text-decoration: none;
+    display: block;
+  }
+
+  .dropdown-menu-grid .dropdown-header a:hover {
+    color: #b71c1c;
+  }
+
+  .dropdown-menu-grid li {
+    list-style: none;
+  }
+
+  .dropdown-menu-grid li:not(.dropdown-header) a {
+    display: block;
+    padding: 8px 12px;
+    color: #333;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    font-size: 14px;
+  }
+
+  .dropdown-menu-grid li:not(.dropdown-header) a:hover {
+    background-color: #f5f5f5;
+    color: #d32f2f;
+    transform: translateX(4px);
+  }
+}
+
+/* ============================================
+   MOBILE - Menu vertical tradicional (lista)
+   ============================================ */
+@media (max-width: 768px) {
+  .dropdown-menu-wrapper {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    padding: 8px 0;
+    min-width: 200px;
+    z-index: 1000;
+    margin-top: 8px;
+  }
+
+  .dropdown-menu-grid {
+    display: block;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .dropdown-menu-grid .dropdown-header {
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 4px;
+  }
+
+  .dropdown-menu-grid .dropdown-header a {
+    display: block;
+    padding: 12px 16px;
+    color: #d32f2f;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    font-family: Arial, sans-serif;
+  }
+
+  .dropdown-menu-grid .dropdown-header a:hover {
+    background: #f5f5f5;
+    color: #b71c1c;
+  }
+
+  .dropdown-menu-grid li:not(.dropdown-header) a {
+    display: block;
+    padding: 10px 16px;
+    color: #333;
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    transition: all 0.2s ease;
+  }
+
+  .dropdown-menu-grid li:not(.dropdown-header) a:hover {
+    background: #f5f5f5;
+    color: #d32f2f;
+  }
 }
