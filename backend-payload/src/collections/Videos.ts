@@ -48,7 +48,13 @@ export const Videos: CollectionConfig = {
       relationTo: 'media',
       required: false,
       admin: {
-        description: 'Selecione um arquivo de vídeo da biblioteca de mídias (MP4, WebM, etc).',
+        description: 'Selecione um arquivo de vídeo MP4 da biblioteca de mídias.',
+      },
+      // Filtro para mostrar apenas vídeos MP4
+      filterOptions: {
+        mimeType: {
+          contains: 'video/mp4',
+        },
       },
     },
     {
@@ -64,6 +70,12 @@ export const Videos: CollectionConfig = {
       type: 'upload',
       relationTo: 'media',
       required: true,
+      // Filtro para mostrar apenas imagens
+      filterOptions: {
+        mimeType: {
+          contains: 'image/',
+        },
+      },
     },
     {
       name: 'relatedProducts',
