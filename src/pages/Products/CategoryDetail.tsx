@@ -7,15 +7,15 @@ const CategoryDetail: React.FC = () => {
   const [searchParams] = useSearchParams();
   const categoriaSlug = searchParams.get("categoria") || "";
 
-  const { 
-    loading, 
-    error, 
+  const {
+    loading,
+    error,
     categories, // ← Pega as categorias do viewModel
-    getProductsByCategory, 
+    getProductsByCategory,
     getImageUrl,
-    getBannerUrl // ← Pega a função de banner
+    getBannerUrl, // ← Pega a função de banner
   } = useHomeViewModel();
-  
+
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 8;
 
@@ -50,7 +50,6 @@ const CategoryDetail: React.FC = () => {
   if (products.length === 0) {
     return (
       <div className="category-detail-empty">
-        <h1>{categoria.name}</h1>
         <p>Nenhum produto encontrado nesta categoria.</p>
         <Link to="/" className="btn-voltar">
           Voltar para Home

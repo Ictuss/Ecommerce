@@ -90,7 +90,11 @@ const Header: React.FC = () => {
                 </div>
               )}
             </li>
-
+            <li>
+              <Link to="/produtos?categoria=sob-encomenda" className="link">
+                Sob Encomenda
+              </Link>
+            </li>
             <li>
               <Link to="/blog" className="link">
                 Blog
