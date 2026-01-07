@@ -12,6 +12,7 @@ import CartModal from "./components/cart/CartModal";
 import SearchResults from "./pages/SearchResults/SearchResults";
 import Footer from "./components/Footer/Footer";
 import CategoryDetail from "./pages/Products/CategoryDetail";
+import CategoriasPage from "./pages/Categorias/Categoriaspage";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/busca" element={<SearchResults />} />
           <Route path="/sobre" element={<SobreNos />} />
           <Route path="/produtos" element={<CategoryDetail />} />
+          <Route path="/categorias" element={<CategoriasPage />} />
         </Routes>
         <Footer />
       </Router>

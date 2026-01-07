@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "./Footer.css";
 import { Category, categoryService } from "../../services/categories_services";
 
-// Ícones SVG inline para não precisar de dependências extras
+// Ícones SVG inline
 const InstagramIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
     <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
@@ -40,14 +40,20 @@ const WhatsAppIcon = () => (
   </svg>
 );
 
+const ArrowIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+    <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" />
+  </svg>
+);
+
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
   const [categorias, setCategorias] = useState<Category[]>([]);
-  const [categoriasExpanded, setCategoriasExpanded] = useState(false); // ← NOVO
   const whatsappNumber = "554291383593";
   const whatsappLink = `https://wa.me/${whatsappNumber}`;
 
-  const LIMIT_INITIAL = 8; // ← Quantas categorias mostrar inicialmente
+  // Define as categorias principais (top 8-10)
+  const CATEGORIAS_PRINCIPAIS = 8;
 
   useEffect(() => {
     categoryService
@@ -56,12 +62,8 @@ const Footer: React.FC = () => {
       .catch((err) => console.error("Erro ao carregar categorias:", err));
   }, []);
 
-  // ← NOVO: Categorias a mostrar (limitadas ou todas)
-  const categoriasToShow = categoriasExpanded
-    ? categorias
-    : categorias.slice(0, LIMIT_INITIAL);
-
-  const hasMore = categorias.length > LIMIT_INITIAL;
+  // Pega apenas as categorias principais
+  const categoriasDestaque = categorias.slice(0, CATEGORIAS_PRINCIPAIS);
 
   return (
     <footer className="footer">
@@ -108,7 +110,7 @@ const Footer: React.FC = () => {
 
           {/* Coluna 2 - Links Rápidos */}
           <div className="footer-column">
-            <h3 className="footer-title">Links Rápidos</h3>
+            <h3 className="footer-title">Navegação</h3>
             <ul className="footer-links">
               <li>
                 <Link to="/">Início</Link>
@@ -131,41 +133,24 @@ const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Coluna 3 - Categorias */}
-          <div className="footer-column">
-            <h3 className="footer-title">Categorias</h3>
-            <ul className="footer-links">
-              {/* ← ALTERADO: Usa categoriasToShow em vez de categorias */}
-              {categoriasToShow.map((cat) => (
+          {/* Coluna 3 - Categorias Principais */}
+          <div className="footer-column footer-column-wide">
+            <h3 className="footer-title">Categorias Principais</h3>
+            <ul className="footer-links footer-categories">
+              {categoriasDestaque.map((cat) => (
                 <li key={cat.id}>
                   <Link to={`/produtos?categoria=${cat.slug}`}>{cat.name}</Link>
                 </li>
               ))}
-
-              {/* ← NOVO: Botão "Ver mais" / "Ver menos" */}
-              {hasMore && (
-                <li>
-                  <button
-                    type="button"
-                    onClick={() => setCategoriasExpanded((v) => !v)}
-                    style={{
-                      background: "none",
-                      border: "none",
-                      color: "rgba(255, 255, 255, 0.8)",
-                      cursor: "pointer",
-                      fontSize: "14px",
-                      padding: "4px 0",
-                      marginTop: "8px",
-                      textDecoration: "underline",
-                    }}
-                  >
-                    {categoriasExpanded
-                      ? "▲ Ver menos"
-                      : "▼ Ver mais categorias"}
-                  </button>
-                </li>
-              )}
             </ul>
+
+            {/* Link para todas as categorias */}
+            {categorias.length > CATEGORIAS_PRINCIPAIS && (
+              <Link to="/categorias" className="footer-all-categories">
+                Ver todas as categorias
+                <ArrowIcon />
+              </Link>
+            )}
           </div>
 
           {/* Coluna 4 - Contato */}

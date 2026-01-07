@@ -1,6 +1,6 @@
 /* ===================================
    FOOTER - ICTUS Saúde
-   Design moderno e responsivo
+   Design moderno e limpo (2025)
    =================================== */
 
 .footer {
@@ -21,7 +21,7 @@
     max-width: 1200px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 1.3fr 1fr 1.4fr 1.3fr;
     gap: 40px;
 }
 
@@ -34,8 +34,12 @@
     flex-direction: column;
 }
 
+.footer-column-wide {
+    /* Coluna de categorias com mais destaque */
+}
+
 .footer-title {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     font-weight: 700;
     margin-bottom: 20px;
     color: #ffffff;
@@ -51,12 +55,11 @@
     width: 40px;
     height: 3px;
     background: #c41e3a;
-    /* Vermelho ICTUS */
     border-radius: 2px;
 }
 
 .footer-description {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     line-height: 1.6;
     color: #b0b0b0;
     margin-bottom: 20px;
@@ -121,7 +124,7 @@
 .footer-links a {
     color: #b0b0b0;
     text-decoration: none;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     transition: all 0.3s ease;
     display: inline-block;
 }
@@ -129,6 +132,48 @@
 .footer-links a:hover {
     color: #ffffff;
     padding-left: 5px;
+}
+
+/* ===================================
+   CATEGORIAS - LAYOUT EM 2 COLUNAS
+   =================================== */
+
+.footer-categories {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px 15px;
+    margin-bottom: 20px;
+}
+
+.footer-categories li {
+    margin-bottom: 0;
+}
+
+/* Link "Ver todas as categorias" */
+.footer-all-categories {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #c41e3a;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    margin-top: 8px;
+    padding: 8px 0;
+}
+
+.footer-all-categories:hover {
+    color: #ff4757;
+    gap: 12px;
+}
+
+.footer-all-categories svg {
+    transition: transform 0.3s ease;
+}
+
+.footer-all-categories:hover svg {
+    transform: translateX(4px);
 }
 
 /* ===================================
@@ -146,7 +191,7 @@
     align-items: flex-start;
     gap: 12px;
     margin-bottom: 15px;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: #b0b0b0;
 }
 
@@ -177,14 +222,14 @@
 }
 
 .footer-hours h4 {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     font-weight: 600;
     margin-bottom: 10px;
     color: #ffffff;
 }
 
 .footer-hours p {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: #b0b0b0;
     margin: 5px 0;
 }
@@ -206,7 +251,7 @@
 }
 
 .footer-copyright {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: #808080;
     margin: 0;
 }
@@ -217,7 +262,7 @@
 }
 
 .footer-legal a {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: #808080;
     text-decoration: none;
     transition: color 0.3s ease;
@@ -240,6 +285,11 @@
     .footer-main {
         padding: 40px 20px 30px;
     }
+
+    /* Categorias continuam em 2 colunas no tablet */
+    .footer-categories {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 /* ===================================
@@ -253,6 +303,10 @@
         text-align: center;
     }
 
+    .footer-title {
+        font-size: 1.1rem;
+    }
+
     .footer-title::after {
         left: 50%;
         transform: translateX(-50%);
@@ -262,8 +316,18 @@
         justify-content: center;
     }
 
+    /* Categorias em 1 coluna no mobile */
+    .footer-categories {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
     .footer-links a:hover {
         padding-left: 0;
+    }
+
+    .footer-all-categories {
+        justify-content: center;
     }
 
     .footer-contact li {
@@ -283,6 +347,12 @@
 
     .footer-hours {
         text-align: center;
+    }
+
+    .footer-description,
+    .footer-links a,
+    .footer-contact li {
+        font-size: 0.9rem;
     }
 }
 

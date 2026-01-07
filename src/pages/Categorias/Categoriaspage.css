@@ -1,0 +1,298 @@
+/* ===================================
+   PÁGINA DE CATEGORIAS - ICTUS Saúde
+   Design moderno e responsivo
+   =================================== */
+
+.categorias-page {
+    min-height: 100vh;
+    background: #f5f5f5;
+}
+
+/* ===================================
+   HERO SECTION
+   =================================== */
+
+.categorias-hero {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: #ffffff;
+    padding: 80px 20px 60px;
+    text-align: center;
+}
+
+.categorias-hero-content h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: #ffffff;
+}
+
+.categorias-hero-content p {
+    font-size: 1.1rem;
+    color: #b0b0b0;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* ===================================
+   CONTAINER
+   =================================== */
+
+.categorias-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 20px;
+}
+
+/* ===================================
+   GRID DE CATEGORIAS
+   =================================== */
+
+.categorias-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.categoria-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 28px 24px;
+    text-decoration: none;
+    color: #1a1a2e;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
+}
+
+.categoria-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background: #c41e3a;
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+}
+
+.categoria-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(196, 30, 58, 0.15);
+}
+
+.categoria-card:hover::before {
+    transform: scaleY(1);
+}
+
+.categoria-icon {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #c41e3a 0%, #a01829 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.categoria-card:hover .categoria-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.categoria-name {
+    flex: 1;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin: 0;
+    transition: color 0.3s ease;
+}
+
+.categoria-card:hover .categoria-name {
+    color: #c41e3a;
+}
+
+.categoria-arrow {
+    font-size: 1.5rem;
+    color: #c41e3a;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+}
+
+.categoria-card:hover .categoria-arrow {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* ===================================
+   ESTADOS
+   =================================== */
+
+.categorias-loading {
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #c41e3a;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.categorias-loading p {
+    font-size: 1.1rem;
+    color: #666;
+}
+
+.categorias-empty {
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.categorias-empty p {
+    font-size: 1.1rem;
+    color: #666;
+}
+
+/* ===================================
+   RESPONSIVO - TABLET
+   =================================== */
+
+@media (max-width: 992px) {
+    .categorias-hero-content h1 {
+        font-size: 2rem;
+    }
+
+    .categorias-hero-content p {
+        font-size: 1rem;
+    }
+
+    .categorias-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 20px;
+    }
+
+    .categoria-card {
+        padding: 24px 20px;
+    }
+}
+
+/* ===================================
+   RESPONSIVO - MOBILE
+   =================================== */
+
+@media (max-width: 576px) {
+    .categorias-hero {
+        padding: 60px 20px 40px;
+    }
+
+    .categorias-hero-content h1 {
+        font-size: 1.75rem;
+    }
+
+    .categorias-hero-content p {
+        font-size: 0.95rem;
+    }
+
+    .categorias-container {
+        padding: 40px 20px;
+    }
+
+    .categorias-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .categoria-card {
+        padding: 20px 18px;
+    }
+
+    .categoria-icon {
+        width: 42px;
+        height: 42px;
+    }
+
+    .categoria-name {
+        font-size: 1rem;
+    }
+}
+
+/* ===================================
+   ANIMAÇÕES
+   =================================== */
+
+.categoria-card {
+    animation: fadeInUp 0.5s ease forwards;
+    opacity: 0;
+}
+
+.categoria-card:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.categoria-card:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.categoria-card:nth-child(3) {
+    animation-delay: 0.15s;
+}
+
+.categoria-card:nth-child(4) {
+    animation-delay: 0.2s;
+}
+
+.categoria-card:nth-child(5) {
+    animation-delay: 0.25s;
+}
+
+.categoria-card:nth-child(6) {
+    animation-delay: 0.3s;
+}
+
+.categoria-card:nth-child(7) {
+    animation-delay: 0.35s;
+}
+
+.categoria-card:nth-child(8) {
+    animation-delay: 0.4s;
+}
+
+.categoria-card:nth-child(n+9) {
+    animation-delay: 0.45s;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
