@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "./CategoriasPage.css";
+import "./Categoriaspage.css";
 import { Category, categoryService } from "../../services/categories_services";
 
 const CategoryIcon = () => (
