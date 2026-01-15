@@ -10,6 +10,8 @@ import { Videos } from './collections/Videos'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { Categories } from './collections/Categories'
 import { fileURLToPath } from 'url'
+import { NewsletterSubscribers } from './collections/NewsletterSubscribers'
+import { newsletterSubscribe } from './endpoints/newsletter'
 const allowedOrigins = [
   'http://localhost:5173',
   'https://ecommerce-frontend-five-wheat.vercel.app',
@@ -22,6 +24,13 @@ console.log('[payload] BLOB_READ_WRITE_TOKEN definido?', !!process.env.BLOB_READ
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 export default buildConfig({
+  endpoints: [
+    {
+      path: '/newsletter/subscribe',
+      method: 'post',
+      handler: newsletterSubscribe,
+    },
+  ],
   // 🔐 obrigatório
   secret: process.env.PAYLOAD_SECRET!,
 
@@ -31,7 +40,7 @@ export default buildConfig({
 
   editor: lexicalEditor({}),
 
-  collections: [Users, Categories, Products, BlogPosts, Videos, Media],
+  collections: [Users, Categories, Products, BlogPosts, Videos, Media, NewsletterSubscribers],
 
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),

@@ -73,6 +73,7 @@ export interface Config {
     'blog-posts': BlogPost;
     videos: Video;
     media: Media;
+    'newsletter-subscribers': NewsletterSubscriber;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -86,6 +87,7 @@ export interface Config {
     'blog-posts': BlogPostsSelect<false> | BlogPostsSelect<true>;
     videos: VideosSelect<false> | VideosSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    'newsletter-subscribers': NewsletterSubscribersSelect<false> | NewsletterSubscribersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -160,6 +162,10 @@ export interface Category {
   slug: string;
   banner?: (number | null) | Media;
   order?: number | null;
+  /**
+   * Marque para mostrar esta categoria na página inicial
+   */
+  showOnHome?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -309,7 +315,7 @@ export interface Video {
   slug: string;
   description?: string | null;
   /**
-   * Selecione um arquivo de vídeo da biblioteca de mídias (MP4, WebM, etc).
+   * Selecione um arquivo de vídeo MP4 da biblioteca de mídias.
    */
   videoFile?: (number | null) | Media;
   /**
@@ -322,6 +328,23 @@ export interface Video {
    */
   relatedProducts?: (number | Product)[] | null;
   featured?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "newsletter-subscribers".
+ */
+export interface NewsletterSubscriber {
+  id: number;
+  name: string;
+  email: string;
+  phone?: string | null;
+  subscribedAt?: string | null;
+  /**
+   * Se o inscrito está ativo na newsletter
+   */
+  active?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -372,6 +395,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'newsletter-subscribers';
+        value: number | NewsletterSubscriber;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -448,6 +475,7 @@ export interface CategoriesSelect<T extends boolean = true> {
   slug?: T;
   banner?: T;
   order?: T;
+  showOnHome?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -576,6 +604,19 @@ export interface MediaSelect<T extends boolean = true> {
               filename?: T;
             };
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "newsletter-subscribers_select".
+ */
+export interface NewsletterSubscribersSelect<T extends boolean = true> {
+  name?: T;
+  email?: T;
+  phone?: T;
+  subscribedAt?: T;
+  active?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
