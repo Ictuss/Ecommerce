@@ -105,7 +105,9 @@ const Header: React.FC = () => {
                 Videos
               </Link>
             </li>
-            <CartButton />
+            <li className="cart-menu-item">
+              <CartButton showLabel={true} />
+            </li>
           </ul>
         </nav>
       </div>

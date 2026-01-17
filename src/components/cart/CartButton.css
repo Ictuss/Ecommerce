@@ -27,3 +27,45 @@
   padding: 0 4px;
   font-weight: 700;
 }
+
+.cart-button--with-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: white;
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(18px, 3.0vw, 32px);
+  font-weight: bold;
+  transition: opacity .2s ease;
+}
+
+.cart-button--with-label:hover {
+  opacity: .8;
+}
+
+.cart-button--with-label .cart-button__label {
+  color: white;
+}
+
+.cart-button--with-label .cart-button__icon {
+  font-size: clamp(18px, 3.0vw, 32px);
+  filter: brightness(0) invert(1);
+  /* Força o emoji a ficar branco */
+}
+
+.cart-button--with-label .cart-button__badge {
+  background: white;
+  color: #ff0000;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-weight: bold;
+  position: relative;
+  top: -8px;
+
+  margin-left: -8px;
+}

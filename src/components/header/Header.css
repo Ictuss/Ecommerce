@@ -274,3 +274,20 @@ button.link {
     color: #d32f2f;
   }
 }
+
+.cart-menu-item {
+  display: flex;
+  align-items: center;
+}
+
+.cart-menu-item .link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white !important;
+}
+
+.cart-menu-item svg {
+  color: white !important;
+  fill: white !important;
+}
