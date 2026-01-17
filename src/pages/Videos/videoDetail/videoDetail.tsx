@@ -74,9 +74,7 @@ const VideoDetail: React.FC = () => {
         setLoadingVideo(true);
 
         const videos = await apiService.fetchVideos();
-        const foundVideo = videos.find(
-          (v: any) => String(v.id) === String(id)
-        );
+        const foundVideo = videos.find((v: any) => String(v.id) === String(id));
 
         if (!foundVideo) return;
 
@@ -92,9 +90,7 @@ const VideoDetail: React.FC = () => {
 
         if (foundVideo.videoFile) {
           rawVideoUrl =
-            foundVideo.videoFile?.url ||
-            foundVideo.videoFile?.filename ||
-            "";
+            foundVideo.videoFile?.url || foundVideo.videoFile?.filename || "";
         }
 
         if (!rawVideoUrl && foundVideo.videoUrl) {
@@ -103,17 +99,20 @@ const VideoDetail: React.FC = () => {
 
         const finalVideoUrl = buildVideoUrl(rawVideoUrl);
 
-const relatedProducts =
-  foundVideo.relatedProducts
-    ?.filter((product: any) => product && typeof product === 'object' && product.id)
-    ?.map((product: any) => ({
-      id: product.id,
-      name: product.name,
-      price: `R$ ${product.salePrice ?? product.price ?? 0}`,
-      images: product.images ?? [],
-      description: product.description ?? "",
-      slug: product.slug,
-    })) ?? [];
+        const relatedProducts =
+          foundVideo.relatedProducts
+            ?.filter(
+              (product: any) =>
+                product && typeof product === "object" && product.id
+            )
+            ?.map((product: any) => ({
+              id: product.id,
+              name: product.name,
+              price: `R$ ${product.salePrice ?? product.price ?? 0}`,
+              images: product.images ?? [],
+              description: product.description ?? "",
+              slug: product.slug,
+            })) ?? [];
 
         setVideo({
           id: foundVideo.id,
@@ -285,6 +284,69 @@ const relatedProducts =
               {renderLinesWithBreaks(video.title)}
             </h1>
             <p className="video-detail__description">{video.description}</p>
+
+            {products.length > 0 && (
+              <div className="video-detail__products">
+                <h2 className="video-detail__products-title">
+                  Produtos nesse vídeo
+                </h2>
+
+                <div className="video-detail__products-row">
+                  <div className="video-detail__products-list">
+                    {products.slice(0, 3).map((p) => {
+                      const imageUrl = getFirstProductImageUrl(p);
+
+                      return (
+                        <article
+                          key={p.id}
+                          className="video-detail__product-card"
+                          onClick={() => navigate(`/product/${p.slug}`)}
+                        >
+                          <div className="video-detail__product-image-wrapper">
+                            {imageUrl && (
+                              <img
+                                src={imageUrl}
+                                alt={p.name}
+                                className="video-detail__product-image"
+                              />
+                            )}
+                          </div>
+                          <div className="video-detail__product-info">
+                            <p className="video-detail__product-name">
+                              {p.name}
+                            </p>
+                            <p className="video-detail__product-price">
+                              {p.price}
+                            </p>
+                          </div>
+                        </article>
+                      );
+                    })}
+                  </div>
+
+                  {/* Botão + vermelho - agora clicável */}
+                  {products.length > 3 && (
+                    <button
+                      className="video-detail__products-more"
+                      onClick={() => {
+                        // Scroll suave até produtos relacionados
+                        document
+                          .querySelector(".video-related-products")
+                          ?.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start",
+                          });
+                      }}
+                      title="Ver mais produtos"
+                    >
+                      <span className="video-detail__products-more-icon">
+                        +
+                      </span>
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 

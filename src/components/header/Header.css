@@ -20,55 +20,50 @@
 /* Navbar */
 .navbar-container {
   background-color: #ff0000;
-  padding: 10px 0;
+  padding: 15px 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
   font-family: 'Anton', sans-serif;
-  padding: 15px 20px;
 }
 
-.navbar {
+nav {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+  justify-content: center;
+  width: 100%;
 }
 
-/* Hambúrguer - escondido no desktop */
+/* Hambúrguer - REMOVIDO */
 .menu-toggle {
   display: none;
-  background: transparent;
-  border: none;
-  font-size: 28px;
-  line-height: 1;
-  cursor: pointer;
-  padding: 6px 8px;
-  position: relative;
 }
 
-.menu-toggle::after {
-  content: "☰";
-  font-size: 28px;
-}
-
-.menu-toggle[aria-expanded="true"]::after {
-  content: "×";
-}
-
+/* Nav Links - Sempre visível */
 .nav-links {
   list-style: none;
   display: flex;
   align-items: center;
-  gap: clamp(15px, 4vw, 120px);
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: clamp(10px, 2vw, 30px);
   margin: 0;
   padding: 0;
+  width: 100%;
+}
+
+.nav-links li {
+  display: flex;
+  align-items: center;
+  /* ⬅️ ADICIONADO: alinha verticalmente */
 }
 
 .nav-links .link {
   text-decoration: none;
   color: white;
-  font-size: clamp(18px, 3.0vw, 32px);
+  font-size: clamp(16px, 2vw, 22px);
+  /* ⬅️ AUMENTADO: de 14px para 16px no mobile */
   font-weight: bold;
   transition: opacity .2s ease;
+  white-space: nowrap;
 }
 
 .nav-links .link:hover {
@@ -81,37 +76,15 @@
   color: #ff0000;
 }
 
-@media (min-width: 1440px) {
-  .navbar-container {
-    background-color: #ff0000;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
-    padding: 10px 80px;
-    display: flex;
-    justify-content: flex-start;
-  }
-
-  nav {
-    margin-left: 270px;
-    display: flex;
-    justify-content: center;
-  }
-
-  .nav-links {
-    display: flex;
-    justify-content: flex-start;
-  }
-
-  .logoPrincipal-container {
-    width: 100%;
-  }
-}
-
 /* Dropdown container */
 .dropdown {
   position: relative;
+  display: flex;
+  align-items: center;
+  /* ⬅️ ADICIONADO: alinha o botão Produtos */
 }
 
-/* Botão Produtos - mesmo estilo do link */
+/* Botão Produtos */
 .dropdown .link {
   background: none;
   border: none;
@@ -146,6 +119,12 @@ button.link {
   font: inherit;
   cursor: pointer;
   text-decoration: none;
+}
+
+/* Cart Menu Item */
+.cart-menu-item {
+  display: flex;
+  align-items: center;
 }
 
 /* ============================================
@@ -216,9 +195,42 @@ button.link {
 }
 
 /* ============================================
-   MOBILE - Menu vertical tradicional (lista)
+   TELAS GRANDES
+   ============================================ */
+@media (min-width: 1440px) {
+  .navbar-container {
+    padding: 10px 80px;
+  }
+
+  nav {
+    margin-left: 270px;
+  }
+
+  .nav-links {
+    gap: 45px;
+  }
+}
+
+/* ============================================
+   MOBILE - Dropdown simplificado
    ============================================ */
 @media (max-width: 768px) {
+  .navbar-container {
+    padding: 12px 15px;
+  }
+
+  .nav-links {
+    gap: clamp(10px, 2.5vw, 18px);
+    /* ⬅️ AUMENTADO: gap maior */
+    row-gap: 12px;
+    /* ⬅️ AUMENTADO: de 10px para 12px */
+  }
+
+  .nav-links .link {
+    font-size: clamp(15px, 3.5vw, 18px);
+    /* ⬅️ AUMENTADO: de 12px para 15px mínimo */
+  }
+
   .dropdown-menu-wrapper {
     position: absolute;
     top: 100%;
@@ -275,19 +287,17 @@ button.link {
   }
 }
 
-.cart-menu-item {
-  display: flex;
-  align-items: center;
-}
+/* ============================================
+   MOBILE MUITO PEQUENO
+   ============================================ */
+@media (max-width: 480px) {
+  .nav-links .link {
+    font-size: 14px;
+    /* ⬅️ AUMENTADO: de 11px para 14px */
+  }
 
-.cart-menu-item .link {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: white !important;
-}
-
-.cart-menu-item svg {
-  color: white !important;
-  fill: white !important;
+  .nav-links {
+    gap: 8px;
+    row-gap: 10px;
+  }
 }
