@@ -7,7 +7,7 @@ import { useCart } from "../../contexts/CartContext";
 import { FormattedDescription } from "../../components/FormattedDescription";
 
 function formatBRL(price: number | null | undefined): string {
-  if (price == null || isNaN(price)) {
+  if (price == null || isNaN(price) || price === 0) {
     return "Consulte-nos";
   }
   return price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
@@ -67,16 +67,20 @@ const ProductDetail: React.FC = () => {
   const displayImages =
     productImages.length > 0 ? productImages : [littmannImg];
 
+  // Verifica se o produto tem preço válido
+  const hasValidPrice =
+    product.price != null && !isNaN(product.price) && product.price > 0;
+
   const handleAddToCart = () => {
     addToCart(
       {
         id: product.id,
         name: product.name,
-        price: product.price || 0, // Se for null, usa 0
+        price: product.price || 0,
         image: displayImages[0] ?? littmannImg,
         slug: product.slug,
       },
-      qty
+      qty,
     );
 
     openCart();
@@ -87,11 +91,11 @@ const ProductDetail: React.FC = () => {
       {
         id: product.id,
         name: product.name,
-        price: product.price || 0, // Se for null, usa 0
+        price: product.price || 0,
         image: displayImages[0] ?? littmannImg,
         slug: product.slug,
       },
-      qty
+      qty,
     );
 
     openCart();
@@ -233,12 +237,21 @@ const ProductDetail: React.FC = () => {
               name: product.name,
               image: displayImages,
               description: product.description,
-              offers: {
-                "@type": "Offer",
-                priceCurrency: "BRL",
-                price: product.price || 0,
-                availability: "https://schema.org/InStock",
-              },
+              offers: hasValidPrice
+                ? {
+                    "@type": "Offer",
+                    priceCurrency: "BRL",
+                    price: product.price,
+                    availability: "https://schema.org/InStock",
+                  }
+                : {
+                    "@type": "Offer",
+                    availability: "https://schema.org/InStock",
+                    priceSpecification: {
+                      "@type": "PriceSpecification",
+                      price: "Consulte-nos",
+                    },
+                  },
             }),
           }}
         />
