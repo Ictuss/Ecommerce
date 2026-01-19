@@ -195,23 +195,6 @@ button.link {
 }
 
 /* ============================================
-   TELAS GRANDES
-   ============================================ */
-@media (min-width: 1440px) {
-  .navbar-container {
-    padding: 10px 80px;
-  }
-
-  nav {
-    margin-left: 270px;
-  }
-
-  .nav-links {
-    gap: 45px;
-  }
-}
-
-/* ============================================
    MOBILE - Dropdown simplificado
    ============================================ */
 @media (max-width: 768px) {

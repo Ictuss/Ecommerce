@@ -1,15 +1,21 @@
 import React, { useState } from "react";
 import { useCart } from "../../contexts/CartContext";
 import "./CartModal.css";
-import littmannImg from "../../assets/1.png"; // ⬅️ MESMA IMAGEM DO PRODUCT DETAIL
-// ❌ REMOVE isso se ainda estiver usando aqui
-// import { buildImageUrl } from "../../config/env";
+import littmannImg from "../../assets/1.png";
 
 const formatBRL = (value: number) =>
   value.toLocaleString("pt-BR", {
     style: "currency",
     currency: "BRL",
   });
+
+// Função para formatar preço ou mostrar "Consultar"
+const formatPrice = (price: number | null | undefined): string => {
+  if (price == null || price === 0 || isNaN(price)) {
+    return "Consultar";
+  }
+  return formatBRL(price);
+};
 
 const CartModal: React.FC = () => {
   const {
@@ -26,6 +32,11 @@ const CartModal: React.FC = () => {
 
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
 
+  // Verifica se há produtos sem preço no carrinho
+  const hasProductsWithoutPrice = items.some(
+    (item) => item.price == null || item.price === 0 || isNaN(item.price),
+  );
+
   const handleSendToWhatsApp = (paymentMethod: string) => {
     const businessWhatsApp = "554291383593";
 
@@ -36,12 +47,25 @@ const CartModal: React.FC = () => {
     items.forEach((item, index) => {
       message += `${index + 1}. *${item.name}*\n`;
       message += `   Qtd: ${item.quantity}x\n`;
-      message += `   Valor unitário: ${formatBRL(item.price)}\n`;
-      message += `   Subtotal: ${formatBRL(item.price * item.quantity)}\n\n`;
+
+      // Se não tem preço, mostra "A consultar"
+      if (item.price == null || item.price === 0 || isNaN(item.price)) {
+        message += `   Valor: *A CONSULTAR*\n\n`;
+      } else {
+        message += `   Valor unitário: ${formatBRL(item.price)}\n`;
+        message += `   Subtotal: ${formatBRL(item.price * item.quantity)}\n\n`;
+      }
     });
 
     message += `━━━━━━━━━━━━━━━\n`;
-    message += `💰 *VALOR TOTAL: ${formatBRL(totalPrice)}*\n\n`;
+
+    // Se tem produtos sem preço, mostra mensagem diferente
+    if (hasProductsWithoutPrice) {
+      message += `💰 *VALOR TOTAL: A CONSULTAR*\n`;
+      message += `   _(Alguns produtos precisam de orçamento)_\n\n`;
+    } else {
+      message += `💰 *VALOR TOTAL: ${formatBRL(totalPrice)}*\n\n`;
+    }
 
     const paymentText =
       {
@@ -86,7 +110,6 @@ const CartModal: React.FC = () => {
             <ul className="cart-modal__list">
               {items.map((item) => (
                 <li key={item.id} className="cart-modal__item">
-                  {/* ⬇️ MESMA IDEIA DO PRODUCTDETAIL: usa image direto, fallback pro littmann */}
                   <img
                     src={item.image || littmannImg}
                     alt={item.name}
@@ -99,7 +122,7 @@ const CartModal: React.FC = () => {
                   <div className="cart-modal__item-info">
                     <p className="cart-modal__item-name">{item.name}</p>
                     <p className="cart-modal__item-price">
-                      {formatBRL(item.price)}
+                      {formatPrice(item.price)}
                     </p>
 
                     <div className="cart-modal__item-actions">
@@ -141,8 +164,19 @@ const CartModal: React.FC = () => {
             <footer className="cart-modal__footer">
               <div className="cart-modal__total">
                 <span>Total</span>
-                <strong>{formatBRL(totalPrice)}</strong>
+                <strong>
+                  {hasProductsWithoutPrice
+                    ? "A consultar"
+                    : formatBRL(totalPrice)}
+                </strong>
               </div>
+
+              {/* Aviso se houver produtos sem preço */}
+              {hasProductsWithoutPrice && (
+                <p className="cart-modal__warning">
+                  ⚠️ Alguns produtos precisam de orçamento
+                </p>
+              )}
 
               {showPaymentOptions ? (
                 <div className="cart-modal__payment-options">

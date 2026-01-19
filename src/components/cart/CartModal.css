@@ -81,7 +81,7 @@
   gap: 6px;
 }
 
-.cart-modal__item-actions > button {
+.cart-modal__item-actions>button {
   width: 24px;
   height: 24px;
   border-radius: 4px;
@@ -136,6 +136,18 @@
   background: #e32626;
   color: #fff;
 }
+
+.cart-modal__warning {
+  background-color: #fff3cd;
+  border: 1px solid #ffc107;
+  color: #856404;
+  padding: 10px;
+  border-radius: 6px;
+  margin: 10px 0;
+  font-size: 14px;
+  text-align: center;
+}
+
 /* ADICIONE NO FINAL DO SEU CartModal.css */
 
 /* Botão de finalizar (verde WhatsApp) */

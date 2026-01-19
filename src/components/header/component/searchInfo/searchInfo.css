@@ -125,6 +125,7 @@
   .container {
     display: flex;
     flex-direction: row;
+    height: 200px;
     /* gap: ; */
     padding: 20px 0px;
     justify-content: center;

@@ -10,14 +10,22 @@ const CategoryDetail: React.FC = () => {
   const {
     loading,
     error,
-    categories, // ← Pega as categorias do viewModel
+    categories,
     getProductsByCategory,
     getImageUrl,
-    getBannerUrl, // ← Pega a função de banner
+    getBannerUrl,
   } = useHomeViewModel();
 
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 8;
+
+  // Função auxiliar para formatar preço
+  const formatPrice = (price: number | null | undefined): string => {
+    if (price == null || price === 0 || isNaN(price)) {
+      return "Consultar";
+    }
+    return `R$ ${price.toFixed(2).replace(".", ",")}`;
+  };
 
   if (loading) {
     return (
@@ -29,10 +37,8 @@ const CategoryDetail: React.FC = () => {
     return <div className="category-detail-error">Erro: {error}</div>;
   }
 
-  // ← NOVO: Busca categoria dinâmica
   const categoria = categories.find((cat) => cat.slug === categoriaSlug);
 
-  // Categoria não existe
   if (!categoria) {
     return (
       <div className="category-detail-empty">
@@ -46,7 +52,6 @@ const CategoryDetail: React.FC = () => {
 
   const products = getProductsByCategory(categoriaSlug);
 
-  // Sem produtos
   if (products.length === 0) {
     return (
       <div className="category-detail-empty">
@@ -58,34 +63,29 @@ const CategoryDetail: React.FC = () => {
     );
   }
 
-  // Paginação
   const totalPages = Math.ceil(products.length / itemsPerPage);
   const currentProducts = products.slice(
     currentPage * itemsPerPage,
-    (currentPage + 1) * itemsPerPage
+    (currentPage + 1) * itemsPerPage,
   );
 
   const goToNextPage = () => setCurrentPage((prev) => (prev + 1) % totalPages);
   const goToPrevPage = () =>
     setCurrentPage((prev) => (prev - 1 + totalPages) % totalPages);
 
-  // ← NOVO: Pega URL do banner
   const bannerUrl = getBannerUrl(categoria);
 
   return (
     <div className="category-detail">
-      {/* Banner - só mostra se existir */}
       {bannerUrl && (
         <div className="category-detail-banner">
           <img src={bannerUrl} alt={categoria.name} />
         </div>
       )}
 
-      {/* Título */}
       <h1 className="category-detail-title">{categoria.name}</h1>
       <p className="category-detail-count">{products.length} produtos</p>
 
-      {/* Grid de produtos */}
       <section className="category-section">
         <div className="carousel-wrapper">
           {totalPages > 1 && (
@@ -111,9 +111,7 @@ const CategoryDetail: React.FC = () => {
                     className="product-image"
                   />
                   <h2>{product.name}</h2>
-                  <p className="product-price">
-                    R$ {product.price.toFixed(2).replace(".", ",")}
-                  </p>
+                  <p className="product-price">{formatPrice(product.price)}</p>
                 </div>
               </Link>
             ))}
@@ -129,7 +127,6 @@ const CategoryDetail: React.FC = () => {
           )}
         </div>
 
-        {/* Bolinhas de paginação */}
         {totalPages > 1 && (
           <div className="carousel-dots">
             {Array.from({ length: totalPages }).map((_, index) => (
@@ -143,7 +140,6 @@ const CategoryDetail: React.FC = () => {
         )}
       </section>
 
-      {/* Voltar */}
       <div className="category-detail-footer">
         <Link to="/" className="btn-voltar">
           ← Voltar para Home

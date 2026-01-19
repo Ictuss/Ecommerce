@@ -30,7 +30,7 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
   const totalPages = Math.ceil(products.length / itemsPerPage);
   const currentProducts = products.slice(
     currentPage * itemsPerPage,
-    (currentPage + 1) * itemsPerPage
+    (currentPage + 1) * itemsPerPage,
   );
 
   const goToNextPage = () => {
@@ -43,8 +43,9 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
 
   // Função auxiliar para formatar preço
   const formatPrice = (price: number | null | undefined): string => {
-    if (price == null || isNaN(price)) {
-      return "Consulte-nos";
+    // Verifica se o preço é null, undefined, 0 ou NaN
+    if (price == null || price === 0 || isNaN(price)) {
+      return "Consultar";
     }
     return `R$ ${price.toFixed(2).replace(".", ",")}`;
   };
