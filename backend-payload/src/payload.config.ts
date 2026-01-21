@@ -12,6 +12,7 @@ import { Categories } from './collections/Categories'
 import { fileURLToPath } from 'url'
 import { NewsletterSubscribers } from './collections/NewsletterSubscribers'
 import { newsletterSubscribe } from './endpoints/newsletter'
+import { testSheets } from './endpoints/testSheets'
 const allowedOrigins = [
   'http://localhost:5173',
   'https://ecommerce-frontend-five-wheat.vercel.app',
@@ -29,6 +30,11 @@ export default buildConfig({
       path: '/newsletter/subscribe',
       method: 'post',
       handler: newsletterSubscribe,
+    },
+    {
+      path: '/test/sheets', // NOVO
+      method: 'get',
+      handler: testSheets,
     },
   ],
   // 🔐 obrigatório
