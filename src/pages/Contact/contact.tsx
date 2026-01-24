@@ -31,7 +31,7 @@ const Contato: React.FC = () => {
         EMAILJS_PUBLIC_KEY
       )
       .then(
-        () => {
+        ()  => {
           setSending(false);
           setSent(true);
           // e.currentTarget.reset();
