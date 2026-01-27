@@ -144,8 +144,6 @@ const ProductDetail: React.FC = () => {
           <section className="pd-product-info">
             <h1 className="pd-title">{product.name}</h1>
 
-            <div className="pd-sku">Código: {product.id}</div>
-
             <FormattedDescription
               text={product.description}
               className="pd-description"
